@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="174.83mm" height="190.11mm" version="1.1" viewBox="0 0 174.82974 190.11166" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-.27561 1.5363)">
+<g transform="matrix(3.0109 0 0 3.0109 -219.75 -510.68)">
+<g fill="none" stroke-linejoin="round" stroke-linecap="round">
+<path d="m100.26 170.12 29.811 6.161v41.385l-29.811-8.7274z" points="130.06803,176.28099 130.06803,217.66638 100.25722,208.93902 100.25722,170.11995 " stroke="#ffd4db"/>
+<path d="m74.167 220.67 30.523 10.327 25.378-13.328-29.811-8.7274z" points="104.6901,230.99487 130.06803,217.66638 100.25722,208.93902 74.166855,220.66751 " stroke="#fd7b90"/>
+<path d="m74.167 178.71v41.962l26.09-11.728v-38.819z" points="74.166855,220.66751 100.25722,208.93902 100.25722,170.11995 74.166855,178.70558 " stroke="#7b081b"/>
+<path d="m104.69 186.02v44.977l25.378-13.328v-41.385z" points="104.6901,230.99487 130.06803,217.66638 130.06803,176.28099 104.6901,186.01812 " stroke="#ffc2cc"/>
+<path d="m74.167 178.71 30.523 7.3125 25.378-9.7371-29.811-6.161z" points="104.6901,186.01812 130.06803,176.28099 100.25722,170.11995 74.166855,178.70558 " stroke="#cd092a"/>
+<path d="m74.167 178.71 30.523 7.3125v44.977l-30.523-10.327z" points="104.6901,186.01812 104.6901,230.99487 74.166855,220.66751 74.166855,178.70558 " stroke="#f13f5c"/>
+</g>
+</g>
+</g>
+</svg>
