@@ -11,4 +11,11 @@ loader.then((assets)=>{
   for (let name in assets) {
     window[name] = assets[name];
   }
+
+  cube.element.attr({visibility: 'hidden'});
+
 })
+
+function testMoveAndRotate(animated) {
+  animated.animate().move(100, 100).rotate(45).move(0, 0);
+}

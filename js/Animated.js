@@ -30,13 +30,25 @@ class Animated {
     if (this.queue.length) {
       let attributes = this.queue.shift();
       // change this.rotation etc based on attributes property
+
+      if (attributes.location) {
+        this.location = attributes.location;
+      }
+      if (attributes.rotation) {
+        this.rotation = attributes.rotation;
+      }
+      if (attributes.scalar) {
+        this.scalar = attributes.scalar;
+      }
+      
       if (this.animateQueue) {
-        this.element.animate(attributes, 1000, ()=>{
+        this.element.animate(this.getState(), 1000, ()=>{
           this.process();
         });
       }
       else {
-        this.element.attr(attributes);
+        console.log(this.getState())
+        this.element.attr(this.getState());
       }
     }
     else {
