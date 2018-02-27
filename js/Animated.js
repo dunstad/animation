@@ -9,10 +9,10 @@ class Animated {
     this.queue = [];
     this.animateQueue = false;
     this.element.vivus = new Vivus(this.element.node);
-    this.scalar = 's1';
-    this.rotation = `r0`;
+    this.scalar = 1;
+    this.rotation = 0;
     let bBox = this.element.getBBox();
-    this.location = `t${bBox.x},${bBox.y}`
+    this.location = {x: bBox.x, y: bBox.y};
   }
 
   /**
@@ -35,20 +35,20 @@ class Animated {
         this.location = attributes.location;
       }
       if (attributes.rotation) {
-        this.rotation = attributes.rotation;
+        this.rotation =  attributes.rotation;
       }
       if (attributes.scalar) {
         this.scalar = attributes.scalar;
       }
       
       if (this.animateQueue) {
-        this.element.animate(this.getState(), 1000, ()=>{
+        this.element.animate(this.getStateString(), 1000, ()=>{
           this.process();
         });
       }
       else {
-        console.log(this.getState())
-        this.element.attr(this.getState());
+        console.log(this.getStateString())
+        this.element.attr(this.getStateString());
       }
     }
     else {
@@ -59,9 +59,9 @@ class Animated {
   /**
    * 
    */
-  getState() {
+  getStateString() {
     let bBox = this.element.getBBox();
-    return {transform: `${this.location}${this.rotation}${this.scalar}`};
+    return {transform: `${this.locationToString()}${this.rotationToString()}${this.scalarToString()}`};
   }
 
   /**
@@ -84,7 +84,14 @@ class Animated {
    * @param {*} y 
    */
   move(x, y) {
-    return this.sendToQueue({location: `t${x},${y}`});
+    return this.sendToQueue({location: {x: x, y: y}});
+  }
+
+  /**
+   * 
+   */
+  locationToString() {
+    return `t${this.location.x},${this.location.y}`;
   }
 
   /**
@@ -92,7 +99,14 @@ class Animated {
    * @param {*} deg 
    */
   rotate(deg) {
-    return this.sendToQueue({rotation: `r${deg}`});
+    return this.sendToQueue({rotation: deg});
+  }
+
+  /**
+   * 
+   */
+  rotationToString() {
+    return `r${this.rotation}`;
   }
 
   /**
@@ -100,7 +114,14 @@ class Animated {
    * @param {*} ratio 
    */
   scale(ratio) {
-    return this.sendToQueue({scalar: `s${ratio}`});
+    return this.sendToQueue({scalar: ratio});
+  }
+
+  /**
+   * 
+   */
+  scalarToString() {
+    return `s${this.scalar}`;
   }
 
 }
