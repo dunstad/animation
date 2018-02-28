@@ -99,13 +99,6 @@ class Animated {
   }
 
   /**
-   * Represents the current location of this as an SVG translation string.
-   */
-  locationToString() {
-    return `t${this.location.x},${this.location.y}`;
-  }
-
-  /**
    * Rotates this to the absolute degree provided.
    * @param {number} deg 
    */
@@ -114,18 +107,25 @@ class Animated {
   }
 
   /**
-   * Represents the current rotation of this as an SVG translation string.
-   */
-  rotationToString() {
-    return `r${this.rotation},${this.centerOffsetFromOrigin.x},${this.centerOffsetFromOrigin.y}`;
-  }
-
-  /**
    * Scales this to the absolute ratio provided.
    * @param {number} ratio 
    */
   scale(ratio) {
     return this.sendToQueue({scalar: ratio});
+  }
+
+  /**
+   * Represents the current location of this as an SVG translation string.
+   */
+  locationToString() {
+    return `t${this.location.x},${this.location.y}`;
+  }
+
+  /**
+   * Represents the current rotation of this as an SVG translation string.
+   */
+  rotationToString() {
+    return `r${this.rotation},${this.centerOffsetFromOrigin.x},${this.centerOffsetFromOrigin.y}`;
   }
 
   /**
