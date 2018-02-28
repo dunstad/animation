@@ -14,6 +14,7 @@ class Animated {
     this.location = {x: bBox.x, y: bBox.y};
     this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
+    this.spin = false;
   }
 
   /**
@@ -39,15 +40,15 @@ class Animated {
     if (this.queue.length) {
       let attributes = this.queue.shift();
 
-      if (attributes.location) {
+      if ('location' in attributes) {
         this.location = attributes.location;
       }
 
-      if (attributes.rotation) {
+      if ('rotation' in attributes) {
         this.rotation =  attributes.rotation;
       }
 
-      if (attributes.scalar) {
+      if ('scalar' in attributes) {
         this.scalar = attributes.scalar;
       }
       
@@ -112,6 +113,18 @@ class Animated {
    */
   scale(ratio) {
     return this.sendToQueue({scalar: ratio});
+  }
+
+  /**
+   * Used to start or stop a spinning animation.
+   */
+  toggleSpin() {
+    if (this.spin) {
+      clearInterval(this.spin);
+    }
+    else {
+      this.spin = setInterval(()=>{}, 1000);
+    }
   }
 
   /**
