@@ -1,8 +1,8 @@
 class Animated {
 
   /**
-   * 
-   * @param {*} element 
+   * Makes SVG objects easier to manipulate.
+   * @param {object} element 
    */
   constructor(element) {
     this.element = element;
@@ -17,10 +17,18 @@ class Animated {
   }
 
   /**
-   * 
+   * Signals that transformations after this should be animated.
    */
   animate() {
     this.animateQueue = true;
+    return this;
+  }
+
+  /**
+   * Signals that transformations after this should not be animated.
+   */
+  unanimate() {
+    this.animateQueue = false;
     return this;
   }
 
@@ -30,7 +38,6 @@ class Animated {
   process() {
     if (this.queue.length) {
       let attributes = this.queue.shift();
-      // change this.rotation etc based on attributes property
 
       if (attributes.location) {
         this.location = attributes.location;
@@ -44,7 +51,7 @@ class Animated {
         this.scalar = attributes.scalar;
       }
       
-      if (this.animateQueue) {
+      if (attributes.animate) {
         console.log(this.getStateString())
         this.element.animate(this.getStateString(), 1000, ()=>{
           this.process();
@@ -73,6 +80,7 @@ class Animated {
    * @param {*} stateChange 
    */
   sendToQueue(stateChange) {
+    stateChange.animate = this.animateQueue;
     this.queue.push(stateChange);
     if (!this.element.inAnim().length) {this.process();}
     else {console.log('!');}
