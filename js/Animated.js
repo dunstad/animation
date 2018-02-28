@@ -10,9 +10,10 @@ class Animated {
     this.animateQueue = false;
     this.element.vivus = new Vivus(this.element.node);
     this.scalar = 1;
-    this.rotation = 0;
     let bBox = this.element.getBBox();
     this.location = {x: bBox.x, y: bBox.y};
+    this.rotation = 0;
+    this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
   }
 
   /**
@@ -34,14 +35,17 @@ class Animated {
       if (attributes.location) {
         this.location = attributes.location;
       }
+
       if (attributes.rotation) {
         this.rotation =  attributes.rotation;
       }
+
       if (attributes.scalar) {
         this.scalar = attributes.scalar;
       }
       
       if (this.animateQueue) {
+        console.log(this.getStateString())
         this.element.animate(this.getStateString(), 1000, ()=>{
           this.process();
         });
@@ -69,10 +73,7 @@ class Animated {
    * @param {*} stateChange 
    */
   sendToQueue(stateChange) {
-    let attributes = Object.assign({
-      transform: `${this.location}${this.rotation}${this.scalar}`
-    }, stateChange);
-    this.queue.push(attributes);
+    this.queue.push(stateChange);
     if (!this.element.inAnim().length) {this.process();}
     else {console.log('!');}
     return this;
@@ -106,7 +107,7 @@ class Animated {
    * 
    */
   rotationToString() {
-    return `r${this.rotation}`;
+    return `r${this.rotation},${this.centerOffsetFromOrigin.x},${this.centerOffsetFromOrigin.y}`;
   }
 
   /**

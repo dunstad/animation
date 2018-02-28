@@ -17,5 +17,5 @@ loader.then((assets)=>{
 })
 
 function testMoveAndRotate(animated) {
-  animated.animate().move(100, 100).rotate(45);
+  animated.animate().move(100, 100).rotate(45).move(100, 50).rotate(23).move(0, 0);
 }
