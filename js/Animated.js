@@ -163,8 +163,10 @@ class Animated {
    * Used to start and stop a pulsing animation.
    * @param {number} scalar 
    * @param {number} milliseconds 
+   * @param {function} easing
    */
-  togglePulse(scalar, milliseconds) {
+  togglePulse(scalar, milliseconds, easing) {
+    
     if (this.pulse) {
       this.pulse = false;
     }
@@ -175,12 +177,14 @@ class Animated {
         scalar: scalar,
         animate: true,
         milliseconds: milliseconds,
+        easing: easing,
       };
 
       let scaleDown = {
         scalar: this.scalar,
         animate: true,
         milliseconds: milliseconds,
+        easing: easing,
       };
 
       scaleUp.callback = ()=>{
