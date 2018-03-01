@@ -91,7 +91,7 @@ class Animated {
    * @param {object} stateChange 
    */
   sendToQueue(stateChange) {
-    stateChange.animate = this.animateQueue;
+    if (!stateChange.animate) {stateChange.animate = this.animateQueue;}
     this.queue.push(stateChange);
     if (!this.element.inAnim().length) {this.process();}
     else {console.log('transformation queued');}
@@ -134,16 +134,27 @@ class Animated {
 
   /**
    * Used to start and stop a spinning animation.
-   * This should really be done using the animation callback and not setInterval
    * @param {number} degrees 
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
     if (this.spin) {
-      clearInterval(this.spin);
+      this.spin = false;
     }
     else {
-      this.spin = setInterval(()=>{this.animate().rotate(this.rotation + degrees, milliseconds).unanimate()}, milliseconds);
+      this.spin = true;
+      let transformation = {
+        rotation: this.rotation + degrees,
+        animate: true,
+        milliseconds: milliseconds,
+      };
+      transformation.callback = ()=>{
+        if (this.spin) {
+          transformation.rotation = this.rotation + degrees;
+          this.sendToQueue(transformation);
+        }
+      };
+      return this.sendToQueue(transformation);
     }
   }
 
