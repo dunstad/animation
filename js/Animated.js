@@ -34,7 +34,7 @@ class Animated {
   }
 
   /**
-   * Performs rotations waiting in the queue.
+   * Performs transformations waiting in the queue.
    */
   process() {
     if (this.queue.length) {
