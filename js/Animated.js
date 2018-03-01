@@ -11,7 +11,7 @@ class Animated {
     this.element.vivus = new Vivus(this.element.node);
     this.scalar = 1;
     let bBox = this.element.getBBox();
-    this.location = {x: bBox.x, y: bBox.y};
+    this.location = {x: 0, y: 0};
     this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
     this.spin = false;
