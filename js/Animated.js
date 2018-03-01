@@ -54,7 +54,7 @@ class Animated {
       
       if (attributes.animate) {
         console.log(this.getStateString())
-        this.element.animate(this.getStateString(), 1000, ()=>{
+        this.element.animate(this.getStateString(), attributes.miliseconds || 1000, ()=>{
           this.process();
         });
       }
@@ -94,25 +94,34 @@ class Animated {
    * Moves this to the absolute coordinates provided.
    * @param {number} x 
    * @param {number} y 
+   * @param {number} miliseconds
    */
-  move(x, y) {
-    return this.sendToQueue({location: {x: x, y: y}});
+  move(x, y, miliseconds) {
+    let transformation = {location: {x: x, y: y}};
+    if (miliseconds) transformation.miliseconds = miliseconds;
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Rotates this to the absolute degree provided.
    * @param {number} deg 
+   * @param {number} miliseconds
    */
-  rotate(deg) {
-    return this.sendToQueue({rotation: deg});
+  rotate(deg, miliseconds) {
+    let transformation = {rotation: deg};
+    if (miliseconds) transformation.miliseconds = miliseconds;
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Scales this to the absolute ratio provided.
    * @param {number} ratio 
+   * @param {number} miliseconds
    */
-  scale(ratio) {
-    return this.sendToQueue({scalar: ratio});
+  scale(ratio, miliseconds) {
+    let transformation = {scalar: ratio};
+    if (miliseconds) transformation.miliseconds = miliseconds;
+    return this.sendToQueue(transformation);
   }
 
   /**
