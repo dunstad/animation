@@ -125,23 +125,17 @@ class Animated {
   }
 
   /**
-   * Used to 
-   * @param {*} degrees 
-   * @param {*} milliseconds 
+   * Used to start and stop a spinning animation.
+   * This should really be done using the animation callback and not setInterval
+   * @param {number} degrees 
+   * @param {number} milliseconds 
    */
-  spin(degrees, milliseconds) {
-
-  }
-
-  /**
-   * Used to start or stop a spinning animation.
-   */
-  toggleSpin() {
+  toggleSpin(degrees, milliseconds) {
     if (this.spin) {
       clearInterval(this.spin);
     }
     else {
-      this.spin = setInterval(()=>{this.rotate(0).animate().rotate(360).unanimate()}, 1000);
+      this.spin = setInterval(()=>{this.animate().rotate(this.rotation + degrees, milliseconds).unanimate()}, milliseconds);
     }
   }
 
