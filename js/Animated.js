@@ -54,9 +54,17 @@ class Animated {
       
       if (attributes.animate) {
         console.log(this.getStateString())
-        this.element.animate(this.getStateString(), attributes.milliseconds || 1000, ()=>{
-          this.process();
-        });
+        this.element.animate(
+          this.getStateString(),
+          attributes.milliseconds || 1000,
+          attributes.easing || mina.linear,
+          ()=>{
+            if (attributes.callback) {
+              attributes.callback();
+            }
+            this.process();
+          },
+        );
       }
       else {
         console.log(this.getStateString())
