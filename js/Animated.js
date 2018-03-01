@@ -15,6 +15,7 @@ class Animated {
     this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
     this.spin = false;
+    this.pulse = false;
   }
 
   /**
@@ -155,6 +156,46 @@ class Animated {
         }
       };
       return this.sendToQueue(transformation);
+    }
+  }
+
+  /**
+   * Used to start and stop a pulsing animation.
+   * @param {number} scalar 
+   * @param {number} milliseconds 
+   */
+  togglePulse(scalar, milliseconds) {
+    if (this.pulse) {
+      this.pulse = false;
+    }
+    else {
+      this.pulse = true;
+
+      let scaleUp = {
+        scalar: scalar,
+        animate: true,
+        milliseconds: milliseconds,
+      };
+
+      let scaleDown = {
+        scalar: this.scalar,
+        animate: true,
+        milliseconds: milliseconds,
+      };
+
+      scaleUp.callback = ()=>{
+        if (this.pulse) {
+          this.sendToQueue(scaleDown);
+        }
+      };
+
+      scaleDown.callback = ()=>{
+        if (this.pulse) {
+          this.sendToQueue(scaleUp);
+        }
+      };
+
+      return this.sendToQueue(scaleUp);
     }
   }
 
