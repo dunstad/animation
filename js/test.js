@@ -17,9 +17,13 @@ loader.then((assets)=>{
 })
 
 function testMoveAndRotate(animated) {
-  animated.animate().move(100, 100).rotate(45).move(100, 50).rotate(23).move(0, 0);
+  animated.animate().move(100, 100).rotate(45).move(100, 50).rotate(23).move(0, 0).unanimate();
 }
 
 function testAnimateAndUnanimate(animated) {
   animated.move(100, 100).animate().move(0, 0).unanimate().move(100, 0);
+}
+
+function testMilisecondParameter(animated) {
+  animated.animate().move(100, 100, 500).rotate(45, 2000).move(100, 50, 500).rotate(23, 2000).move(0, 0, 500).unanimate();
 }
