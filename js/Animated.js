@@ -123,7 +123,7 @@ class Animated {
       clearInterval(this.spin);
     }
     else {
-      this.spin = setInterval(()=>{}, 1000);
+      this.spin = setInterval(()=>{this.rotate(0).animate().rotate(360).unanimate()}, 1000);
     }
   }
 
