@@ -98,18 +98,18 @@ class Animated {
    */
   move(x, y, milliseconds) {
     let transformation = {location: {x: x, y: y}};
-    if (milliseconds) transformation.milliseconds = milliseconds;
+    transformation.milliseconds = milliseconds;
     return this.sendToQueue(transformation);
   }
 
   /**
    * Rotates this to the absolute degree provided.
-   * @param {number} deg 
+   * @param {number} degrees 
    * @param {number} milliseconds
    */
-  rotate(deg, milliseconds) {
-    let transformation = {rotation: deg};
-    if (milliseconds) transformation.milliseconds = milliseconds;
+  rotate(degrees, milliseconds) {
+    let transformation = {rotation: degrees};
+    transformation.milliseconds = milliseconds;
     return this.sendToQueue(transformation);
   }
 
@@ -120,8 +120,17 @@ class Animated {
    */
   scale(ratio, milliseconds) {
     let transformation = {scalar: ratio};
-    if (milliseconds) transformation.milliseconds = milliseconds;
+    transformation.milliseconds = milliseconds;
     return this.sendToQueue(transformation);
+  }
+
+  /**
+   * Used to 
+   * @param {*} degrees 
+   * @param {*} milliseconds 
+   */
+  spin(degrees, milliseconds) {
+
   }
 
   /**
