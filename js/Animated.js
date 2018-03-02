@@ -6,7 +6,7 @@ class Animated {
    */
   constructor(element) {
     this.element = element;
-    this.queue = [];
+    this.queue = new AnimationQueue();
     this.animateQueue = false;
     this.element.vivus = new Vivus(this.element.node);
     this.scalar = 1;
@@ -14,10 +14,8 @@ class Animated {
     this.location = {x: 0, y: 0};
     this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
-    this.spin = false;
-    this.spinQueue = [];
-    this.pulse = false;
-    this.pulseQueue = [];
+    this.spinQueue = new AnimationQueue();
+    this.pulseQueue = new AnimationQueue();
   }
 
   /**
@@ -38,34 +36,35 @@ class Animated {
 
   /**
    * Performs transformations waiting in the queue.
-   * @param {object[]} queue
+   * @param {AnimationQueue} queue
    */
   process(queue) {
-    if (queue.length) {
-      let attributes = queue.shift();
+    let transformation = queue.next();
+    if (transformation) {
 
-      if ('location' in attributes) {
-        this.location = attributes.location;
+      if ('location' in transformation) {
+        this.location = transformation.location;
       }
 
-      if ('rotation' in attributes) {
-        this.rotation =  attributes.rotation;
+      if ('rotation' in transformation) {
+        this.rotation =  transformation.rotation;
       }
 
-      if ('scalar' in attributes) {
-        this.scalar = attributes.scalar;
+      if ('scalar' in transformation) {
+        this.scalar = transformation.scalar;
       }
       
-      if (attributes.animate) {
+      if (transformation.animate) {
         console.log(this.getStateString())
         this.element.animate(
           this.getStateString(),
-          attributes.milliseconds || 1000,
-          attributes.easing || mina.linear,
+          transformation.milliseconds || 1000,
+          transformation.easing || mina.linear,
           ()=>{
-            if (attributes.callback) {
-              attributes.callback();
+            if (transformation.callback) {
+              transformation.callback();
             }
+            queue.animationComplete();
             this.process(queue);
           },
         );
@@ -90,12 +89,12 @@ class Animated {
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
    * @param {object} stateChange 
-   * @param {object[]} queue 
+   * @param {AnimationQueue} queue 
    */
   sendToQueue(stateChange, queue) {
     if (!stateChange.animate) {stateChange.animate = this.animateQueue;}
-    queue.push(stateChange);
-    if (!this.element.inAnim().length) {this.process(queue);}
+    queue.add(stateChange);
+    if (!queue.isAnimating()) {this.process(queue);}
     else {console.log('transformation queued');}
     return this;
   }
@@ -140,24 +139,25 @@ class Animated {
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
-    if (this.spin) {
-      this.spin = false;
+    if (this.spinQueue.shouldContinue()) {
+      this.spinQueue.stop();
     }
     else {
-      this.spin = true;
+      this.spinQueue.start();
       let transformation = {
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
       };
       transformation.callback = ()=>{
-        if (this.spin) {
+        if (this.spinQueue.shouldContinue()) {
           transformation.rotation = this.rotation + degrees;
           this.sendToQueue(transformation, this.spinQueue);
         }
       };
-      return this.sendToQueue(transformation, this.spinQueue);
+      this.sendToQueue(transformation, this.spinQueue);
     }
+    return this;
   }
 
   /**
@@ -168,11 +168,11 @@ class Animated {
    */
   togglePulse(scalar, milliseconds, easing) {
     
-    if (this.pulse) {
-      this.pulse = false;
+    if (this.pulseQueue.shouldContinue()) {
+      this.pulseQueue.stop();
     }
     else {
-      this.pulse = true;
+      this.pulseQueue.start();
 
       let scaleUp = {
         scalar: scalar,
@@ -189,19 +189,20 @@ class Animated {
       };
 
       scaleUp.callback = ()=>{
-        if (this.pulse) {
+        if (this.pulseQueue.shouldContinue()) {
           this.sendToQueue(scaleDown, this.pulseQueue);
         }
       };
 
       scaleDown.callback = ()=>{
-        if (this.pulse) {
+        if (this.pulseQueue.shouldContinue()) {
           this.sendToQueue(scaleUp, this.pulseQueue);
         }
       };
 
-      return this.sendToQueue(scaleUp, this.pulseQueue);
+      this.sendToQueue(scaleUp, this.pulseQueue);
     }
+    return this;
   }
 
   /**
