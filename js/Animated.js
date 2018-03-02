@@ -72,6 +72,7 @@ class Animated {
       else {
         console.log(this.getStateString())
         this.element.attr(this.getStateString());
+        queue.animationComplete();
       }
     }
   }
@@ -108,6 +109,7 @@ class Animated {
   move(x, y, milliseconds) {
     let transformation = {location: {x: x, y: y}};
     transformation.milliseconds = milliseconds;
+    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
@@ -119,6 +121,7 @@ class Animated {
   rotate(degrees, milliseconds) {
     let transformation = {rotation: degrees};
     transformation.milliseconds = milliseconds;
+    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
@@ -130,6 +133,7 @@ class Animated {
   scale(ratio, milliseconds) {
     let transformation = {scalar: ratio};
     transformation.milliseconds = milliseconds;
+    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
