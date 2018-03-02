@@ -86,7 +86,7 @@ class Animated {
   }
 
   /**
-   * Sends a transformation to the queue to be processed in order.
+   * Sends a transformation to a queue to be processed in order.
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
    * @param {object} stateChange 

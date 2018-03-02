@@ -27,3 +27,7 @@ function testAnimateAndUnanimate(animated) {
 function testMilisecondParameter(animated) {
   animated.animate().move(100, 100, 500).rotate(45, 2000).move(100, 50, 500).rotate(23, 2000).move(0, 0, 500).unanimate();
 }
+
+function testSeparateAnimationQueues(animated) {
+  animated.toggleSpin(90, 500).togglePulse(2, 1000);
+}
