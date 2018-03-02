@@ -15,7 +15,9 @@ class Animated {
     this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
     this.spin = false;
+    this.spinQueue = [];
     this.pulse = false;
+    this.pulseQueue = [];
   }
 
   /**
@@ -36,10 +38,11 @@ class Animated {
 
   /**
    * Performs transformations waiting in the queue.
+   * @param {object[]} queue
    */
-  process() {
-    if (this.queue.length) {
-      let attributes = this.queue.shift();
+  process(queue) {
+    if (queue.length) {
+      let attributes = queue.shift();
 
       if ('location' in attributes) {
         this.location = attributes.location;
@@ -63,7 +66,7 @@ class Animated {
             if (attributes.callback) {
               attributes.callback();
             }
-            this.process();
+            this.process(queue);
           },
         );
       }
@@ -71,9 +74,6 @@ class Animated {
         console.log(this.getStateString())
         this.element.attr(this.getStateString());
       }
-    }
-    else {
-      this.animateQueue = false;
     }
   }
 
@@ -90,11 +90,12 @@ class Animated {
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
    * @param {object} stateChange 
+   * @param {object[]} queue 
    */
-  sendToQueue(stateChange) {
+  sendToQueue(stateChange, queue) {
     if (!stateChange.animate) {stateChange.animate = this.animateQueue;}
-    this.queue.push(stateChange);
-    if (!this.element.inAnim().length) {this.process();}
+    queue.push(stateChange);
+    if (!this.element.inAnim().length) {this.process(queue);}
     else {console.log('transformation queued');}
     return this;
   }
@@ -108,7 +109,7 @@ class Animated {
   move(x, y, milliseconds) {
     let transformation = {location: {x: x, y: y}};
     transformation.milliseconds = milliseconds;
-    return this.sendToQueue(transformation);
+    return this.sendToQueue(transformation, this.queue);
   }
 
   /**
@@ -119,7 +120,7 @@ class Animated {
   rotate(degrees, milliseconds) {
     let transformation = {rotation: degrees};
     transformation.milliseconds = milliseconds;
-    return this.sendToQueue(transformation);
+    return this.sendToQueue(transformation, this.queue);
   }
 
   /**
@@ -130,7 +131,7 @@ class Animated {
   scale(ratio, milliseconds) {
     let transformation = {scalar: ratio};
     transformation.milliseconds = milliseconds;
-    return this.sendToQueue(transformation);
+    return this.sendToQueue(transformation, this.queue);
   }
 
   /**
@@ -152,10 +153,10 @@ class Animated {
       transformation.callback = ()=>{
         if (this.spin) {
           transformation.rotation = this.rotation + degrees;
-          this.sendToQueue(transformation);
+          this.sendToQueue(transformation, this.spinQueue);
         }
       };
-      return this.sendToQueue(transformation);
+      return this.sendToQueue(transformation, this.spinQueue);
     }
   }
 
@@ -189,17 +190,17 @@ class Animated {
 
       scaleUp.callback = ()=>{
         if (this.pulse) {
-          this.sendToQueue(scaleDown);
+          this.sendToQueue(scaleDown, this.pulseQueue);
         }
       };
 
       scaleDown.callback = ()=>{
         if (this.pulse) {
-          this.sendToQueue(scaleUp);
+          this.sendToQueue(scaleUp, this.pulseQueue);
         }
       };
 
-      return this.sendToQueue(scaleUp);
+      return this.sendToQueue(scaleUp, this.pulseQueue);
     }
   }
 
