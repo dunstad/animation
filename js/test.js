@@ -29,5 +29,5 @@ function testMilisecondParameter(animated) {
 }
 
 function testSeparateAnimationQueues(animated) {
-  animated.toggleSpin(90, 100).togglePulse(2, 1000);
+  animated.toggleSpin(360, 1000 * 60).togglePulse(2, 1000 * 5);
 }
