@@ -79,10 +79,35 @@ class Animated {
 
   /**
    * Represents the current transformation state of this as a transformation string.
+   * The transform parameter allows the resulting string to be a transformation
+   * from the current state.
+   * @param {object} transform
    */
-  getStateString() {
-    let bBox = this.element.getBBox();
-    return {transform: `${this.locationToString()}${this.rotationToString()}${this.scalarToString()}`};
+  getStateString(transform) {
+    let parsedTransform = Snap.parseTransformString(this.element.transform().string)
+    let transformTypeMap = {
+      location: 't',
+      rotation: 'r',
+      scalar: 's',
+    };
+
+    if ('location' in transformation) {
+      parsedTransform.find(e=>e[0]=='t')
+    }
+
+    if ('rotation' in transformation) {
+    
+    }
+
+    if ('scalar' in transformation) {
+    
+    }
+
+    for (let transformType of ['location', 'rotation', 'scalar']) {
+      let shortTransformType = transformTypeMap[transformType];
+      let transformValue = parsedTransform ? parsedTransform.find(e=>e[0]==shortTransformType)[1] : 0;
+    }
+    return {transform: parsedTransform.toString()};
   }
 
   /**
@@ -220,6 +245,8 @@ class Animated {
    * Represents the current rotation of this as an SVG translation string.
    */
   rotationToString() {
+    // let parsedTransform = Snap.parseTransformString(this.element.transform().string)
+    // let rotation = parsedTransform ? parsedTransform.find(e=>e[0]=='r')[1] : 0;
     return `r${this.rotation},${this.centerOffsetFromOrigin.x},${this.centerOffsetFromOrigin.y}`;
   }
 
