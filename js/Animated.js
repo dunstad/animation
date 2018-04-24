@@ -55,9 +55,9 @@ class Animated {
       }
       
       if (transformation.animate) {
-        console.log(this.getStateString())
+        console.log(this.getStateString(transformation))
         this.element.animate(
-          this.getStateString(),
+          this.getStateString(transformation),
           transformation.milliseconds || 1000,
           transformation.easing || mina.linear,
           ()=>{
@@ -70,8 +70,8 @@ class Animated {
         );
       }
       else {
-        console.log(this.getStateString())
-        this.element.attr(this.getStateString());
+        console.log(this.getStateString(transformation))
+        this.element.attr(this.getStateString(transformation));
         queue.animationComplete();
       }
     }
