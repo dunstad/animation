@@ -81,33 +81,35 @@ class Animated {
    * Represents the current transformation state of this as a transformation string.
    * The transform parameter allows the resulting string to be a transformation
    * from the current state.
-   * @param {object} transform
+   * @param {object} transformation
    */
-  getStateString(transform) {
-    let parsedTransform = Snap.parseTransformString(this.element.transform().string)
-    let transformTypeMap = {
-      location: 't',
-      rotation: 'r',
-      scalar: 's',
-    };
+  getStateString(transformation) {
+    transformation = transformation || {};
+    
+    let parsedTransform = Snap.parseTransformString(this.element.transform().string) || [];
 
     if ('location' in transformation) {
-      parsedTransform.find(e=>e[0]=='t')
+      let location = parsedTransform.find(e=>e[0]=='t');
+      if (!location) {
+        location = ['t', 0, 0];
+        parsedTransform.push(location);
+      }
+      
+      location[1] = transformation.location.x;
+      location[2] = transformation.location.y;
     }
-
+    
     if ('rotation' in transformation) {
-    
+      let rotation = parsedTransform.find(e=>e[0]=='r');
+      rotation[1] = transformation.rotation[1];
     }
-
+    
     if ('scalar' in transformation) {
-    
+      let scalar = parsedTransform.find(e=>e[0]=='s');
+      scalar[1] = transformation.scalar[1];
     }
 
-    for (let transformType of ['location', 'rotation', 'scalar']) {
-      let shortTransformType = transformTypeMap[transformType];
-      let transformValue = parsedTransform ? parsedTransform.find(e=>e[0]==shortTransformType)[1] : 0;
-    }
-    return {transform: parsedTransform.toString()};
+    return {transform: parsedTransform ? parsedTransform.toString() : ''};
   }
 
   /**
