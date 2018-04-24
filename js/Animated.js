@@ -86,7 +86,7 @@ class Animated {
   getStateString(transformation) {
     transformation = transformation || {};
     
-    let parsedTransform = Snap.parseTransformString(this.element.transform().string) || [];
+    let parsedTransform = Snap.parseTransformString(this.element.transform().string || 't0,0r0s1');
 
     if ('location' in transformation) {
       let location = parsedTransform.find(e=>e[0]=='t');
@@ -101,12 +101,20 @@ class Animated {
     
     if ('rotation' in transformation) {
       let rotation = parsedTransform.find(e=>e[0]=='r');
-      rotation[1] = transformation.rotation[1];
+      if (!rotation) {
+        rotation = ['r', 0];
+        parsedTransform.push(rotation);
+      }
+      rotation[1] = transformation.rotation;
     }
     
     if ('scalar' in transformation) {
       let scalar = parsedTransform.find(e=>e[0]=='s');
-      scalar[1] = transformation.scalar[1];
+      if (!scalar) {
+        scalar = ['s', 1];
+        parsedTransform.push(scalar);
+      }
+      scalar[1] = transformation.scalar;
     }
 
     return {transform: parsedTransform ? parsedTransform.toString() : ''};
