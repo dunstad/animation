@@ -9,10 +9,7 @@ class Animated {
     this.queue = new AnimationQueue();
     this.animateQueue = false;
     this.element.vivus = new Vivus(this.element.node);
-    this.scalar = 1;
     let bBox = this.element.getBBox();
-    this.location = {x: 0, y: 0};
-    this.rotation = 0;
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
     this.spinQueue = new AnimationQueue();
     this.pulseQueue = new AnimationQueue();
@@ -41,18 +38,6 @@ class Animated {
   process(queue) {
     let transformation = queue.next();
     if (transformation) {
-
-      if ('location' in transformation) {
-        this.location = transformation.location;
-      }
-
-      if ('rotation' in transformation) {
-        this.rotation =  transformation.rotation;
-      }
-
-      if ('scalar' in transformation) {
-        this.scalar = transformation.scalar;
-      }
       
       if (transformation.animate) {
         console.log(this.getStateString(transformation))
@@ -184,13 +169,13 @@ class Animated {
     else {
       this.spinQueue.start();
       let transformation = {
-        rotation: this.rotation + degrees,
+        rotation: this.getRotation() + degrees,
         animate: true,
         milliseconds: milliseconds,
       };
       transformation.callback = ()=>{
         if (this.spinQueue.shouldContinue()) {
-          transformation.rotation = this.rotation + degrees;
+          transformation.rotation = this.getRotation() + degrees;
           this.sendToQueue(transformation, this.spinQueue);
         }
       };
@@ -221,7 +206,7 @@ class Animated {
       };
 
       let scaleDown = {
-        scalar: this.scalar,
+        scalar: this.getScalar(),
         animate: true,
         milliseconds: milliseconds,
         easing: easing,
@@ -244,27 +229,17 @@ class Animated {
     return this;
   }
 
-  /**
-   * Represents the current location of this as an SVG translation string.
-   */
-  locationToString() {
-    return `t${this.location.x},${this.location.y}`;
+  getRotation() {
+    return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="r")[1];
   }
-
-  /**
-   * Represents the current rotation of this as an SVG translation string.
-   */
-  rotationToString() {
-    // let parsedTransform = Snap.parseTransformString(this.element.transform().string)
-    // let rotation = parsedTransform ? parsedTransform.find(e=>e[0]=='r')[1] : 0;
-    return `r${this.rotation},${this.centerOffsetFromOrigin.x},${this.centerOffsetFromOrigin.y}`;
+  
+  getScalar() {
+    return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="s")[1];
   }
-
-  /**
-   * Represents the current scale of this as an SVG translation string.
-   */
-  scalarToString() {
-    return `s${this.scalar}`;
+  
+  getLocation() {
+    let locationInfo = Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="t");
+    return {x: locationInfo[1], y: locationInfo[2]};
   }
 
 }
