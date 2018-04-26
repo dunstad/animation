@@ -239,18 +239,30 @@ class Animated {
   }
 
   mergeAnimation(newTransformation) {
+
     let currentAnimation = Objects.values(this.element.anims)[0];
-    if ('location' in newTransformation) {
-      if (newTransformation.location.x == currentAnimation.start[0] &&
-          newTransformation.location.x == currentAnimation.end[0] &&
-          newTransformation.location.y == currentAnimation.start[1] &&
-          newTransformation.location.y == currentAnimation.end[1]) {
-        
-      }
-      else {
-        throw new Error('incompatible animations');
-      }
+    let locationNotAnimating = currentAnimation.start[0] == currentAnimation.end[0] &&
+                               currentAnimation.start[1] == currentAnimation.end[1];
+    let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
+    let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
+
+    let animationsCompatible = true;
+
+    if ('location' in newTransformation && !locationNotAnimating ||
+        'rotation' in newTransformation && !rotationNotAnimating ||
+        'scalar' in newTransformation && !scalarNotAnimating) {
+      animationsCompatible = false;
     }
+
+    if (animationsCompatible) {
+
+
+
+    }
+    else {
+      throw new Error('incompatible animations');
+    }
+
   }
 
 }
