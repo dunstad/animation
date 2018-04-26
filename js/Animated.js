@@ -256,7 +256,11 @@ class Animated {
 
     if (animationsCompatible) {
 
+      currentAnimation.pause();
 
+      // queue new animations
+      // callback
+      // stop
 
     }
     else {
