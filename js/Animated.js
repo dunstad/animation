@@ -7,7 +7,6 @@ class Animated {
   constructor(element) {
     this.element = element;
     this.queue = new AnimationQueue();
-    this.animateQueue = false;
     this.element.vivus = new Vivus(this.element.node);
     let bBox = this.element.getBBox();
     this.centerOffsetFromOrigin = {x: bBox.cx, y: bBox.cy};
@@ -19,15 +18,15 @@ class Animated {
    * Signals that transformations after this should be animated.
    */
   animate() {
-    this.animateQueue = true;
+    this.queue.start();
     return this;
   }
-
+  
   /**
    * Signals that transformations after this should not be animated.
    */
   unanimate() {
-    this.animateQueue = false;
+    this.queue.stop();
     return this;
   }
 
@@ -113,7 +112,7 @@ class Animated {
    * @param {AnimationQueue} queue 
    */
   sendToQueue(stateChange, queue) {
-    if (!stateChange.animate) {stateChange.animate = this.animateQueue;}
+    if (!stateChange.animate) {stateChange.animate = queue.shouldContinue();}
     queue.add(stateChange);
     if (!queue.isAnimating()) {this.process(queue);}
     else {console.log('transformation queued');}
@@ -129,7 +128,6 @@ class Animated {
   move(x, y, milliseconds) {
     let transformation = {location: {x: x, y: y}};
     transformation.milliseconds = milliseconds;
-    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
@@ -141,7 +139,6 @@ class Animated {
   rotate(degrees, milliseconds) {
     let transformation = {rotation: degrees};
     transformation.milliseconds = milliseconds;
-    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
@@ -153,7 +150,6 @@ class Animated {
   scale(ratio, milliseconds) {
     let transformation = {scalar: ratio};
     transformation.milliseconds = milliseconds;
-    this.queue.start();
     return this.sendToQueue(transformation, this.queue);
   }
 
