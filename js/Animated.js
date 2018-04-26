@@ -238,4 +238,19 @@ class Animated {
     return {x: locationInfo[1], y: locationInfo[2]};
   }
 
+  mergeAnimation(newTransformation) {
+    let currentAnimation = Objects.values(this.element.anims)[0];
+    if ('location' in newTransformation) {
+      if (newTransformation.location.x == currentAnimation.start[0] &&
+          newTransformation.location.x == currentAnimation.end[0] &&
+          newTransformation.location.y == currentAnimation.start[1] &&
+          newTransformation.location.y == currentAnimation.end[1]) {
+        
+      }
+      else {
+        throw new Error('incompatible animations');
+      }
+    }
+  }
+
 }
