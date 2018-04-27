@@ -258,6 +258,14 @@ class Animated {
 
       currentAnimation.pause();
 
+      let currentTransformation = {
+        location: {x: currentAnimation.end[0], y: currentAnimation.end[1]},
+        rotation: currentAnimation.end[2],
+        scalar: currentAnimation.end[3],
+        milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
+        animate: true,
+      };
+
       // queue new animations
       // callback
       // stop
