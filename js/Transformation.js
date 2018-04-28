@@ -8,4 +8,11 @@ class Transformation {
         this.animate = transformationObject.animate || false;
     }
 
+    setLocation(x, y) {
+        this.location = {
+            x: x,
+            y: y,
+        };
+    }
+
 }
