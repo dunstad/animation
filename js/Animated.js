@@ -268,16 +268,9 @@ class Animated {
         animate: true,
       });
 
-      // i feel like there's a better way to write this
-      let shortTransformation, longTransformation;
-      if (currentTransformation.duration > newTransformation.duration) {
-        shortTransformation = newTransformation;
-        longTransformation = currentTransformation;
-      }
-      else {
-        shortTransformation = currentTransformation;
-        longTransformation = newTransformation;
-      }
+      let shortTransformation, longTransformation = [currentTransformation, newTransformation].sort((a, b)=>{
+        return a.milliseconds - b.milliseconds;
+      });
 
       // queue new animations
       // callback
