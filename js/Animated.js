@@ -273,6 +273,12 @@ class Animated {
       });
 
       // queue new animations
+      let newFirstTransformation = new Transformation({
+
+      });
+      let newSecondTransformation = new Transformation({
+
+      });
       // callback
       // stop
 
