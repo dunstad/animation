@@ -242,7 +242,7 @@ class Animated {
 
   mergeAnimation(newTransformation) {
 
-    let currentAnimation = Objects.values(this.element.anims)[0];
+    let currentAnimation = Object.values(this.element.anims)[0];
     let locationNotAnimating = currentAnimation.start[0] == currentAnimation.end[0] &&
                                currentAnimation.start[1] == currentAnimation.end[1];
     let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
@@ -268,19 +268,66 @@ class Animated {
         animate: true,
       });
 
-      let shortTransformation, longTransformation = [currentTransformation, newTransformation].sort((a, b)=>{
+      let [shortTransformation, longTransformation] = [currentTransformation, newTransformation].sort((a, b)=>{
         return a.milliseconds - b.milliseconds;
       });
 
       // queue new animations
-      let newFirstTransformation = new Transformation({
-
+      let firstTransformation = new Transformation({
+        milliseconds: shortTransformation.milliseconds,
+        animate: true,
       });
-      let newSecondTransformation = new Transformation({
-
+      let secondTransformation = new Transformation({
+        milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+        animate: true,
       });
-      // callback
-      // stop
+
+      for (let property of ['location', 'rotation', 'scalar']) {
+
+        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+
+        /**
+         * This lets us scale the location property and the others with the same operation,
+         * which makes the below code a bit simpler.
+         * @param {number | object} value 
+         * @param {number} multiplier 
+         */
+        let multiplyProperty = (value, multiplier)=>{
+          let result;
+          if (typeof value != 'object') {
+            result = value * multiplier;
+          }
+          else {
+            result = {
+              x: value.x * multiplier,
+              y: value.y * multiplier,
+            }; 
+          }
+          return result;
+        };
+
+        if (longTransformation[property] != undefined) {
+
+          firstTransformation[property] = multiplyProperty(longTransformation[property], durationRatio);
+          secondTransformation[property] = longTransformation[property];
+
+        }
+
+        else if (shortTransformation[property] != undefined) {
+
+          firstTransformation[property] = shortTransformation[property];
+
+        }
+
+      }
+
+      console.log(firstTransformation, secondTransformation)
+
+      this.sendToQueue(firstTransformation, this.queue);
+      this.sendToQueue(secondTransformation, this.queue);
+
+      currentAnimation._callback();
+      currentAnimation.stop();
 
     }
     else {
