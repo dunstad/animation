@@ -31,3 +31,8 @@ function testMilisecondParameter(animated) {
 function testSeparateAnimationQueues(animated) {
   animated.toggleSpin(360, 1000 * 60).togglePulse(2, 1000 * 5);
 }
+
+function testMergeAnimation(animated) {
+  animated.animate().rotate(90, 2000).unanimate();
+  setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 500);
+}

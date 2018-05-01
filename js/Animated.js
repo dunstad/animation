@@ -260,10 +260,17 @@ class Animated {
 
       currentAnimation.pause();
 
+      let locationIsAnimating = currentAnimation.start[0] != currentAnimation.end[0] ||
+                                currentAnimation.start[1] != currentAnimation.end[1];
+      let rotationIsAnimating = currentAnimation.start[2] != currentAnimation.end[2];
+      let scalarIsAnimating = currentAnimation.start[3] != currentAnimation.end[3];
+
+      console.log(locationIsAnimating, rotationIsAnimating, scalarIsAnimating)
+
       let currentTransformation = new Transformation({
-        location: {x: currentAnimation.end[0], y: currentAnimation.end[1]},
-        rotation: currentAnimation.end[2],
-        scalar: currentAnimation.end[3],
+        location: locationIsAnimating ? {x: currentAnimation.end[0], y: currentAnimation.end[1]} : undefined,
+        rotation: rotationIsAnimating ? currentAnimation.end[2] : undefined,
+        scalar: scalarIsAnimating ? currentAnimation.end[3] : undefined,
         milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
         animate: true,
       });
@@ -308,6 +315,7 @@ class Animated {
 
         if (longTransformation[property] != undefined) {
 
+          // need to add initial state here too in some situations?
           firstTransformation[property] = multiplyProperty(longTransformation[property], durationRatio);
           secondTransformation[property] = longTransformation[property];
 
