@@ -36,3 +36,8 @@ function testMergeAnimation(animated) {
   animated.animate().rotate(90, 2000).unanimate();
   setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 500);
 }
+
+function testMergeAnimation2(animated) {
+  animated.animate().rotate(360, 1000*4).unanimate();
+  setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 2000);
+}
