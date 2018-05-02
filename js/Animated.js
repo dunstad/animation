@@ -241,7 +241,7 @@ class Animated {
   }
 
   /**
-   * 
+   * Used to combine a new animation with one already in progress.
    * @param {Transformation} newTransformation 
    */
   mergeAnimation(newTransformation) {
