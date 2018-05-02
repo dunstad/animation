@@ -294,13 +294,13 @@ class Animated {
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
-        return (longTransformation[property] * durationRatio) + this[property];
+        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
       };
 
       let splitObjectValue = (property) => {
         return {
-          x: (longTransformation[property].x * durationRatio) + this[property].x,
-          y: (longTransformation[property].y * durationRatio) + this[property].y,
+          x: ((longTransformation[property].x - this[property].x) * durationRatio) + this[property].x,
+          y: ((longTransformation[property].y - this[property].y) * durationRatio) + this[property].y,
         };
       };
       
