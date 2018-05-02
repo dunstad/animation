@@ -343,12 +343,12 @@ class Animated {
         return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
       };
 
+      firstTransformation.location = {};
+      secondTransformation.location = {};
+
       for (let property of ['x', 'y']) {
         
         if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
-          
-          firstTransformation.location = {};
-          secondTransformation.location = {};
           
           firstTransformation.location[property] = splitLocationValue(property);
           secondTransformation.location[property] = longTransformation.location[property];
@@ -357,7 +357,6 @@ class Animated {
         
         else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
           
-          firstTransformation.location = {};
           firstTransformation.location[property] = shortTransformation.location[property];
 
         }
