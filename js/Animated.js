@@ -240,19 +240,25 @@ class Animated {
     return {x: locationInfo[1], y: locationInfo[2]};
   }
 
+  /**
+   * 
+   * @param {Transformation} newTransformation 
+   */
   mergeAnimation(newTransformation) {
 
     let currentAnimation = Object.values(this.element.anims)[0];
-    let locationNotAnimating = currentAnimation.start[0] == currentAnimation.end[0] &&
-                               currentAnimation.start[1] == currentAnimation.end[1];
+    let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
+    let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
     let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
     let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
 
     let animationsCompatible = true;
 
-    if ('location' in newTransformation && !locationNotAnimating ||
-        'rotation' in newTransformation && !rotationNotAnimating ||
-        'scalar' in newTransformation && !scalarNotAnimating) {
+    if (newTransformation.location != undefined && 
+        (newTransformation.location.x != undefined && !xNotAnimating ||
+        newTransformation.location.y != undefined && !yNotAnimating) ||
+        newTransformation.rotation != undefined && !rotationNotAnimating ||
+        newTransformation.scalar != undefined && !scalarNotAnimating) {
       animationsCompatible = false;
     }
 
@@ -290,7 +296,6 @@ class Animated {
         animate: true,
       });
 
-      // this number is too big, what should it be?
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
@@ -312,7 +317,6 @@ class Animated {
         
         if (longTransformation[property] != undefined) {
           
-          // need to add initial state here too in some situations?
           firstTransformation[property] = splitFunction(property);
           secondTransformation[property] = longTransformation[property];
 
@@ -331,6 +335,7 @@ class Animated {
       this.sendToQueue(firstTransformation, this.queue);
       this.sendToQueue(secondTransformation, this.queue);
 
+      // make sure the queue continues to process the newly queued animations
       currentAnimation._callback();
       currentAnimation.stop();
 
