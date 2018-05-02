@@ -169,12 +169,12 @@ class Animated {
     else {
       this.spinQueue.start();
       let transformation = new Transformation({
-        rotation: this.getRotation() + degrees,
+        rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
         callback: ()=>{
           if (this.spinQueue.shouldContinue()) {
-            transformation.rotation = this.getRotation() + degrees;
+            transformation.rotation = this.rotation + degrees;
             this.sendToQueue(transformation, this.spinQueue);
           }
         },
@@ -211,7 +211,7 @@ class Animated {
       });
 
       let scaleDown = new Transformation({
-        scalar: this.getScalar(),
+        scalar: this.scalar,
         animate: true,
         milliseconds: milliseconds,
         easing: easing,
@@ -227,15 +227,15 @@ class Animated {
     return this;
   }
 
-  getRotation() {
+  get rotation() {
     return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="r")[1];
   }
   
-  getScalar() {
+  get scalar() {
     return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="s")[1];
   }
   
-  getLocation() {
+  get location() {
     let locationInfo = Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="t");
     return {x: locationInfo[1], y: locationInfo[2]};
   }
@@ -279,6 +279,7 @@ class Animated {
         return a.milliseconds - b.milliseconds;
       });
 
+
       // queue new animations
       let firstTransformation = new Transformation({
         milliseconds: shortTransformation.milliseconds,
@@ -289,34 +290,30 @@ class Animated {
         animate: true,
       });
 
-      for (let property of ['location', 'rotation', 'scalar']) {
+      // this number is too big, what should it be?
+      let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
-        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+      let splitNumberValue = (property) => {
+        return (longTransformation[property] * durationRatio) + this[property];
+      };
 
-        /**
-         * This lets us scale the location property and the others with the same operation,
-         * which makes the below code a bit simpler.
-         * @param {number | object} value 
-         * @param {number} multiplier 
-         */
-        let multiplyProperty = (value, multiplier)=>{
-          let result;
-          if (typeof value != 'object') {
-            result = value * multiplier;
-          }
-          else {
-            result = {
-              x: value.x * multiplier,
-              y: value.y * multiplier,
-            }; 
-          }
-          return result;
+      let splitObjectValue = (property) => {
+        return {
+          x: (longTransformation[property].x * durationRatio) + this[property].x,
+          y: (longTransformation[property].y * durationRatio) + this[property].y,
         };
-
+      };
+      
+      for (let [property, splitFunction] of Object.entries({
+        location: splitObjectValue,
+        rotation: splitNumberValue,
+        scalar: splitNumberValue,
+      })) {
+        
         if (longTransformation[property] != undefined) {
-
+          
           // need to add initial state here too in some situations?
-          firstTransformation[property] = multiplyProperty(longTransformation[property], durationRatio);
+          firstTransformation[property] = splitFunction(property);
           secondTransformation[property] = longTransformation[property];
 
         }
