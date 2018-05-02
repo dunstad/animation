@@ -8,8 +8,6 @@ class Animated {
     this.element = element;
     this.queue = new AnimationQueue();
     this.element.vivus = new Vivus(this.element.node);
-    this.spinQueue = new AnimationQueue();
-    this.pulseQueue = new AnimationQueue();
   }
 
   /**
@@ -70,15 +68,15 @@ class Animated {
     
     let parsedTransform = Snap.parseTransformString(this.element.transform().string || 't0,0r0s1');
 
-    if (transformation.location !== undefined) {
+    if (transformation.location != undefined) {
       let location = parsedTransform.find(e=>e[0]=='t');
       if (!location) {
         location = ['t', 0, 0];
         parsedTransform.push(location);
       }
       
-      location[1] = transformation.location.x;
-      location[2] = transformation.location.y;
+      location[1] = transformation.location.x != undefined ? transformation.location.x : location[1];
+      location[2] = transformation.location.y != undefined ? transformation.location.y : location[2];
     }
     
     if (transformation.rotation !== undefined) {
@@ -163,23 +161,23 @@ class Animated {
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
-    if (this.spinQueue.shouldContinue()) {
-      this.spinQueue.stop();
+    if (this.queue.shouldContinue()) {
+      this.queue.stop();
     }
     else {
-      this.spinQueue.start();
+      this.queue.start();
       let transformation = new Transformation({
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
         callback: ()=>{
-          if (this.spinQueue.shouldContinue()) {
+          if (this.queue.shouldContinue()) {
             transformation.rotation = this.rotation + degrees;
-            this.sendToQueue(transformation, this.spinQueue);
+            this.sendToQueue(transformation, this.queue);
           }
         },
       });
-      this.sendToQueue(transformation, this.spinQueue);
+      this.sendToQueue(transformation, this.queue);
     }
     return this;
   }
@@ -192,11 +190,11 @@ class Animated {
    */
   togglePulse(scalar, milliseconds, easing) {
     
-    if (this.pulseQueue.shouldContinue()) {
-      this.pulseQueue.stop();
+    if (this.queue.shouldContinue()) {
+      this.queue.stop();
     }
     else {
-      this.pulseQueue.start();
+      this.queue.start();
 
       let scaleUp = new Transformation({
         scalar: scalar,
@@ -204,8 +202,8 @@ class Animated {
         milliseconds: milliseconds,
         easing: easing,
         callback: ()=>{
-          if (this.pulseQueue.shouldContinue()) {
-            this.sendToQueue(scaleDown, this.pulseQueue);
+          if (this.queue.shouldContinue()) {
+            this.sendToQueue(scaleDown, this.queue);
           }
         },
       });
@@ -216,13 +214,13 @@ class Animated {
         milliseconds: milliseconds,
         easing: easing,
         callback: ()=>{
-          if (this.pulseQueue.shouldContinue()) {
-            this.sendToQueue(scaleUp, this.pulseQueue);
+          if (this.queue.shouldContinue()) {
+            this.sendToQueue(scaleUp, this.queue);
           }
         },
       });
 
-      this.sendToQueue(scaleUp, this.pulseQueue);
+      this.sendToQueue(scaleUp, this.queue);
     }
     return this;
   }
