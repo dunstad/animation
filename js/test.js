@@ -41,3 +41,8 @@ function testMergeAnimation2(animated) {
   animated.animate().rotate(360, 1000*4).unanimate();
   setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 2000);
 }
+
+function testSeparateXAndY(animated) {
+  animated.animate().moveX(500, 1000*10).unanimate();
+  setTimeout(()=>{animated.mergeAnimation({location: {y: 100}, animate: true, milliseconds: 1000})}, 2000);
+}

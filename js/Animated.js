@@ -130,6 +130,32 @@ class Animated {
   }
 
   /**
+   * Moves this to the absolute x coordinate provided.
+   * @param {number} x 
+   * @param {number} milliseconds
+   */
+  moveX(x, milliseconds) {
+    let transformation = new Transformation({
+      location: {x: x},
+      milliseconds: milliseconds,
+    });
+    return this.sendToQueue(transformation, this.queue);
+  }
+
+  /**
+   * Moves this to the absolute y coordinate provided.
+   * @param {number} y 
+   * @param {number} milliseconds
+   */
+  moveY(y, milliseconds) {
+    let transformation = new Transformation({
+      location: {y: y},
+      milliseconds: milliseconds,
+    });
+    return this.sendToQueue(transformation, this.queue);
+  }
+
+  /**
    * Rotates this to the absolute degree provided.
    * @param {number} degrees 
    * @param {number} milliseconds
@@ -264,17 +290,13 @@ class Animated {
 
       currentAnimation.pause();
 
-      let locationIsAnimating = currentAnimation.start[0] != currentAnimation.end[0] ||
-                                currentAnimation.start[1] != currentAnimation.end[1];
-      let rotationIsAnimating = currentAnimation.start[2] != currentAnimation.end[2];
-      let scalarIsAnimating = currentAnimation.start[3] != currentAnimation.end[3];
-
-      console.log(locationIsAnimating, rotationIsAnimating, scalarIsAnimating)
-
       let currentTransformation = new Transformation({
-        location: locationIsAnimating ? {x: currentAnimation.end[0], y: currentAnimation.end[1]} : undefined,
-        rotation: rotationIsAnimating ? currentAnimation.end[2] : undefined,
-        scalar: scalarIsAnimating ? currentAnimation.end[3] : undefined,
+        location: {
+          x: !xNotAnimating ? currentAnimation.end[0] : undefined,
+          y: !yNotAnimating ? currentAnimation.end[1] : undefined,
+        },
+        rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
+        scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
         milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
         animate: true,
       });
@@ -300,29 +322,43 @@ class Animated {
         return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
       };
 
-      let splitObjectValue = (property) => {
-        return {
-          x: ((longTransformation[property].x - this[property].x) * durationRatio) + this[property].x,
-          y: ((longTransformation[property].y - this[property].y) * durationRatio) + this[property].y,
-        };
-      };
-      
-      for (let [property, splitFunction] of Object.entries({
-        location: splitObjectValue,
-        rotation: splitNumberValue,
-        scalar: splitNumberValue,
-      })) {
+      for (let property of ['rotation', 'scalar']) {
         
         if (longTransformation[property] != undefined) {
           
-          firstTransformation[property] = splitFunction(property);
+          firstTransformation[property] = splitNumberValue(property);
           secondTransformation[property] = longTransformation[property];
-
+          
         }
-
+        
         else if (shortTransformation[property] != undefined) {
-
+          
           firstTransformation[property] = shortTransformation[property];
+          
+        }
+        
+      }
+
+      let splitLocationValue = (property) => {
+        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
+      };
+
+      for (let property of ['x', 'y']) {
+        
+        if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
+          
+          firstTransformation.location = {};
+          secondTransformation.location = {};
+          
+          firstTransformation.location[property] = splitLocationValue(property);
+          secondTransformation.location[property] = longTransformation.location[property];
+          
+        }
+        
+        else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
+          
+          firstTransformation.location = {};
+          firstTransformation.location[property] = shortTransformation.location[property];
 
         }
 
