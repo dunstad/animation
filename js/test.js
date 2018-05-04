@@ -17,15 +17,15 @@ loader.then((assets)=>{
 })
 
 function testMoveAndRotate(animated) {
-  animated.animate().move(100, 100).rotate(45).move(100, 50).rotate(23).move(0, 0).unanimate();
+  animated.queue().move(100, 100, 1000).rotate(45, 1000).move(100, 50, 1000).rotate(23, 1000).move(0, 0, 1000).unqueue();
 }
 
 function testAnimateAndUnanimate(animated) {
-  animated.move(100, 100).animate().move(0, 0).unanimate().move(100, 0);
+  animated.move(100, 100).queue().move(0, 0, 1000).unqueue().move(100, 0);
 }
 
 function testMilisecondParameter(animated) {
-  animated.animate().move(100, 100, 500).rotate(45, 2000).move(100, 50, 500).rotate(23, 2000).move(0, 0, 500).unanimate();
+  animated.queue().move(100, 100, 500).rotate(45, 2000).move(100, 50, 500).rotate(23, 2000).move(0, 0, 500).unqueue();
 }
 
 function testSeparateAnimationQueues(animated) {
@@ -33,16 +33,16 @@ function testSeparateAnimationQueues(animated) {
 }
 
 function testMergeAnimation(animated) {
-  animated.animate().rotate(90, 2000).unanimate();
+  animated.queue().rotate(90, 2000).unqueue();
   setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 500);
 }
 
 function testMergeAnimation2(animated) {
-  animated.animate().rotate(360, 1000*4).unanimate();
+  animated.queue().rotate(360, 1000*4).unqueue();
   setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 2000);
 }
 
 function testSeparateXAndY(animated) {
-  animated.animate().moveX(500, 1000*10).unanimate();
+  animated.queue().moveX(500, 1000*10).unqueue();
   setTimeout(()=>{animated.mergeAnimation({location: {y: 100}, animate: true, milliseconds: 1000})}, 2000);
 }

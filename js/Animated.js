@@ -11,17 +11,17 @@ class Animated {
   }
 
   /**
-   * Signals that transformations after this should be animated.
+   * Signals that transformations after this should be queued.
    */
-  animate() {
+  queue() {
     this.queue.start();
     return this;
   }
   
   /**
-   * Signals that transformations after this should not be animated.
+   * Signals that transformations after this should not be queued.
    */
-  unanimate() {
+  unqueue() {
     this.queue.stop();
     return this;
   }
@@ -125,6 +125,7 @@ class Animated {
     let transformation = new Transformation({
       location: {x: x, y: y},
       milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -138,6 +139,7 @@ class Animated {
     let transformation = new Transformation({
       location: {x: x},
       milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -151,6 +153,7 @@ class Animated {
     let transformation = new Transformation({
       location: {y: y},
       milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -164,6 +167,7 @@ class Animated {
     let transformation = new Transformation({
       rotation: degrees,
       milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -177,6 +181,7 @@ class Animated {
     let transformation = new Transformation({
       scalar: ratio,
       milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
     });
     return this.sendToQueue(transformation, this.queue);
   }
