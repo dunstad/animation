@@ -38,7 +38,7 @@ class Animated {
         console.log(this.getStateString(transformation))
         this.element.animate(
           this.getStateString(transformation),
-          transformation.milliseconds || 1000,
+          transformation.milliseconds,
           transformation.easing || mina.linear,
           ()=>{
             if (transformation.callback) {
