@@ -36,8 +36,6 @@ class Animated {
       
       if (transformation.animate) {
         console.log(this.getStateString(transformation))
-        // add this to get newest animation
-        // Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0]
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
@@ -50,6 +48,7 @@ class Animated {
             this.process(queue);
           },
         );
+        let animation = Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0];
       }
       else {
         console.log(this.getStateString(transformation))
