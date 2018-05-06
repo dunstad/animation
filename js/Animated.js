@@ -49,6 +49,7 @@ class Animated {
           },
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0];
+        animation.easingMap = transformation.easingMap;
       }
       else {
         console.log(this.getStateString(transformation))
@@ -383,6 +384,13 @@ class Animated {
       throw new Error('incompatible animations');
     }
 
+  }
+
+  /**
+   * Used to pause all running animations.
+   */
+  pause() {
+    Object.values(this.element.anims).map(anim=>anim.pause());
   }
 
 }

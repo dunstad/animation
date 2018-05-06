@@ -8,6 +8,7 @@ class Transformation {
         this.milliseconds = transformationObject.milliseconds;
         this.animate = transformationObject.animate;
         this.easing = transformationObject.easing;
+        this.easingMap = transformationObject.easingMap;
         this.callback = transformationObject.callback;
     }
 
