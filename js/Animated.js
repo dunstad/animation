@@ -36,8 +36,8 @@ class Animated {
       
       if (transformation.animate) {
         console.log(this.getStateString(transformation))
-        // add this
-        // x=Snap.animate(0, 100, val=>mail.element.attr({transform: `t${val},0`}), 1000)
+        // add this to get newest animation
+        // Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0]
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
