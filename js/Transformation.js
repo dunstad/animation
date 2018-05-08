@@ -23,6 +23,9 @@ class Transformation {
 
         // function
         this.callback = transformationObject.callback;
+
+        // boolean
+        this.waitForFinish = transformationObject.waitForFinish;
     }
 
     setLocation(x, y) {

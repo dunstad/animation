@@ -121,12 +121,12 @@ class Animated {
    * Sends a transformation to a queue to be processed in order.
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
-   * @param {object} stateChange 
+   * @param {Transformation} stateChange 
    * @param {AnimationQueue} queue 
    */
   sendToQueue(stateChange, queue) {
     queue.add(stateChange);
-    if (!queue.isAnimating() && queue.shouldContinue()) {this.process(queue);}
+    if ((!queue.isAnimating() || !stateChange.waitForFinish) && queue.shouldContinue()) {this.process(queue);}
     else {console.log('transformation queued');}
     return this;
   }
