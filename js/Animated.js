@@ -123,11 +123,12 @@ class Animated {
    * @param {number} y 
    * @param {number} milliseconds
    */
-  move(x, y, milliseconds) {
+  move(x, y, milliseconds, easing) {
     let transformation = new Transformation({
       location: {x: x, y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
+      easing: easing,
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -137,11 +138,12 @@ class Animated {
    * @param {number} x 
    * @param {number} milliseconds
    */
-  moveX(x, milliseconds) {
+  moveX(x, milliseconds, easing) {
     let transformation = new Transformation({
       location: {x: x},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
+      easing: easing,
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -151,11 +153,12 @@ class Animated {
    * @param {number} y 
    * @param {number} milliseconds
    */
-  moveY(y, milliseconds) {
+  moveY(y, milliseconds, easing) {
     let transformation = new Transformation({
       location: {y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
+      easing: easing,
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -165,11 +168,12 @@ class Animated {
    * @param {number} degrees 
    * @param {number} milliseconds
    */
-  rotate(degrees, milliseconds) {
+  rotate(degrees, milliseconds, easing) {
     let transformation = new Transformation({
       rotation: degrees,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
+      easing: easing,
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -179,11 +183,12 @@ class Animated {
    * @param {number} ratio 
    * @param {number} milliseconds
    */
-  scale(ratio, milliseconds) {
+  scale(ratio, milliseconds, easing) {
     let transformation = new Transformation({
       scalar: ratio,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
+      easing: easing,
     });
     return this.sendToQueue(transformation, this.queue);
   }
