@@ -49,7 +49,7 @@ class Animated {
           },
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0];
-        animation.easingMap = transformation.easingMap;
+        animation.easingMap = transformation.easing;
       }
       else {
         console.log(this.getStateString(transformation))

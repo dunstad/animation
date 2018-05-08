@@ -2,13 +2,26 @@ class Transformation {
 
     constructor(transformationObject) {
         transformationObject = transformationObject || {};
+        
+        // {x: number, y: number}, can leave out either x or y
         this.location = transformationObject.location;
+        
+        // number
         this.rotation = transformationObject.rotation;
+        
+        // number
         this.scalar = transformationObject.scalar;
+        
+        // number
         this.milliseconds = transformationObject.milliseconds;
+        
+        // boolean
         this.animate = transformationObject.animate;
+        
+        // can be either a function or an array of four functions.
         this.easing = transformationObject.easing;
-        this.easingMap = transformationObject.easingMap;
+
+        // function
         this.callback = transformationObject.callback;
     }
 
