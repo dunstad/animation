@@ -18,7 +18,7 @@ class Transformation {
         // boolean
         this.animate = transformationObject.animate;
         
-        // can be either a function or an array of four functions.
+        // an array of four functions
         this.easing = transformationObject.easing;
 
         // function

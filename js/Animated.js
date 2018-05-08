@@ -39,7 +39,7 @@ class Animated {
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
-          transformation.easing || mina.linear,
+          transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear],
           ()=>{
             if (transformation.callback) {
               transformation.callback();
@@ -124,11 +124,12 @@ class Animated {
    * @param {number} milliseconds
    */
   move(x, y, milliseconds, easing) {
+    easing = easing || mina.linear;
     let transformation = new Transformation({
       location: {x: x, y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
-      easing: easing,
+      easing: [easing, easing, mina.linear, mina.linear],
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -139,11 +140,12 @@ class Animated {
    * @param {number} milliseconds
    */
   moveX(x, milliseconds, easing) {
+    easing = easing || mina.linear;
     let transformation = new Transformation({
       location: {x: x},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
-      easing: easing,
+      easing: [easing, mina.linear, mina.linear, mina.linear],
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -154,11 +156,12 @@ class Animated {
    * @param {number} milliseconds
    */
   moveY(y, milliseconds, easing) {
+    easing = easing || mina.linear;
     let transformation = new Transformation({
       location: {y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
-      easing: easing,
+      easing: [mina.linear, easing, mina.linear, mina.linear],
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -169,11 +172,12 @@ class Animated {
    * @param {number} milliseconds
    */
   rotate(degrees, milliseconds, easing) {
+    easing = easing || mina.linear;
     let transformation = new Transformation({
       rotation: degrees,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
-      easing: easing,
+      easing: [mina.linear, mina.linear, easing, mina.linear],
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -184,11 +188,12 @@ class Animated {
    * @param {number} milliseconds
    */
   scale(ratio, milliseconds, easing) {
+    easing = easing || mina.linear;
     let transformation = new Transformation({
       scalar: ratio,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
-      easing: easing,
+      easing: [mina.linear, mina.linear, mina.linear, easing],
     });
     return this.sendToQueue(transformation, this.queue);
   }
@@ -226,7 +231,10 @@ class Animated {
    * @param {number} milliseconds 
    * @param {function} easing
    */
-  togglePulse(scalar, milliseconds, easing) {
+  togglePulse(scalar, milliseconds, easingOut, easingIn) {
+
+    easingIn = easingIn || easingOut || mina.linear;
+    easingOut = easingOut || mina.linear;
     
     if (this.queue.shouldContinue()) {
       this.queue.stop();
@@ -238,7 +246,7 @@ class Animated {
         scalar: scalar,
         animate: true,
         milliseconds: milliseconds,
-        easing: easing,
+        easing: [mina.linear, mina.linear, mina.linear, easingOut],
         callback: ()=>{
           if (this.queue.shouldContinue()) {
             this.sendToQueue(scaleDown, this.queue);
@@ -250,7 +258,7 @@ class Animated {
         scalar: this.scalar,
         animate: true,
         milliseconds: milliseconds,
-        easing: easing,
+        easing: [mina.linear, mina.linear, mina.linear, easingIn],
         callback: ()=>{
           if (this.queue.shouldContinue()) {
             this.sendToQueue(scaleUp, this.queue);
