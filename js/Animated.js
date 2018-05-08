@@ -125,9 +125,8 @@ class Animated {
    * @param {AnimationQueue} queue 
    */
   sendToQueue(stateChange, queue) {
-    if (!stateChange.animate) {stateChange.animate = queue.shouldContinue();}
     queue.add(stateChange);
-    if (!queue.isAnimating()) {this.process(queue);}
+    if (!queue.isAnimating() && queue.shouldContinue()) {this.process(queue);}
     else {console.log('transformation queued');}
     return this;
   }
