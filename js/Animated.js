@@ -313,13 +313,21 @@ class Animated {
     let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
     let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
 
+    let canMergeEasingMaps = (easingMap1, easingMap2)=>{
+      let result = easingMap1.map((e, i)=>{
+        return e == mina.linear || easingMap2[i] == mina.linear || e == easingMap2[i];
+      }).reduce((a, b)=>{return a && b});
+      return result;
+    };
+
     let animationsCompatible = true;
 
     if (newTransformation.location != undefined && 
         (newTransformation.location.x != undefined && !xNotAnimating ||
         newTransformation.location.y != undefined && !yNotAnimating) ||
         newTransformation.rotation != undefined && !rotationNotAnimating ||
-        newTransformation.scalar != undefined && !scalarNotAnimating) {
+        newTransformation.scalar != undefined && !scalarNotAnimating ||
+        !canMergeEasingMaps(newTransformation.easing, currentAnimation.easingMap)) {
       animationsCompatible = false;
     }
 
