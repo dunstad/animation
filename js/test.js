@@ -21,28 +21,25 @@ function testMoveAndRotate(animated) {
 }
 
 function testAnimateAndUnanimate(animated) {
-  animated.move(100, 100).queue().move(0, 0, 1000).unqueue().move(100, 0);
-}
-
-function testMilisecondParameter(animated) {
-  animated.queue().move(100, 100, 500).rotate(45, 2000).move(100, 50, 500).rotate(23, 2000).move(0, 0, 500).unqueue();
-}
-
-function testSeparateAnimationQueues(animated) {
-  animated.toggleSpin(360, 1000 * 60).togglePulse(2, 1000 * 5);
+  animated.queue().move(100, 100).move(0, 0, 1000).move(100, 0).unqueue();
 }
 
 function testMergeAnimation(animated) {
-  animated.queue().rotate(90, 2000).unqueue();
-  setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 500);
+  animated.rotate(90, 2000);
+  setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 500);
 }
 
 function testMergeAnimation2(animated) {
-  animated.queue().rotate(360, 1000*4).unqueue();
-  setTimeout(()=>{animated.mergeAnimation({scalar: 2, animate: true, milliseconds: 1000})}, 2000);
+  animated.rotate(360, 1000*4);
+  setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 2000);
 }
 
 function testSeparateXAndY(animated) {
-  animated.queue().moveX(500, 1000*10).unqueue();
-  setTimeout(()=>{animated.mergeAnimation({location: {y: 100}, animate: true, milliseconds: 1000})}, 2000);
+  animated.moveX(500, 1000*10);
+  setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
+}
+
+function testEasingMap(animated) {
+  animated.moveX(500, 1000*10);
+  setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
 }

@@ -36,7 +36,6 @@ class Animated {
       
       if (transformation.animate) {
         console.log(this.getStateString(transformation))
-        transformation.easing = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
@@ -48,8 +47,8 @@ class Animated {
             this.process(queue);
           },
         );
-        let animation = Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0];
-        animation.easingMap = transformation.easing;
+        let animation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
+        animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
         animation.update = function() {
           var a = this,
