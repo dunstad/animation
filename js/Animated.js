@@ -36,10 +36,11 @@ class Animated {
       
       if (transformation.animate) {
         console.log(this.getStateString(transformation))
+        transformation.easing = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
-          transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear],
+          transformation.easing,
           ()=>{
             if (transformation.callback) {
               transformation.callback();
@@ -50,6 +51,22 @@ class Animated {
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{a.b-b.b})[0];
         animation.easingMap = transformation.easing;
+
+        animation.update = function() {
+          var a = this,
+              res;
+          if (Array.isArray(a.start)) {
+              res = [];
+              for (var j = 0, jj = a.start.length; j < jj; j++) {
+                  res[j] = +a.start[j] +
+                      (a.end[j] - a.start[j]) * a.easingMap[j](a.s);
+              }
+          } else {
+              throw new Error("i don't think this branch ever runs");
+              res = +a.start + (a.end - a.start) * a.easingMap[0](a.s);
+          }
+          a.set(res);
+        };
       }
       else {
         console.log(this.getStateString(transformation))
