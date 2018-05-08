@@ -6,7 +6,7 @@ class Animated {
    */
   constructor(element) {
     this.element = element;
-    this.queue = new AnimationQueue();
+    this.animationQueue = new AnimationQueue();
     this.element.vivus = new Vivus(this.element.node);
   }
 
@@ -14,7 +14,7 @@ class Animated {
    * Signals that transformations after this should be queued.
    */
   queue() {
-    this.queue.start();
+    this.animationQueue.start();
     return this;
   }
   
@@ -22,7 +22,7 @@ class Animated {
    * Signals that transformations after this should not be queued.
    */
   unqueue() {
-    this.queue.stop();
+    this.animationQueue.stop();
     return this;
   }
 
@@ -40,7 +40,6 @@ class Animated {
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
-          transformation.easing,
           ()=>{
             if (transformation.callback) {
               transformation.callback();
@@ -148,7 +147,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [easing, easing, mina.linear, mina.linear],
     });
-    return this.sendToQueue(transformation, this.queue);
+    return this.sendToQueue(transformation, this.animationQueue);
   }
 
   /**
@@ -164,7 +163,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [easing, mina.linear, mina.linear, mina.linear],
     });
-    return this.sendToQueue(transformation, this.queue);
+    return this.sendToQueue(transformation, this.animationQueue);
   }
 
   /**
@@ -180,7 +179,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, easing, mina.linear, mina.linear],
     });
-    return this.sendToQueue(transformation, this.queue);
+    return this.sendToQueue(transformation, this.animationQueue);
   }
 
   /**
@@ -196,7 +195,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, easing, mina.linear],
     });
-    return this.sendToQueue(transformation, this.queue);
+    return this.sendToQueue(transformation, this.animationQueue);
   }
 
   /**
@@ -212,7 +211,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, mina.linear, easing],
     });
-    return this.sendToQueue(transformation, this.queue);
+    return this.sendToQueue(transformation, this.animationQueue);
   }
 
   /**
@@ -221,23 +220,23 @@ class Animated {
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
-    if (this.queue.shouldContinue()) {
-      this.queue.stop();
+    if (this.animationQueue.shouldContinue()) {
+      this.animationQueue.stop();
     }
     else {
-      this.queue.start();
+      this.animationQueue.start();
       let transformation = new Transformation({
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
         callback: ()=>{
-          if (this.queue.shouldContinue()) {
+          if (this.animationQueue.shouldContinue()) {
             transformation.rotation = this.rotation + degrees;
-            this.sendToQueue(transformation, this.queue);
+            this.sendToQueue(transformation, this.animationQueue);
           }
         },
       });
-      this.sendToQueue(transformation, this.queue);
+      this.sendToQueue(transformation, this.animationQueue);
     }
     return this;
   }
@@ -253,11 +252,11 @@ class Animated {
     easingIn = easingIn || easingOut || mina.linear;
     easingOut = easingOut || mina.linear;
     
-    if (this.queue.shouldContinue()) {
-      this.queue.stop();
+    if (this.animationQueue.shouldContinue()) {
+      this.animationQueue.stop();
     }
     else {
-      this.queue.start();
+      this.animationQueue.start();
 
       let scaleUp = new Transformation({
         scalar: scalar,
@@ -265,8 +264,8 @@ class Animated {
         milliseconds: milliseconds,
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
         callback: ()=>{
-          if (this.queue.shouldContinue()) {
-            this.sendToQueue(scaleDown, this.queue);
+          if (this.animationQueue.shouldContinue()) {
+            this.sendToQueue(scaleDown, this.animationQueue);
           }
         },
       });
@@ -277,13 +276,13 @@ class Animated {
         milliseconds: milliseconds,
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
         callback: ()=>{
-          if (this.queue.shouldContinue()) {
-            this.sendToQueue(scaleUp, this.queue);
+          if (this.animationQueue.shouldContinue()) {
+            this.sendToQueue(scaleUp, this.animationQueue);
           }
         },
       });
 
-      this.sendToQueue(scaleUp, this.queue);
+      this.sendToQueue(scaleUp, this.animationQueue);
     }
     return this;
   }
@@ -314,6 +313,8 @@ class Animated {
     let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
 
     let canMergeEasingMaps = (easingMap1, easingMap2)=>{
+      easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
+      easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
       let result = easingMap1.map((e, i)=>{
         return e == mina.linear || easingMap2[i] == mina.linear || e == easingMap2[i];
       }).reduce((a, b)=>{return a && b});
@@ -352,12 +353,22 @@ class Animated {
 
 
       // queue new animations
+      let mergeEasingMaps = (easingMap1, easingMap2)=>{
+        easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        return easingMap1.map((e, i)=>{return e != mina.linear ? e : easingMap2[i];});
+      };
+
+      let mergedEasingMap = mergeEasingMaps(shortTransformation.easing, longTransformation.easing);
+
       let firstTransformation = new Transformation({
         milliseconds: shortTransformation.milliseconds,
+        easing: mergedEasingMap,
         animate: true,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+        easing: mergedEasingMap,
         animate: true,
       });
 
@@ -410,8 +421,8 @@ class Animated {
 
       console.log(firstTransformation, secondTransformation)
 
-      this.sendToQueue(firstTransformation, this.queue);
-      this.sendToQueue(secondTransformation, this.queue);
+      this.sendToQueue(firstTransformation, this.animationQueue);
+      this.sendToQueue(secondTransformation, this.animationQueue);
 
       // make sure the queue continues to process the newly queued animations
       currentAnimation._callback();
