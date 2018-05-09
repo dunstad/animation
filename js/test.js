@@ -59,7 +59,7 @@ tests = [
    * @param {Animated} animated
    */
   function testSeparateXAndY(animated) {
-    animated.moveX(500, 1000*4);
+    animated.moveX(300, 1000*4);
     setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
   },
 
@@ -67,7 +67,7 @@ tests = [
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(100, 1000*4);
+    animated.moveX(300, 1000*4);
     setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
   },
 
@@ -75,7 +75,7 @@ tests = [
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(100, 1000*4);
+    animated.moveX(300, 1000*4);
     setTimeout(()=>{animated.moveY(100, 1000, mina.easeinout, false)}, 2000);
   },
   
@@ -83,7 +83,7 @@ tests = [
    * @param {Animated} animated
    */
   function testAutoMerge2(animated) {
-    animated.moveX(100, 1000*4);
+    animated.moveX(300, 1000*4);
     animated.moveY(100, 1000*4, undefined, false);
     animated.rotate(360, 1000*4, undefined, false);
   },
