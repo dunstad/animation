@@ -11,27 +11,10 @@ class Animated {
   }
 
   /**
-   * Signals that transformations after this should be queued.
-   */
-  queue() {
-    this.animationQueue.start();
-    return this;
-  }
-  
-  /**
-   * Signals that transformations after this should not be queued.
-   */
-  unqueue() {
-    this.animationQueue.stop();
-    return this;
-  }
-
-  /**
    * Performs transformations waiting in the queue.
-   * @param {AnimationQueue} queue
    */
-  process(queue) {
-    let transformation = queue.next();
+  process() {
+    let transformation = this.animationQueue.next();
     if (transformation) {
       
       if (transformation.animate) {
@@ -43,8 +26,8 @@ class Animated {
             if (transformation.callback) {
               transformation.callback();
             }
-            queue.animationComplete();
-            this.process(queue);
+            this.animationQueue.animationComplete();
+            this.process();
           },
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
@@ -69,7 +52,7 @@ class Animated {
       else {
         console.log(this.getStateString(transformation))
         this.element.attr(this.getStateString(transformation));
-        queue.animationComplete();
+        this.animationQueue.animationComplete();
       }
     }
   }
@@ -122,12 +105,17 @@ class Animated {
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
    * @param {Transformation} stateChange 
-   * @param {AnimationQueue} queue 
    */
-  sendToQueue(stateChange, queue) {
-    queue.add(stateChange);
-    if ((!queue.isAnimating() || !stateChange.waitForFinish) && queue.shouldContinue()) {this.process(queue);}
-    else {console.log('transformation queued');}
+  sendToQueue(stateChange) {
+    let queueReadyAndEmpty = !this.animationQueue.isAnimating() && this.animationQueue.shouldContinue();
+    if (stateChange.waitForFinish || queueReadyAndEmpty) {
+      this.animationQueue.add(stateChange);
+      if (queueReadyAndEmpty) {this.process();}
+      else {console.log('transformation queued');}
+    }
+    else {
+      this.mergeAnimation(stateChange);
+    }
     return this;
   }
 
@@ -136,80 +124,105 @@ class Animated {
    * @param {number} x 
    * @param {number} y 
    * @param {number} milliseconds
+   * @param {function} easing
+   * @param {boolean} waitForFinish
    */
-  move(x, y, milliseconds, easing) {
+  move(x, y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
+    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
+    this.animationQueue.start();
     let transformation = new Transformation({
       location: {x: x, y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
       easing: [easing, easing, mina.linear, mina.linear],
+      waitForFinish: waitForFinish,
     });
-    return this.sendToQueue(transformation, this.animationQueue);
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Moves this to the absolute x coordinate provided.
    * @param {number} x 
    * @param {number} milliseconds
+   * @param {function} easing
+   * @param {boolean} waitForFinish
    */
-  moveX(x, milliseconds, easing) {
+  moveX(x, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
+    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
+    this.animationQueue.start();
     let transformation = new Transformation({
       location: {x: x},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
       easing: [easing, mina.linear, mina.linear, mina.linear],
+      waitForFinish: waitForFinish,
     });
-    return this.sendToQueue(transformation, this.animationQueue);
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Moves this to the absolute y coordinate provided.
    * @param {number} y 
    * @param {number} milliseconds
+   * @param {function} easing
+   * @param {boolean} waitForFinish
    */
-  moveY(y, milliseconds, easing) {
+  moveY(y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
+    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
+    this.animationQueue.start();
     let transformation = new Transformation({
       location: {y: y},
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
       easing: [mina.linear, easing, mina.linear, mina.linear],
+      waitForFinish: waitForFinish,
     });
-    return this.sendToQueue(transformation, this.animationQueue);
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Rotates this to the absolute degree provided.
    * @param {number} degrees 
    * @param {number} milliseconds
+   * @param {function} easing
+   * @param {boolean} waitForFinish
    */
-  rotate(degrees, milliseconds, easing) {
+  rotate(degrees, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
+    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
+    this.animationQueue.start();
     let transformation = new Transformation({
       rotation: degrees,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, easing, mina.linear],
+      waitForFinish: waitForFinish,
     });
-    return this.sendToQueue(transformation, this.animationQueue);
+    return this.sendToQueue(transformation);
   }
 
   /**
    * Scales this to the absolute ratio provided.
    * @param {number} ratio 
    * @param {number} milliseconds
+   * @param {function} easing
+   * @param {boolean} waitForFinish
    */
-  scale(ratio, milliseconds, easing) {
+  scale(ratio, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
+    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
+    this.animationQueue.start();
     let transformation = new Transformation({
       scalar: ratio,
       milliseconds: milliseconds,
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, mina.linear, easing],
+      waitForFinish: waitForFinish,
     });
-    return this.sendToQueue(transformation, this.animationQueue);
+    return this.sendToQueue(transformation);
   }
 
   /**
@@ -227,14 +240,15 @@ class Animated {
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
+        waitForFinish: false,
         callback: ()=>{
           if (this.animationQueue.shouldContinue()) {
             transformation.rotation = this.rotation + degrees;
-            this.sendToQueue(transformation, this.animationQueue);
+            this.sendToQueue(transformation);
           }
         },
       });
-      this.sendToQueue(transformation, this.animationQueue);
+      this.sendToQueue(transformation);
     }
     return this;
   }
@@ -243,7 +257,8 @@ class Animated {
    * Used to start and stop a pulsing animation.
    * @param {number} scalar 
    * @param {number} milliseconds 
-   * @param {function} easing
+   * @param {function} easingOut
+   * @param {function} easingIn
    */
   togglePulse(scalar, milliseconds, easingOut, easingIn) {
 
@@ -261,9 +276,10 @@ class Animated {
         animate: true,
         milliseconds: milliseconds,
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
+        waitForFinish: false,
         callback: ()=>{
           if (this.animationQueue.shouldContinue()) {
-            this.sendToQueue(scaleDown, this.animationQueue);
+            this.sendToQueue(scaleDown);
           }
         },
       });
@@ -273,14 +289,15 @@ class Animated {
         animate: true,
         milliseconds: milliseconds,
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
+        waitForFinish: false,
         callback: ()=>{
           if (this.animationQueue.shouldContinue()) {
-            this.sendToQueue(scaleUp, this.animationQueue);
+            this.sendToQueue(scaleUp);
           }
         },
       });
 
-      this.sendToQueue(scaleUp, this.animationQueue);
+      this.sendToQueue(scaleUp);
     }
     return this;
   }
@@ -363,11 +380,13 @@ class Animated {
         milliseconds: shortTransformation.milliseconds,
         easing: mergedEasingMap,
         animate: true,
+        waitForFinish: true,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
         easing: mergedEasingMap,
         animate: true,
+        waitForFinish: true,
       });
 
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
@@ -419,8 +438,8 @@ class Animated {
 
       console.log(firstTransformation, secondTransformation)
 
-      this.sendToQueue(firstTransformation, this.animationQueue);
-      this.sendToQueue(secondTransformation, this.animationQueue);
+      this.sendToQueue(firstTransformation);
+      this.sendToQueue(secondTransformation);
 
       // make sure the queue continues to process the newly queued animations
       currentAnimation._callback();
