@@ -110,7 +110,6 @@ class Animated {
     if (stateChange.waitForFinish || queueReadyAndEmpty) {
       this.animationQueue.add(stateChange);
       if (queueReadyAndEmpty) {this.process();}
-      else {console.log('transformation queued');}
     }
     else {
       this.mergeAnimation(stateChange);

@@ -23,65 +23,88 @@ function reset(animated) {
   animated.move(0, 0).rotate(0).scale(1);
 }
 
-/**
- * @param {Animated} animated 
- */
-function testMoveAndRotate(animated) {
-  animated.move(100, 100, 1000).rotate(45, 1000).move(100, 50, 1000).rotate(23, 1000).move(0, 0, 1000);
+tests = [
+
+  /**
+   * @param {Animated} animated
+   */
+  function testMoveAndRotate(animated) {
+    animated.move(100, 100, 1000).rotate(45, 1000).move(100, 50, 1000).rotate(23, 1000).move(0, 0, 1000);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testAnimateAndUnanimate(animated) {
+    animated.move(100, 100).move(0, 0, 1000).move(100, 0);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testMergeAnimation(animated) {
+    animated.rotate(90, 2000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 500);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testMergeAnimation2(animated) {
+    animated.rotate(360, 1000*4);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 2000);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testSeparateXAndY(animated) {
+    animated.moveX(500, 1000*4);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testEasingMap(animated) {
+    animated.moveX(100, 1000*4);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testAutoMerge(animated) {
+    animated.moveX(100, 1000*4);
+    setTimeout(()=>{animated.moveY(100, 1000, mina.easeinout, false)}, 2000);
+  },
+  
+  /**
+   * @param {Animated} animated
+   */
+  function testAutoMerge2(animated) {
+    animated.moveX(100, 1000*4);
+    animated.moveY(100, 1000*4, undefined, false);
+    animated.rotate(360, 1000*4, undefined, false);
+  },
+
+];
+
+for (let test of tests) {
+  window[test.name] = test;
 }
 
-/**
- * @param {Animated} animated 
- */
-function testAnimateAndUnanimate(animated) {
-  animated.move(100, 100).move(0, 0, 1000).move(100, 0);
-}
+function runTests(animated, tests) {
+  var counter = 0;
+  let runOneTest = ()=>{
+    let test = tests[counter];
+    reset(animated);
+    console.log(test.name);
+    test(animated);
+    counter++;
+  };
 
-/**
- * @param {Animated} animated 
- */
-function testMergeAnimation(animated) {
-  animated.rotate(90, 2000);
-  setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 500);
-}
-
-/**
- * @param {Animated} animated 
- */
-function testMergeAnimation2(animated) {
-  animated.rotate(360, 1000*4);
-  setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 2000);
-}
-
-/**
- * @param {Animated} animated 
- */
-function testSeparateXAndY(animated) {
-  animated.moveX(500, 1000*10);
-  setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
-}
-
-/**
- * @param {Animated} animated 
- */
-function testEasingMap(animated) {
-  animated.moveX(500, 1000*10);
-  setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
-}
-
-/**
- * @param {Animated} animated 
- */
-function testAutoMerge(animated) {
-  animated.moveX(500, 1000*10);
-  setTimeout(()=>{animated.moveY(100, 1000, mina.easeinout, false)}, 2000);
-}
-
-/**
- * @param {Animated} animated 
- */
-function testAutoMerge2(animated) {
-  animated.moveX(100, 1000*10);
-  animated.moveY(100, 1000*10, undefined, false);
-  animated.rotate(360, 1000*10, undefined, false);
+  runOneTest();
+  setInterval(runOneTest, 1000 * 5);
+  
 }
