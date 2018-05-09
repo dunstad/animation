@@ -51,6 +51,7 @@ class Animated {
       else {
         this.element.attr(this.getStateString(transformation));
         this.animationQueue.animationComplete();
+        this.process();
       }
     }
   }
@@ -456,6 +457,14 @@ class Animated {
    */
   pause() {
     Object.values(this.element.anims).map(anim=>anim.pause());
+  }
+
+  /**
+   * Used to stop all running animations.
+   */
+  stop() {
+    Object.values(this.element.anims).map(anim=>anim.stop());
+    this.animationQueue.animationComplete();
   }
 
 }

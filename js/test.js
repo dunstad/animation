@@ -19,6 +19,13 @@ loader.then((assets)=>{
 /**
  * @param {Animated} animated 
  */
+function reset(animated) {
+  animated.move(0, 0).rotate(0).scale(1);
+}
+
+/**
+ * @param {Animated} animated 
+ */
 function testMoveAndRotate(animated) {
   animated.move(100, 100, 1000).rotate(45, 1000).move(100, 50, 1000).rotate(23, 1000).move(0, 0, 1000);
 }
