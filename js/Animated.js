@@ -314,6 +314,35 @@ class Animated {
   }
 
   /**
+   * Turns the current animation into a transformation to make it easier to
+   * merge with other animations.
+   */
+  currentAnimationToTransformation() {
+
+    let currentAnimation = Object.values(this.element.anims)[0];
+    currentAnimation.stop();
+    
+    let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
+    let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
+    let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
+    let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
+
+    let currentTransformation = new Transformation({
+      location: {
+        x: !xNotAnimating ? currentAnimation.end[0] : undefined,
+        y: !yNotAnimating ? currentAnimation.end[1] : undefined,
+      },
+      rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
+      scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
+      milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
+      animate: true,
+    });
+
+    return currentTransformation;
+
+  }
+
+  /**
    * Used to combine a new animation with one already in progress.
    * @param {Transformation} newTransformation 
    */
