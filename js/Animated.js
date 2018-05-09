@@ -18,15 +18,14 @@ class Animated {
     if (transformation) {
       
       if (transformation.animate) {
-        console.log(this.getStateString(transformation))
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
           ()=>{
+            this.animationQueue.animationComplete();
             if (transformation.callback) {
               transformation.callback();
             }
-            this.animationQueue.animationComplete();
             this.process();
           },
         );
@@ -50,7 +49,6 @@ class Animated {
         };
       }
       else {
-        console.log(this.getStateString(transformation))
         this.element.attr(this.getStateString(transformation));
         this.animationQueue.animationComplete();
       }
@@ -380,7 +378,7 @@ class Animated {
         milliseconds: shortTransformation.milliseconds,
         easing: mergedEasingMap,
         animate: true,
-        waitForFinish: true,
+        waitForFinish: false,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
@@ -436,17 +434,18 @@ class Animated {
 
       }
 
-      console.log(firstTransformation, secondTransformation)
-
+      currentAnimation.stop();
+      // currentAnimation._callback();
+      this.animationQueue.animationComplete();
+      
       this.sendToQueue(firstTransformation);
       this.sendToQueue(secondTransformation);
 
-      // make sure the queue continues to process the newly queued animations
-      currentAnimation._callback();
-      currentAnimation.stop();
 
     }
     else {
+      console.log(currentAnimation);
+      console.log(newTransformation);
       throw new Error('incompatible animations');
     }
 

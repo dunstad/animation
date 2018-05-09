@@ -69,3 +69,12 @@ function testAutoMerge(animated) {
   animated.moveX(500, 1000*10);
   setTimeout(()=>{animated.moveY(100, 1000, mina.easeinout, false)}, 2000);
 }
+
+/**
+ * @param {Animated} animated 
+ */
+function testAutoMerge2(animated) {
+  animated.moveX(100, 1000*10);
+  animated.moveY(100, 1000*10, undefined, false);
+  animated.rotate(360, 1000*10, undefined, false);
+}
