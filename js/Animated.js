@@ -321,6 +321,7 @@ class Animated {
 
     let currentAnimation = Object.values(this.element.anims)[0];
     currentAnimation.stop();
+    this.animationQueue.animationComplete();
     
     let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
     let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
