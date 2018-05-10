@@ -1,4 +1,5 @@
 class Transformation {
+
   constructor(transformationObject) {
     transformationObject = transformationObject || {};
 
@@ -66,6 +67,96 @@ class Transformation {
     }
 
     return animationsCompatible;
+
+  }
+
+  /**
+   * Used to allow different animations to run at the same time by combining them.
+   * @param {Transformation} otherTransformation 
+   */
+  merge(otherTransformation) {
+
+    if (this.canMergeWith(otherTransformation)) {
+
+      let [shortTransformation, longTransformation] = [this, otherTransformation].sort((a, b)=>{
+        return a.milliseconds - b.milliseconds;
+      });
+
+      let mergeEasingMaps = (easingMap1, easingMap2)=>{
+        easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        return easingMap1.map((e, i)=>{return e != mina.linear ? e : easingMap2[i];});
+      };
+
+      let mergedEasingMap = mergeEasingMaps(shortTransformation.easing, longTransformation.easing);
+
+      let firstTransformation = new Transformation({
+        milliseconds: shortTransformation.milliseconds,
+        easing: mergedEasingMap,
+        animate: true,
+        waitForFinish: false,
+      });
+      let secondTransformation = new Transformation({
+        milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+        easing: mergedEasingMap,
+        animate: true,
+        waitForFinish: true,
+      });
+
+      let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+
+      let splitNumberValue = (property) => {
+        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
+      };
+
+      for (let property of ['rotation', 'scalar']) {
+        
+        if (longTransformation[property] != undefined) {
+          
+          firstTransformation[property] = splitNumberValue(property);
+          secondTransformation[property] = longTransformation[property];
+          
+        }
+        
+        else if (shortTransformation[property] != undefined) {
+          
+          firstTransformation[property] = shortTransformation[property];
+          
+        }
+        
+      }
+
+      let splitLocationValue = (property) => {
+        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
+      };
+
+      firstTransformation.location = {};
+      secondTransformation.location = {};
+
+      for (let property of ['x', 'y']) {
+        
+        if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
+          
+          firstTransformation.location[property] = splitLocationValue(property);
+          secondTransformation.location[property] = longTransformation.location[property];
+          
+        }
+        
+        else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
+          
+          firstTransformation.location[property] = shortTransformation.location[property];
+
+        }
+
+      }
+
+      return [firstTransformation, secondTransformation];
+      
+    }
+
+    else {
+      throw new Error('incompatible transformations');
+    }
 
   }
 

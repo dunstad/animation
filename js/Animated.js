@@ -321,6 +321,7 @@ class Animated {
 
     let currentAnimation = Object.values(this.element.anims)[0];
     currentAnimation.stop();
+    // currentAnimation._callback();
     this.animationQueue.animationComplete();
     
     let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
