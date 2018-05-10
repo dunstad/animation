@@ -2,7 +2,6 @@ class AnimationQueue {
 
   constructor() {
     this.queue = []
-    this.animate = false;
     this.animating = false;
   }
 
@@ -32,16 +31,8 @@ class AnimationQueue {
     return this.animating;
   }
 
-  start() {
-    this.animate = true;
-  }
-
-  stop() {
-    this.animate = false;
-  }
-
-  shouldContinue() {
-    return this.animate;
+  nextWaits() {
+    return this.queue[this.queue.length - 1].waitForFinish;
   }
 
 }

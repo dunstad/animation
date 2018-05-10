@@ -106,10 +106,9 @@ class Animated {
    * @param {Transformation} stateChange 
    */
   sendToQueue(stateChange) {
-    let queueReadyAndEmpty = !this.animationQueue.isAnimating() && this.animationQueue.shouldContinue();
-    if (stateChange.waitForFinish || queueReadyAndEmpty) {
+    if (stateChange.waitForFinish || !this.animationQueue.isAnimating()) {
       this.animationQueue.add(stateChange);
-      if (queueReadyAndEmpty) {this.process();}
+      if (!this.animationQueue.isAnimating()) {this.process();}
     }
     else {
       this.mergeAnimation(stateChange);
@@ -128,7 +127,6 @@ class Animated {
   move(x, y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    this.animationQueue.start();
     let transformation = new Transformation({
       location: {x: x, y: y},
       milliseconds: milliseconds,
@@ -149,7 +147,6 @@ class Animated {
   moveX(x, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    this.animationQueue.start();
     let transformation = new Transformation({
       location: {x: x},
       milliseconds: milliseconds,
@@ -170,7 +167,6 @@ class Animated {
   moveY(y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    this.animationQueue.start();
     let transformation = new Transformation({
       location: {y: y},
       milliseconds: milliseconds,
@@ -191,7 +187,6 @@ class Animated {
   rotate(degrees, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    this.animationQueue.start();
     let transformation = new Transformation({
       rotation: degrees,
       milliseconds: milliseconds,
@@ -212,7 +207,6 @@ class Animated {
   scale(ratio, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    this.animationQueue.start();
     let transformation = new Transformation({
       scalar: ratio,
       milliseconds: milliseconds,
@@ -229,18 +223,19 @@ class Animated {
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
-    if (this.animationQueue.shouldContinue()) {
-      this.animationQueue.stop();
+    // new way to detect when to stop needed
+    if (true) {
+      // new way to stop toggles
     }
     else {
-      this.animationQueue.start();
       let transformation = new Transformation({
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
         waitForFinish: false,
         callback: ()=>{
-          if (this.animationQueue.shouldContinue()) {
+          // new way to detect when to stop needed
+          if (true) {
             transformation.rotation = this.rotation + degrees;
             this.sendToQueue(transformation);
           }
@@ -263,11 +258,11 @@ class Animated {
     easingIn = easingIn || easingOut || mina.linear;
     easingOut = easingOut || mina.linear;
     
-    if (this.animationQueue.shouldContinue()) {
-      this.animationQueue.stop();
+    // new way to detect when to stop needed
+    if (true) {
+      // new way to stop toggles
     }
     else {
-      this.animationQueue.start();
 
       let scaleUp = new Transformation({
         scalar: scalar,
@@ -276,7 +271,8 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
         waitForFinish: false,
         callback: ()=>{
-          if (this.animationQueue.shouldContinue()) {
+          // new way to detect when to stop needed
+          if (true) {
             this.sendToQueue(scaleDown);
           }
         },
@@ -289,7 +285,8 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
         waitForFinish: false,
         callback: ()=>{
-          if (this.animationQueue.shouldContinue()) {
+          // new way to detect when to stop needed
+          if (true) {
             this.sendToQueue(scaleUp);
           }
         },
@@ -345,140 +342,17 @@ class Animated {
   }
 
   /**
-   * Used to combine a new animation with one already in progress.
+   * Used to combine a new animation with the existing queue.
    * @param {Transformation} newTransformation 
    */
   mergeAnimation(newTransformation) {
 
-    let currentAnimation = Object.values(this.element.anims)[0];
-    let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
-    let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
-    let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
-    let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
+    let queue = this.animationQueue.queue;
 
-    let canMergeEasingMaps = (easingMap1, easingMap2)=>{
-      easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
-      easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
-      let result = easingMap1.map((e, i)=>{
-        return e == mina.linear || easingMap2[i] == mina.linear || e == easingMap2[i];
-      }).reduce((a, b)=>{return a && b});
-      return result;
-    };
+    let firstMerge = this.currentAnimationToTransformation().merge(queue.next());
 
-    let animationsCompatible = true;
-
-    if (newTransformation.location != undefined && 
-        (newTransformation.location.x != undefined && !xNotAnimating ||
-        newTransformation.location.y != undefined && !yNotAnimating) ||
-        newTransformation.rotation != undefined && !rotationNotAnimating ||
-        newTransformation.scalar != undefined && !scalarNotAnimating ||
-        !canMergeEasingMaps(newTransformation.easing, currentAnimation.easingMap)) {
-      animationsCompatible = false;
-    }
-
-    if (animationsCompatible) {
-
-      currentAnimation.pause();
-
-      let currentTransformation = new Transformation({
-        location: {
-          x: !xNotAnimating ? currentAnimation.end[0] : undefined,
-          y: !yNotAnimating ? currentAnimation.end[1] : undefined,
-        },
-        rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
-        scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
-        milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
-        animate: true,
-      });
-
-      let [shortTransformation, longTransformation] = [currentTransformation, newTransformation].sort((a, b)=>{
-        return a.milliseconds - b.milliseconds;
-      });
-
-
-      // queue new animations
-      let mergeEasingMaps = (easingMap1, easingMap2)=>{
-        easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
-        easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
-        return easingMap1.map((e, i)=>{return e != mina.linear ? e : easingMap2[i];});
-      };
-
-      let mergedEasingMap = mergeEasingMaps(shortTransformation.easing, longTransformation.easing);
-
-      let firstTransformation = new Transformation({
-        milliseconds: shortTransformation.milliseconds,
-        easing: mergedEasingMap,
-        animate: true,
-        waitForFinish: false,
-      });
-      let secondTransformation = new Transformation({
-        milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-        easing: mergedEasingMap,
-        animate: true,
-        waitForFinish: true,
-      });
-
-      let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
-
-      let splitNumberValue = (property) => {
-        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
-      };
-
-      for (let property of ['rotation', 'scalar']) {
-        
-        if (longTransformation[property] != undefined) {
-          
-          firstTransformation[property] = splitNumberValue(property);
-          secondTransformation[property] = longTransformation[property];
-          
-        }
-        
-        else if (shortTransformation[property] != undefined) {
-          
-          firstTransformation[property] = shortTransformation[property];
-          
-        }
-        
-      }
-
-      let splitLocationValue = (property) => {
-        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
-      };
-
-      firstTransformation.location = {};
-      secondTransformation.location = {};
-
-      for (let property of ['x', 'y']) {
-        
-        if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
-          
-          firstTransformation.location[property] = splitLocationValue(property);
-          secondTransformation.location[property] = longTransformation.location[property];
-          
-        }
-        
-        else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
-          
-          firstTransformation.location[property] = shortTransformation.location[property];
-
-        }
-
-      }
-
-      currentAnimation.stop();
-      // currentAnimation._callback();
-      this.animationQueue.animationComplete();
-      
-      this.sendToQueue(firstTransformation);
-      this.sendToQueue(secondTransformation);
-
-
-    }
-    else {
-      console.log(currentAnimation);
-      console.log(newTransformation);
-      throw new Error('incompatible animations');
-    }
+    // skipping to the front to preserve order
+    this.animationQueue.queue.unshift(...firstMerge);
 
   }
 
