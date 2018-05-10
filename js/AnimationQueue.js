@@ -5,6 +5,10 @@ class AnimationQueue {
     this.animating = false;
   }
 
+  get length() {
+    return this.queue.length;
+  }
+
   add(transformation) {
     this.queue.push(transformation);
   }
@@ -32,7 +36,7 @@ class AnimationQueue {
   }
 
   nextWaits() {
-    return this.queue[this.queue.length - 1].waitForFinish;
+    return this.length ? this.queue[this.length - 1].waitForFinish : true;
   }
 
 }
