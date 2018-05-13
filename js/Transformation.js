@@ -94,7 +94,7 @@ class Transformation {
         milliseconds: shortTransformation.milliseconds,
         easing: mergedEasingMap,
         animate: true,
-        waitForFinish: false,
+        waitForFinish: true,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
@@ -106,6 +106,7 @@ class Transformation {
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
+        // this here is intended to refer to an Animated...
         return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
       };
 

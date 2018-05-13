@@ -52,7 +52,7 @@ tests = [
    */
   function testMergeAnimation2(animated) {
     animated.rotate(360, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 2000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 1000);
   },
 
   /**

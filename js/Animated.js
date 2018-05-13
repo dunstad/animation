@@ -106,13 +106,7 @@ class Animated {
    * @param {Transformation} transformation 
    */
   sendToQueue(transformation) {
-
-    if (!transformation.waitForFinish && !this.animationQueue.length) {
-
-    }
-
-
-    if (transformation.waitForFinish || !this.animationQueue.isAnimating()) {
+    if (transformation.waitForFinish || !this.animationQueue.length) {
       this.animationQueue.add(transformation);
       if (!this.animationQueue.isAnimating()) {this.process();}
     }
@@ -353,12 +347,11 @@ class Animated {
    */
   mergeAnimation(newTransformation) {
 
-    let queue = this.animationQueue.queue;
-
-    let firstMerge = this.currentAnimationToTransformation().merge(queue.next());
+    let firstMerge = this.currentAnimationToTransformation().merge(newTransformation);
 
     // skipping to the front to preserve order
     this.animationQueue.queue.unshift(...firstMerge);
+    this.process();
 
   }
 
