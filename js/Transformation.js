@@ -26,6 +26,9 @@ class Transformation {
 
     // boolean
     this.waitForFinish = transformationObject.waitForFinish;
+
+    // number (0.0-1.0)
+    this.status = transformationObject.status;
   }
 
   /**
@@ -72,11 +75,14 @@ class Transformation {
 
   /**
    * Used to allow different animations to run at the same time by combining them.
+   * Status tells us how far in the first animation was before merging. (0.0-1.0)
    * @param {Transformation} otherTransformation 
    */
   merge(otherTransformation) {
 
     if (this.canMergeWith(otherTransformation)) {
+
+      let status = this.status || 0;
 
       let [shortTransformation, longTransformation] = [this, otherTransformation].sort((a, b)=>{
         return a.milliseconds - b.milliseconds;
@@ -106,8 +112,8 @@ class Transformation {
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
-        // this here is intended to refer to an Animated...
-        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
+        let currentValue = longTransformation[property] * status;
+        return ((longTransformation[property] - currentValue) * durationRatio) + currentValue;
       };
 
       for (let property of ['rotation', 'scalar']) {
@@ -126,9 +132,10 @@ class Transformation {
         }
         
       }
-
+      
       let splitLocationValue = (property) => {
-        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
+        let currentValue = longTransformation.location[property] * status;
+        return ((longTransformation.location[property] - currentValue) * durationRatio) + currentValue;
       };
 
       firstTransformation.location = {};
