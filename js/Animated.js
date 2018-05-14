@@ -351,6 +351,7 @@ class Animated {
     let firstMerge = this.currentAnimationToTransformation().merge(newTransformation);
 
     // skipping to the front to preserve order
+    // this is putting noWait transforms into the queue and it shouldn't
     this.animationQueue.queue.unshift(...firstMerge);
     this.process();
 
