@@ -82,8 +82,6 @@ class Transformation {
 
     if (this.canMergeWith(otherTransformation)) {
 
-      let status = this.status || 0;
-
       let [shortTransformation, longTransformation] = [this, otherTransformation].sort((a, b)=>{
         return a.milliseconds - b.milliseconds;
       });
@@ -109,10 +107,13 @@ class Transformation {
         waitForFinish: true,
       });
 
+      // need to take status into account
+      let shortTimeLeft = shortTransformation.milliseconds * (1 - (shortTransformation.status || 0));
+      let longTimeLeft = longTransformation.milliseconds * (1 - (longTransformation.status || 0));
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
-        let currentValue = longTransformation[property] * status;
+        let currentValue = longTransformation[property] * (longTransformation.status || 0);
         return ((longTransformation[property] - currentValue) * durationRatio) + currentValue;
       };
 
@@ -134,7 +135,7 @@ class Transformation {
       }
       
       let splitLocationValue = (property) => {
-        let currentValue = longTransformation.location[property] * status;
+        let currentValue = longTransformation.location[property] * (longTransformation.status || 0);
         return ((longTransformation.location[property] - currentValue) * durationRatio) + currentValue;
       };
 
