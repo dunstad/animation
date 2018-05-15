@@ -87,6 +87,15 @@ tests = [
     animated.moveY(100, 1000*4, undefined, false);
     animated.rotate(360, 1000*4, undefined, false);
   },
+  
+  /**
+   * @param {Animated} animated
+   */
+  function testMergeWithQueue(animated) {
+    animated.moveX(300, 1000*1);
+    animated.moveY(100, 1000*1, undefined, true);
+    animated.rotate(360, 1000*2, undefined, false);
+  },
 
 ];
 
