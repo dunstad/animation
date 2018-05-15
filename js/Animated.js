@@ -106,7 +106,7 @@ class Animated {
    * @param {Transformation} transformation 
    */
   sendToQueue(transformation) {
-    if (transformation.waitForFinish || !this.animationQueue.length && !this.animationQueue.isAnimating()) {
+    if (transformation.waitForFinish || !this.animationQueue.isAnimating()) {
       this.animationQueue.add(transformation);
       if (!this.animationQueue.isAnimating()) {this.process();}
     }
@@ -224,7 +224,7 @@ class Animated {
    */
   toggleSpin(degrees, milliseconds) {
     // new way to detect when to stop needed
-    if (true) {
+    if (false) {
       // new way to stop toggles
     }
     else {
@@ -259,7 +259,7 @@ class Animated {
     easingOut = easingOut || mina.linear;
     
     // new way to detect when to stop needed
-    if (true) {
+    if (false) {
       // new way to stop toggles
     }
     else {
