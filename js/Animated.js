@@ -106,7 +106,7 @@ class Animated {
    * @param {Transformation} transformation 
    */
   sendToQueue(transformation) {
-    if (transformation.waitForFinish || !this.animationQueue.length) {
+    if (transformation.waitForFinish || !this.animationQueue.length && !this.animationQueue.isAnimating()) {
       this.animationQueue.add(transformation);
       if (!this.animationQueue.isAnimating()) {this.process();}
     }
