@@ -34,6 +34,7 @@ class Animated {
           },
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
+        animation.originalCallback = transformation.callback;
         animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
         animation.update = function() {
@@ -335,7 +336,7 @@ class Animated {
       status: currentAnimation.status(),
       // this probably causes the wrapping callback in process to get called twice
       // doesn't seem to be causing issues right now though
-      callback: currentAnimation._callback,
+      callback: currentAnimation.originalCallback,
     });
 
     return currentTransformation;
