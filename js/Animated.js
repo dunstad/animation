@@ -8,6 +8,10 @@ class Animated {
     this.element = element;
     this.animationQueue = new AnimationQueue();
     this.element.vivus = new Vivus(this.element.node);
+    this.sentinels = {
+      spin: false,
+      pulse: false,
+    };
   }
 
   /**
@@ -223,19 +227,18 @@ class Animated {
    * @param {number} milliseconds 
    */
   toggleSpin(degrees, milliseconds) {
-    // new way to detect when to stop needed
-    if (false) {
-      // new way to stop toggles
+    if (this.sentinels.spin) {
+      this.sentinels.spin = false;
     }
     else {
+      this.sentinels.spin = true;
       let transformation = new Transformation({
         rotation: this.rotation + degrees,
         animate: true,
         milliseconds: milliseconds,
         waitForFinish: false,
         callback: ()=>{
-          // new way to detect when to stop needed
-          if (true) {
+          if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
             this.sendToQueue(transformation);
           }
@@ -258,12 +261,11 @@ class Animated {
     easingIn = easingIn || easingOut || mina.linear;
     easingOut = easingOut || mina.linear;
     
-    // new way to detect when to stop needed
-    if (false) {
-      // new way to stop toggles
+    if (this.sentinels.pulse) {
+      this.sentinels.pulse = false;
     }
     else {
-
+      this.sentinels.pulse = true;
       let scaleUp = new Transformation({
         scalar: scalar,
         animate: true,
@@ -271,10 +273,7 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
         waitForFinish: false,
         callback: ()=>{
-          // new way to detect when to stop needed
-          if (true) {
-            this.sendToQueue(scaleDown);
-          }
+          this.sendToQueue(scaleDown);
         },
       });
 
@@ -285,8 +284,7 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
         waitForFinish: false,
         callback: ()=>{
-          // new way to detect when to stop needed
-          if (true) {
+          if (this.sentinels.pulse) {
             this.sendToQueue(scaleUp);
           }
         },

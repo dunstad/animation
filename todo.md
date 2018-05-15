@@ -1,2 +1,2 @@
-* continuous animations need a new way to know when to stop
+* continuous animations not merging for some reason
 * correct animations for time lost during processing?
