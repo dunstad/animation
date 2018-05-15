@@ -103,6 +103,7 @@ tests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, undefined, false);
+    setTimeout(()=>{animated.toggleSpin(360, 1000);}, 1500);
   },
 
 ];
