@@ -158,7 +158,12 @@ class Transformation {
 
       }
 
-      return [firstTransformation, secondTransformation];
+      let result = [firstTransformation];
+      if (secondTransformation.milliseconds > 0) {
+        result.push(secondTransformation);
+      }
+
+      return result;
       
     }
 

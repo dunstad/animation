@@ -348,11 +348,36 @@ class Animated {
    */
   mergeAnimation(newTransformation) {
 
-    let firstMerge = this.currentAnimationToTransformation().merge(newTransformation);
+    this.animationQueue.queue.unshift(this.currentAnimationToTransformation());
 
-    // skipping to the front to preserve order
-    // this is putting noWait transforms into the queue and it shouldn't
-    this.animationQueue.queue.unshift(...firstMerge);
+    /**
+     * Recursively merges an animation with all overlapping animations in a queue.
+     * @param {Transformation} transformation 
+     * @param {AnimationQueue} queue 
+     */
+    let mergeWithQueue = (transformation, queue)=>{
+
+      if (!queue.length) {queue.push(transformation);}
+
+      else {
+
+        let firstQueued = queue.shift();
+        let mergeResult = transformation.merge(firstQueued);
+        
+        if (mergeResult[1]) {
+          
+          mergeWithQueue(mergeResult[1], queue);
+          
+        }
+        
+        queue.unshift(mergeResult[0]);
+
+      }
+
+    }
+
+    mergeWithQueue(newTransformation, this.animationQueue.queue);
+
     this.process();
 
   }
