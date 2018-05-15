@@ -97,6 +97,14 @@ tests = [
     animated.rotate(360, 1000*2, undefined, false);
   },
 
+  /**
+   * @param {Animated} animated
+   */
+  function testMergePreservesCallbacks(animated) {
+    animated.toggleSpin(360, 1000);
+    animated.moveX(100, 1000, undefined, false);
+  },
+
 ];
 
 for (let test of tests) {

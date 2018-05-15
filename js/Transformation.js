@@ -99,12 +99,14 @@ class Transformation {
         easing: mergedEasingMap,
         animate: true,
         waitForFinish: true,
+        callback: shortTransformation.callback,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
         easing: mergedEasingMap,
         animate: true,
         waitForFinish: true,
+        callback: longTransformation.callback,
       });
 
       // need to take status into account
@@ -162,6 +164,13 @@ class Transformation {
       let result = [firstTransformation];
       if (secondTransformation.milliseconds > 0) {
         result.push(secondTransformation);
+      }
+      else {
+        let firstCallback = firstTransformation.callback;
+        firstTransformation.callback = ()=>{
+          firstCallback && firstCallback();
+          secondTransformation.callback && secondTransformation.callback();
+        };
       }
 
       return result;

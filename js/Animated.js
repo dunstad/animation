@@ -318,7 +318,6 @@ class Animated {
 
     let currentAnimation = Object.values(this.element.anims)[0];
     currentAnimation.stop();
-    // currentAnimation._callback();
     this.animationQueue.animationComplete();
     
     let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
@@ -336,6 +335,9 @@ class Animated {
       milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
       animate: true,
       status: currentAnimation.status(),
+      // this probably causes the wrapping callback in process to get called twice
+      // doesn't seem to be causing issues right now though
+      callback: currentAnimation._callback,
     });
 
     return currentTransformation;
