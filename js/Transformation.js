@@ -29,6 +29,9 @@ class Transformation {
 
     // number (0.0-1.0)
     this.status = transformationObject.status;
+
+    // number used to figure out if any animations are still running
+    this.mergeCount = transformationObject.mergeCount;
   }
 
   /**
@@ -109,9 +112,6 @@ class Transformation {
         callback: longTransformation.callback,
       });
 
-      // need to take status into account
-      let shortTimeLeft = shortTransformation.milliseconds * (1 - (shortTransformation.status || 0));
-      let longTimeLeft = longTransformation.milliseconds * (1 - (longTransformation.status || 0));
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
