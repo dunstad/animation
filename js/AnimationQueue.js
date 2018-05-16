@@ -38,8 +38,4 @@ class AnimationQueue {
     return this.animating;
   }
 
-  nextWaits() {
-    return this.length ? this.queue[this.length - 1].waitForFinish : true;
-  }
-
 }
