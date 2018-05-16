@@ -26,7 +26,6 @@ class Animated {
           this.getStateString(transformation),
           transformation.milliseconds,
           ()=>{
-            this.animationQueue.animationComplete();
             if (transformation.callback) {
               transformation.callback();
             }
@@ -55,7 +54,6 @@ class Animated {
       }
       else {
         this.element.attr(this.getStateString(transformation));
-        this.animationQueue.animationComplete();
         this.process();
       }
     }
@@ -111,11 +109,14 @@ class Animated {
    * @param {Transformation} transformation 
    */
   sendToQueue(transformation) {
-    if (transformation.waitForFinish || !this.animationQueue.isAnimating()) {
+    let animating = Object.keys(this.element.anims).length;
+    if (transformation.waitForFinish || !animating) {
+      console.log('1');
       this.animationQueue.add(transformation);
-      if (!this.animationQueue.isAnimating()) {this.process();}
+      if (!animating) {this.process();}
     }
     else {
+      console.log('2');
       this.mergeAnimation(transformation);
     }
     return this;
@@ -239,6 +240,8 @@ class Animated {
         milliseconds: milliseconds,
         waitForFinish: false,
         callback: ()=>{
+          console.log('!', this.element.anims);
+          console.log(transformation, this.rotation, degrees);
           if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
             this.sendToQueue(transformation);
@@ -274,6 +277,7 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
         waitForFinish: false,
         callback: ()=>{
+          console.log('a', this.element.anims);
           this.sendToQueue(scaleDown);
         },
       });
@@ -285,6 +289,7 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
         waitForFinish: false,
         callback: ()=>{
+          console.log('A', this.element.anims);
           if (this.sentinels.pulse) {
             this.sendToQueue(scaleUp);
           }
@@ -315,9 +320,8 @@ class Animated {
    */
   currentAnimationToTransformation() {
 
-    let currentAnimation = Object.values(this.element.anims)[0];
+    let currentAnimation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
     currentAnimation.stop();
-    this.animationQueue.animationComplete();
     
     let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
     let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
@@ -334,8 +338,6 @@ class Animated {
       milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
       animate: true,
       status: currentAnimation.status(),
-      // this probably causes the wrapping callback in process to get called twice
-      // doesn't seem to be causing issues right now though
       callback: currentAnimation.originalCallback,
     });
 
@@ -349,7 +351,7 @@ class Animated {
    */
   mergeAnimation(newTransformation) {
 
-    this.animationQueue.queue.unshift(this.currentAnimationToTransformation());
+    this.animationQueue.queue.unshift(newTransformation);
 
     /**
      * Recursively merges an animation with all overlapping animations in a queue.
@@ -377,7 +379,7 @@ class Animated {
 
     }
 
-    mergeWithQueue(newTransformation, this.animationQueue.queue);
+    mergeWithQueue(this.currentAnimationToTransformation(), this.animationQueue.queue);
 
     this.process();
 
@@ -395,7 +397,6 @@ class Animated {
    */
   stop() {
     Object.values(this.element.anims).map(anim=>anim.stop());
-    this.animationQueue.animationComplete();
   }
 
 }

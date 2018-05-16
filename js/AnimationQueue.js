@@ -2,7 +2,6 @@ class AnimationQueue {
 
   constructor() {
     this.queue = []
-    this.animating = 0;
   }
 
   get length() {
@@ -15,27 +14,8 @@ class AnimationQueue {
 
   next() {
     let result;
-    if (!this.animating) {
-      result = this.queue.shift();
-      if (result) {
-        this.animating += 1;
-      }
-    }
-    else {
-      result = false;
-    }
+    result = this.queue.shift();
     return result;
-  }
-  
-  animationComplete() {
-    this.animating -= 1;
-    if (this.animating < 0) {
-      throw new Error('animations stopped more times than started');
-    }
-  }
-
-  isAnimating() {
-    return this.animating;
   }
 
 }

@@ -29,9 +29,6 @@ class Transformation {
 
     // number (0.0-1.0)
     this.status = transformationObject.status;
-
-    // number used to figure out if any animations are still running
-    this.mergeCount = transformationObject.mergeCount;
   }
 
   /**
@@ -173,11 +170,13 @@ class Transformation {
         };
       }
 
+      console.log('merge', result)
       return result;
       
     }
 
     else {
+      console.error(this, otherTransformation);
       throw new Error('incompatible transformations');
     }
 
