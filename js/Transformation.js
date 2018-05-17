@@ -26,9 +26,6 @@ class Transformation {
 
     // boolean
     this.waitForFinish = transformationObject.waitForFinish;
-
-    // number (0.0-1.0)
-    this.status = transformationObject.status;
   }
 
   /**

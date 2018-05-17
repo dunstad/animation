@@ -338,7 +338,6 @@ class Animated {
       scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
       milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
       animate: true,
-      status: currentAnimation.status(),
       callback: currentAnimation.originalCallback,
     });
 
