@@ -347,6 +347,112 @@ class Animated {
   }
 
   /**
+   * Used to allow different animations to run at the same time by combining them.
+   * @param {Transformation} otherTransformation 
+   */
+  merge(transformation, otherTransformation) {
+
+    if (transformation.canMergeWith(otherTransformation)) {
+
+      let [shortTransformation, longTransformation] = [transformation, otherTransformation].sort((a, b)=>{
+        return a.milliseconds - b.milliseconds;
+      });
+
+      let mergeEasingMaps = (easingMap1, easingMap2)=>{
+        easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
+        return easingMap1.map((e, i)=>{return e != mina.linear ? e : easingMap2[i];});
+      };
+
+      let mergedEasingMap = mergeEasingMaps(shortTransformation.easing, longTransformation.easing);
+
+      let firstTransformation = new Transformation({
+        milliseconds: shortTransformation.milliseconds,
+        easing: mergedEasingMap,
+        animate: true,
+        waitForFinish: true,
+        callback: shortTransformation.callback,
+      });
+      let secondTransformation = new Transformation({
+        milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+        easing: mergedEasingMap,
+        animate: true,
+        waitForFinish: true,
+        callback: longTransformation.callback,
+      });
+
+      let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+
+      let splitNumberValue = (property) => {
+        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
+      };
+
+      for (let property of ['rotation', 'scalar']) {
+        
+        if (longTransformation[property] != undefined) {
+          
+          firstTransformation[property] = splitNumberValue(property);
+          secondTransformation[property] = longTransformation[property];
+          
+        }
+        
+        else if (shortTransformation[property] != undefined) {
+          
+          firstTransformation[property] = shortTransformation[property];
+          
+        }
+        
+      }
+      
+      let splitLocationValue = (property) => {
+        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
+      };
+
+      firstTransformation.location = {};
+      secondTransformation.location = {};
+
+      for (let property of ['x', 'y']) {
+        
+        if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
+          
+          firstTransformation.location[property] = splitLocationValue(property);
+          secondTransformation.location[property] = longTransformation.location[property];
+          
+        }
+        
+        else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
+          
+          firstTransformation.location[property] = shortTransformation.location[property];
+
+        }
+
+      }
+
+      let result = [firstTransformation];
+      if (secondTransformation.milliseconds > 0) {
+        result.push(secondTransformation);
+      }
+      else {
+        let firstCallback = firstTransformation.callback;
+        firstTransformation.callback = ()=>{
+          firstCallback && firstCallback();
+          secondTransformation.callback && secondTransformation.callback();
+        };
+      }
+
+      console.log('merge', result)
+      return result;
+      
+    }
+
+    else {
+      console.error(transformation, otherTransformation);
+      throw new Error('incompatible transformations');
+    }
+
+  }
+
+  /**
    * Used to combine a new animation with the existing queue.
    * @param {Transformation} newTransformation 
    */
@@ -366,7 +472,7 @@ class Animated {
       else {
 
         let firstQueued = queue.shift();
-        let mergeResult = transformation.merge(firstQueued);
+        let mergeResult = this.merge(transformation, firstQueued);
         
         if (mergeResult[1]) {
           
