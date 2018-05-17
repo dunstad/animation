@@ -112,6 +112,7 @@ class Transformation {
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
       let splitNumberValue = (property) => {
+        // status isn't enough information, we need the starting state of the animated object
         let currentValue = longTransformation[property] * (longTransformation.status || 0);
         return ((longTransformation[property] - currentValue) * durationRatio) + currentValue;
       };

@@ -26,10 +26,11 @@ class Animated {
           this.getStateString(transformation),
           transformation.milliseconds,
           ()=>{
+            // processing before callbacks so they can tell when we're animating
+            this.process();
             if (transformation.callback) {
               transformation.callback();
             }
-            this.process();
           },
         );
         let animation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
