@@ -26,17 +26,28 @@ class Sky {
 
   set time(time) {
     this.timeValue = time;
+    this.setColorFromTime(time);
   }
 
   setColorFromTime(time) {
     time = time || this.timeValue;
     let coloredHours = Object.keys(this.skyColors).map(n=>parseInt(n)).sort((a, b)=>a-b);
 
-    let bottomHour = coloredHours.find(n=>n>time) || coloredHours[0];
-    let topHour = coloredHours.find(n=>n<time) || coloredHours[coloredHours.length - 1];
+    let bottomHour = coloredHours.find(n=>n>=time) || coloredHours[0];
+    let topHour = coloredHours.find(n=>n<=time) || coloredHours[coloredHours.length - 1];
 
-    let bottomColor = this.skyColors[bottomHour].hex();
-    let topColor = this.skyColors[topHour].hex();
+    let bottomDifference = time - bottomHour;
+    let topDifference = topHour - time;
+
+    let range = bottomDifference + topDifference;
+
+    let bottomRatio = 1 - (bottomDifference / range);
+    let topRatio = 1 - (topDifference / range);
+
+    console.log(bottomRatio, topRatio)
+
+    let bottomColor = chroma.mix(this.skyColors[bottomHour], this.skyColors[topHour], bottomRatio).hex();
+    let topColor = chroma.mix(this.skyColors[bottomHour], this.skyColors[topHour], topRatio).hex();
 
     this.gradient.setStops(`${topColor}-${bottomColor}`);
   }
