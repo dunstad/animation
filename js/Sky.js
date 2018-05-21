@@ -53,8 +53,8 @@ class Sky {
 
     console.log('hours', bottomHour, topHour);
 
-    let bottomDifference = (time - bottomHour) || 1;
-    let topDifference = (topHour - time) || 1;
+    let bottomDifference = (time - bottomHour) || .1;
+    let topDifference = (topHour - time) || 100;
 
     let range = bottomDifference + topDifference;
 
