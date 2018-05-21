@@ -48,7 +48,7 @@ class Sky {
     time = time != undefined ? time : this.timeValue;
     let coloredHours = Object.keys(this.skyColors).map(n=>parseInt(n));
 
-    let bottomHour = this.previousHour(time);
+    let bottomHour = time % 1 ? this.previousHour(time) : time;
     let topHour = this.nextHour(time);
 
     console.log('hours', bottomHour, topHour);
@@ -58,8 +58,8 @@ class Sky {
 
     let range = bottomDifference + topDifference;
 
-    let bottomRatio = 1 - (bottomDifference / range);
-    let topRatio = 1 - (topDifference / range);
+    let bottomRatio = bottomDifference / range;
+    let topRatio = topDifference / range;
 
     console.log('ratios', bottomRatio, topRatio)
 
@@ -73,8 +73,8 @@ class Sky {
     let bottomColor = chroma.mix(this.skyColors[bottomHour], this.skyColors[topHour], bottomRatio).hex();
     let topColor = chroma.mix(this.skyColors[topHour], nextColor, bottomRatio).hex();
 
-    // this.gradient.setStops(`${topColor}-${bottomColor}`);
-    this.gradient.setStops(`${bottomColor}-${topColor}`);
+    this.gradient.setStops(`${topColor}-${bottomColor}`);
+    // this.gradient.setStops(`${bottomColor}-${topColor}`);
   }
 
 }
