@@ -7,7 +7,8 @@ class Animated {
   constructor(element) {
     this.element = element;
     this.animationQueue = new AnimationQueue();
-    this.element.vivus = new Vivus(this.element.node);
+    try {this.element.vivus = new Vivus(this.element.node);}
+    catch {}
     this.sentinels = {
       spin: false,
       pulse: false,
