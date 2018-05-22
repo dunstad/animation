@@ -1,3 +1,3 @@
-* make a sky we can easily control the time on
+* add easy gif exporting
 * make the sky rect an Animated
 * correct animations for time lost during processing?
