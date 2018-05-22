@@ -29,7 +29,7 @@ class Animated {
             // processing before callbacks so they can tell when we're animating
             this.process();
             if (transformation.gif) {
-              transformation.gif.render();
+              setTimeout(()=>{transformation.gif.render();}, 1000);
             }
             if (transformation.callback) {
               transformation.callback();
@@ -504,10 +504,13 @@ class Animated {
       quality: 10,
       width: width,
       height: height,
-      workerScript: '/lib/gif.worker.js'
+      workerScript: '/lib/gif.worker.js',
+      background: '#fff',
+      debug: true,
     });
     
     gif.on('finished', (blob)=>{
+      console.log('%')
       window.open(URL.createObjectURL(blob));
     });
 
