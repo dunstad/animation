@@ -1,6 +1,6 @@
 class Sky {
   
-  constructor(time) {
+  constructor(width, height, time) {
     this.timeValue = time != undefined ? time : 0;
     
     this.skyColors = {};
@@ -16,7 +16,7 @@ class Sky {
     this.skyColors[20] = chroma('#3D5FF9');
 
     this.gradient = svgContainer.gradient('l(0,0,0,1)');
-    this.rect = svgContainer.rect(10, 10, 100, 100);
+    this.rect = svgContainer.rect(10, 10, width || 100, height || 100);
     this.rect.attr({fill: this.gradient});
     this.setColorFromTime(time);
   }
