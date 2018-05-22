@@ -64,7 +64,7 @@ class Sky extends Animated {
     time = time != undefined ? time : this.timeValue;
     let coloredHours = Object.keys(this.skyColors).map(n=>parseInt(n));
 
-    let bottomHour = time % 1 ? this.previousHour(time) : time;
+    let bottomHour = coloredHours.indexOf(time) == -1 ? this.previousHour(time) : time;
     let topHour = this.nextHour(time);
 
     console.log('hours', bottomHour, topHour);
