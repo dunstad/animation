@@ -28,6 +28,9 @@ class Animated {
           ()=>{
             // processing before callbacks so they can tell when we're animating
             this.process();
+            if (transformation.gif) {
+              transformation.gif.render();
+            }
             if (transformation.callback) {
               transformation.callback();
             }
@@ -37,20 +40,19 @@ class Animated {
         animation.originalCallback = transformation.callback;
         animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
+        animation.gif = transformation.gif;
+
         animation.update = function() {
-          var a = this,
-              res;
-          if (Array.isArray(a.start)) {
+          var res;
+          if (Array.isArray(this.start)) {
               res = [];
-              for (var j = 0, jj = a.start.length; j < jj; j++) {
-                  res[j] = +a.start[j] +
-                      (a.end[j] - a.start[j]) * a.easingMap[j](a.s);
+              for (var j = 0, jj = this.start.length; j < jj; j++) {
+                  res[j] = +this.start[j] +
+                      (this.end[j] - this.start[j]) * this.easingMap[j](this.s);
               }
-          } else {
-              throw new Error("i don't think this branch ever runs");
-              res = +a.start + (a.end - a.start) * a.easingMap[0](a.s);
           }
-          a.set(res);
+          this.set(res);
+          this.gif && this.gif.frameThis();
         };
       }
       else {
@@ -131,7 +133,7 @@ class Animated {
    * @param {function} easing
    * @param {boolean} waitForFinish
    */
-  move(x, y, milliseconds, easing, waitForFinish) {
+  move(x, y, milliseconds, easing, waitForFinish, gif) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
     let transformation = new Transformation({
@@ -140,6 +142,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [easing, easing, mina.linear, mina.linear],
       waitForFinish: waitForFinish,
+      gif: gif && this.newGIF(gif.width, gif.height),
     });
     return this.sendToQueue(transformation);
   }
@@ -151,7 +154,7 @@ class Animated {
    * @param {function} easing
    * @param {boolean} waitForFinish
    */
-  moveX(x, milliseconds, easing, waitForFinish) {
+  moveX(x, milliseconds, easing, waitForFinish, gif) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
     let transformation = new Transformation({
@@ -160,6 +163,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [easing, mina.linear, mina.linear, mina.linear],
       waitForFinish: waitForFinish,
+      gif: gif && this.newGIF(gif.width, gif.height),
     });
     return this.sendToQueue(transformation);
   }
@@ -171,7 +175,7 @@ class Animated {
    * @param {function} easing
    * @param {boolean} waitForFinish
    */
-  moveY(y, milliseconds, easing, waitForFinish) {
+  moveY(y, milliseconds, easing, waitForFinish, gif) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
     let transformation = new Transformation({
@@ -180,6 +184,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, easing, mina.linear, mina.linear],
       waitForFinish: waitForFinish,
+      gif: gif && this.newGIF(gif.width, gif.height),
     });
     return this.sendToQueue(transformation);
   }
@@ -191,7 +196,7 @@ class Animated {
    * @param {function} easing
    * @param {boolean} waitForFinish
    */
-  rotate(degrees, milliseconds, easing, waitForFinish) {
+  rotate(degrees, milliseconds, easing, waitForFinish, gif) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
     let transformation = new Transformation({
@@ -200,6 +205,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, easing, mina.linear],
       waitForFinish: waitForFinish,
+      gif: gif && this.newGIF(gif.width, gif.height),
     });
     return this.sendToQueue(transformation);
   }
@@ -211,7 +217,7 @@ class Animated {
    * @param {function} easing
    * @param {boolean} waitForFinish
    */
-  scale(ratio, milliseconds, easing, waitForFinish) {
+  scale(ratio, milliseconds, easing, waitForFinish, gif) {
     easing = easing || mina.linear;
     waitForFinish = waitForFinish != undefined ? waitForFinish : true;
     let transformation = new Transformation({
@@ -220,6 +226,7 @@ class Animated {
       animate: Boolean(milliseconds),
       easing: [mina.linear, mina.linear, mina.linear, easing],
       waitForFinish: waitForFinish,
+      gif: gif && this.newGIF(gif.width, gif.height),
     });
     return this.sendToQueue(transformation);
   }
@@ -489,6 +496,31 @@ class Animated {
 
     this.process();
 
+  }
+
+  newGIF(width, height) {
+    let gif = new GIF({
+      workers: 2,
+      quality: 10,
+      width: width,
+      height: height,
+      workerScript: '/lib/gif.worker.js'
+    });
+    
+    gif.on('finished', (blob)=>{
+      window.open(URL.createObjectURL(blob));
+    });
+
+    gif.frameThis = ()=>{
+      let img = new Image();
+      let serialized = new XMLSerializer().serializeToString(this.element.node.firstElementChild);
+      let svg = new Blob([serialized], {type: "image/svg+xml"});
+      let url = URL.createObjectURL(svg);
+      img.src = url;
+      img.onload = ()=>{gif.addFrame(img);};
+    };
+
+    return gif;
   }
 
   /**

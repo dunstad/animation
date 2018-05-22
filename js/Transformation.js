@@ -26,6 +26,9 @@ class Transformation {
 
     // boolean
     this.waitForFinish = transformationObject.waitForFinish;
+
+    // GIF
+    this.gif = transformationObject.gif;
   }
 
   /**
