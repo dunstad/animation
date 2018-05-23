@@ -1,7 +1,7 @@
 function newGIF(width, height) {
   let gif = new GIF({
     workers: 2,
-    quality: 1,
+    quality: 100,
     width: width,
     height: height,
     workerScript: '/lib/gif.worker.js',
@@ -17,6 +17,15 @@ function newGIF(width, height) {
 }
 
 function svgToFrame(svg, gif) {
+  let img = new Image();
+  let serialized = new XMLSerializer().serializeToString(svg);
+  let svgBlob = new Blob([serialized], {type: "image/svg+xml"});
+  let url = URL.createObjectURL(svgBlob);
+  img.src = url;
+  img.onload = ()=>{gif.addFrame(img, {delay: 1000 / 60});};
+}
+
+function svgToFrame2(svg, gif) {
   
   let canvasElement = document.createElement('canvas');
   canvasElement.width = gif.options.width;
@@ -46,9 +55,9 @@ frameCapture = setInterval(()=>{
   svgToFrame(svgContainer.node, gif);
 }, 1000 / 60);
 
-// mail.rotate(360, 2000);
+mail.rotate(360, 2000);
 
 setTimeout(()=>{
   clearInterval(frameCapture);
   gif.render()
-}, 10 * 1000);
+}, 2 * 1000);
