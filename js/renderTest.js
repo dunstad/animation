@@ -48,6 +48,9 @@ mail.move(10, 10)
 
 gif = newGIF(170, 170);
 
+// make this do nothing
+Snap.prefixURL = a=>a;
+
 sky = new Sky(170, 170);
 
 frameCapture = setInterval(()=>{
