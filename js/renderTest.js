@@ -39,13 +39,16 @@ mail.move(10, 10)
 
 gif = newGIF(170, 170);
 
+sky = new Sky(170, 170);
+
 frameCapture = setInterval(()=>{
+  sky.time += .1;
   svgToFrame(svgContainer.node, gif);
 }, 1000 / 60);
 
-mail.rotate(360, 2000);
+// mail.rotate(360, 2000);
 
 setTimeout(()=>{
   clearInterval(frameCapture);
   gif.render()
-}, 2000);
+}, 10 * 1000);
