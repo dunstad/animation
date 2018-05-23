@@ -1,7 +1,7 @@
 function newGIF(width, height) {
   let gif = new GIF({
     workers: 2,
-    quality: 10,
+    quality: 1,
     width: width,
     height: height,
     workerScript: '/lib/gif.worker.js',
@@ -31,19 +31,21 @@ function svgToFrame(svg, gif) {
     fabricCanvas.add(obj).renderAll();
   })
 
-  gif.addFrame(canvasElement);
+  gif.addFrame(canvasElement, {delay: 1000 / 60});
 
 }
 
-gif = newGIF(400, 200);
+mail.move(10, 10)
+
+gif = newGIF(170, 170);
 
 frameCapture = setInterval(()=>{
   svgToFrame(svgContainer.node, gif);
-}, 100);
+}, 1000 / 60);
 
-mail.moveX(100, 1000);
+mail.rotate(360, 2000);
 
 setTimeout(()=>{
   clearInterval(frameCapture);
   gif.render()
-}, 1000);
+}, 2000);
