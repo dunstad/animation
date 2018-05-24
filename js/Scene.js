@@ -1,0 +1,11 @@
+class Scene {
+  
+  constructor() {
+    
+  }
+
+  play() {
+    
+  }
+
+}
