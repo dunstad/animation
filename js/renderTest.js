@@ -16,31 +16,38 @@ function newGIF(width, height) {
   return gif;
 }
 
-function svgToFrame(svg, gif) {
+/**
+ * Used to get SVG onto canvas or into a GIF.
+ * @param {SVGElement} svg 
+ */
+function svgToImageBlob(svg) {
   let img = new Image();
   let serialized = new XMLSerializer().serializeToString(svg);
   let svgBlob = new Blob([serialized], {type: "image/svg+xml"});
   let url = URL.createObjectURL(svgBlob);
   img.src = url;
+  return img;
+}
+
+function svgToGIFFrame(svg, gif) {
+  let img = svgToImageBlob(svg);
   img.onload = ()=>{gif.addFrame(img, {delay: 1000 / 60});};
 }
 
-function svgToFrame2(svg, gif) {
+function svgToVideoFrame(svg) {
+
+  let svgImage = svgToImageBlob(svg);
   
   let canvasElement = document.createElement('canvas');
   canvasElement.width = gif.options.width;
   canvasElement.height = gif.options.height;
   
-  let fabricCanvas = new fabric.Canvas(canvasElement);
-  fabricCanvas.setWidth(gif.options.width);
-  fabricCanvas.setHeight(gif.options.height);
-  
-  fabric.loadSVGFromString(`${new XMLSerializer().serializeToString(svg)}`, (objects, options)=>{
-    var obj = fabric.util.groupSVGElements(objects, options);
-    fabricCanvas.add(obj).renderAll();
-  })
+  let context = canvas.getContext('2d');
 
-  gif.addFrame(canvasElement, {delay: 1000 / 60});
+  svgImage.onload = ()=>{
+    context.drawImage(svgImage, 0, 0);
+    gif.addFrame(canvasElement, {delay: 1000 / 60}); // temporary
+  };
 
 }
 
@@ -55,7 +62,7 @@ sky = new Sky(170, 170);
 
 frameCapture = setInterval(()=>{
   sky.time += .1;
-  svgToFrame(svgContainer.node, gif);
+  svgToGIFFrame(svgContainer.node, gif);
 }, 1000 / 60);
 
 mail.rotate(360, 2000);
