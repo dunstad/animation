@@ -34,7 +34,7 @@ function svgToGIFFrame(svg, gif) {
   img.onload = ()=>{gif.addFrame(img, {delay: 1000 / 60});};
 }
 
-function svgToVideoFrame(svg, gif) {
+function svgToVideoFrame(svg, capturer) {
 
   let svgImage = svgToImageBlob(svg);
   
@@ -46,7 +46,7 @@ function svgToVideoFrame(svg, gif) {
 
   svgImage.onload = ()=>{
     context.drawImage(svgImage, 0, 0);
-    gif.addFrame(canvasElement, {delay: 1000 / 60}); // temporary
+    capturer.capture(canvasElement);
   };
 
 }
@@ -54,6 +54,11 @@ function svgToVideoFrame(svg, gif) {
 mail.move(10, 10)
 
 gif = newGIF(170, 170);
+capturer = new CCapture({
+  format: 'png',
+  framerate: 60,
+  verbose: true,
+});
 
 // make this do nothing
 Snap.prefixURL = a=>a;
@@ -63,12 +68,28 @@ sky = new Sky(170, 170);
 frameCapture = setInterval(()=>{
   sky.time += .1;
   // svgToGIFFrame(svgContainer.node, gif);
-  svgToVideoFrame(svgContainer.node, gif);
+  svgToVideoFrame(svgContainer.node, capturer);
 }, 1000 / 60);
+
+// let frameFunc = ()=>{
+//   sky.time += .1;
+//   svgToVideoFrame(svgContainer.node, capturer);
+//   requestAnimationFrame(frameFunc);
+// };
+
+// requestAnimationFrame(frameFunc);
 
 mail.rotate(360, 2000);
 
+capturer.start();
+
 setTimeout(()=>{
+  // gif.render();
+  capturer.stop();
+  capturer.save()
   clearInterval(frameCapture);
-  gif.render()
 }, 2 * 1000);
+
+// cancelAnimationFrame(); // needs a parameter?
+// capturer.stop();
+// capturer.save()
