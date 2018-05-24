@@ -34,15 +34,15 @@ function svgToGIFFrame(svg, gif) {
   img.onload = ()=>{gif.addFrame(img, {delay: 1000 / 60});};
 }
 
-function svgToVideoFrame(svg) {
+function svgToVideoFrame(svg, gif) {
 
   let svgImage = svgToImageBlob(svg);
   
   let canvasElement = document.createElement('canvas');
   canvasElement.width = gif.options.width;
   canvasElement.height = gif.options.height;
-  
-  let context = canvas.getContext('2d');
+
+  let context = canvasElement.getContext('2d');
 
   svgImage.onload = ()=>{
     context.drawImage(svgImage, 0, 0);
@@ -62,7 +62,8 @@ sky = new Sky(170, 170);
 
 frameCapture = setInterval(()=>{
   sky.time += .1;
-  svgToGIFFrame(svgContainer.node, gif);
+  // svgToGIFFrame(svgContainer.node, gif);
+  svgToVideoFrame(svgContainer.node, gif);
 }, 1000 / 60);
 
 mail.rotate(360, 2000);
