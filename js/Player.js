@@ -4,7 +4,7 @@ class Player {
     this.svgElement = svgElement;
   }
 
-  svgToImageBlob = ()=>{
+  svgToImageBlob() {
     let img = new Image();
     let serialized = new XMLSerializer().serializeToString(this.svgElement);
     let svgBlob = new Blob([serialized], {type: "image/svg+xml"});
@@ -13,7 +13,7 @@ class Player {
     return img;
   };
 
-  svgToGIFFrame = ()=>{
+  svgToGIFFrame() {
     let img = svgToImageBlob(this.svgElement);
     img.onload = ()=>{this.gif.addFrame(img, {delay: 1000 / 60});};
     this.requestId = requestAnimationFrame(this.svgToGIFFrame);
