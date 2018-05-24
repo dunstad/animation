@@ -67,8 +67,6 @@ class Sky extends Animated {
     let bottomHour = coloredHours.indexOf(time) == -1 ? this.previousHour(time) : time;
     let topHour = this.nextHour(time);
 
-    console.log('hours', bottomHour, topHour);
-
     // topHour || 24 lets the transition to the next day work well
     // || .1 and || 100 are for when both differences are 0,
     // so colors continue to change smoothly
@@ -79,8 +77,6 @@ class Sky extends Animated {
 
     let bottomRatio = bottomDifference / range;
     let topRatio = topDifference / range;
-
-    console.log('ratios', bottomRatio, topRatio)
 
     let nextColor = this.skyColors[this.nextHour(topHour)];
     let bottomColor = chroma.mix(this.skyColors[bottomHour], this.skyColors[topHour], bottomRatio).hex();

@@ -113,12 +113,10 @@ class Animated {
   sendToQueue(transformation) {
     let animating = Object.keys(this.element.anims).length;
     if (transformation.waitForFinish || !animating) {
-      console.log('1');
       this.animationQueue.add(transformation);
       if (!animating) {this.process();}
     }
     else {
-      console.log('2');
       this.mergeAnimation(transformation);
     }
     return this;
@@ -242,8 +240,6 @@ class Animated {
         milliseconds: milliseconds,
         waitForFinish: false,
         callback: ()=>{
-          console.log('!', this.element.anims);
-          console.log(transformation, this.rotation, degrees);
           if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
             this.sendToQueue(transformation);
@@ -279,7 +275,6 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingOut],
         waitForFinish: false,
         callback: ()=>{
-          console.log('a', this.element.anims);
           this.sendToQueue(scaleDown);
         },
       });
@@ -291,7 +286,6 @@ class Animated {
         easing: [mina.linear, mina.linear, mina.linear, easingIn],
         waitForFinish: false,
         callback: ()=>{
-          console.log('A', this.element.anims);
           if (this.sentinels.pulse) {
             this.sendToQueue(scaleUp);
           }
@@ -440,7 +434,6 @@ class Animated {
         };
       }
 
-      console.log('merge', result)
       return result;
       
     }
