@@ -1,4 +1,4 @@
-* rework Animated methods to be helpers for a general addTransformation function
+* can the toggle/callback methods use makeAnimationHelper?
 * make process() handle more arbitrary animations with Snap.animate()
   * we should be able to put animation of Sky's time property in a transformation
 * a Scene's Actions should be a map of assets and lists of transformations
