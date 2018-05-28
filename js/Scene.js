@@ -20,10 +20,8 @@ class Scene {
       let loader = new Loader(this.player.svgElement, this.svgLabelToPathMap);
     
       loader.then((assets)=>{
-        for (let name in assets) {
-          this.assets[name] = assets[name];
-        }
-        resolve();
+        Object.assign(this.assets, assets);
+        resolve(this.assets);
       })
     });
 
@@ -31,16 +29,10 @@ class Scene {
 
   play() {
     
-    this.actions(this.assets).then(this.onfinish);
+    return new Promise((resolve, reject)=>{
+      this.actions(this.assets).then(resolve).catch(console.error);
+    });
 
-  }
-
-  runWhenLoaded(callback) {
-    this.onload = callback;
-  }
-
-  runWhenFinished(callback) {
-    this.onfinish = callback;
   }
 
 }
