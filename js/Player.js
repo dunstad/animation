@@ -45,7 +45,7 @@ class Player {
 
     this.requestId = requestAnimationFrame(svgToGIFFrame);
 
-    this.scene.runWhenOver(()=>{
+    this.scene.runWhenFinished(()=>{
       this.gif.render();
       cancelAnimationFrame(this.requestId);
     });
