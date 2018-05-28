@@ -2,6 +2,7 @@ class Scene {
   
   /**
    * Used to give a scene the assets and actions it needs to run.
+   * actions should return a Promise
    * @param {Player} player 
    * @param {object} svgLabelToPathMap 
    * @param {function} actions 

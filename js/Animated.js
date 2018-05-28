@@ -109,6 +109,7 @@ class Animated {
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
    * @param {Transformation} transformation 
+   * @return {Animated}
    */
   sendToQueue(transformation) {
     let animating = Object.keys(this.element.anims).length;
@@ -129,6 +130,7 @@ class Animated {
    * @param {number} milliseconds
    * @param {function} easing
    * @param {boolean} waitForFinish
+   * @return {Animated}
    */
   move(x, y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
@@ -149,6 +151,7 @@ class Animated {
    * @param {number} milliseconds
    * @param {function} easing
    * @param {boolean} waitForFinish
+   * @return {Animated}
    */
   moveX(x, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
@@ -169,6 +172,7 @@ class Animated {
    * @param {number} milliseconds
    * @param {function} easing
    * @param {boolean} waitForFinish
+   * @return {Animated}
    */
   moveY(y, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
@@ -189,6 +193,7 @@ class Animated {
    * @param {number} milliseconds
    * @param {function} easing
    * @param {boolean} waitForFinish
+   * @return {Animated}
    */
   rotate(degrees, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
@@ -209,6 +214,7 @@ class Animated {
    * @param {number} milliseconds
    * @param {function} easing
    * @param {boolean} waitForFinish
+   * @return {Animated}
    */
   scale(ratio, milliseconds, easing, waitForFinish) {
     easing = easing || mina.linear;
@@ -226,6 +232,7 @@ class Animated {
   /**
    * Used to time animations without using setTimeout
    * @param {number} milliseconds 
+   * @return {Animated}
    */
   wait(milliseconds) {
     let transformation = new Transformation({
@@ -240,6 +247,7 @@ class Animated {
    * Used to start and stop a spinning animation.
    * @param {number} degrees 
    * @param {number} milliseconds 
+   * @return {Animated}
    */
   toggleSpin(degrees, milliseconds) {
     if (this.sentinels.spin) {
@@ -270,6 +278,7 @@ class Animated {
    * @param {number} milliseconds 
    * @param {function} easingOut
    * @param {function} easingIn
+   * @return {Animated}
    */
   togglePulse(scalar, milliseconds, easingOut, easingIn) {
 
@@ -356,6 +365,7 @@ class Animated {
   /**
    * Used to allow different animations to run at the same time by combining them.
    * @param {Transformation} otherTransformation 
+   * @return {Transformation[]}
    */
   merge(transformation, otherTransformation) {
 
