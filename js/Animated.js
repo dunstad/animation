@@ -16,7 +16,7 @@ class Animated {
       pulse: false,
     };
 
-    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait]) {
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
@@ -159,7 +159,7 @@ class Animated {
         milliseconds = undefined;
       }
       return this.addTransformation({
-        ...func(...arguments),
+        ...func.bind(this)(...arguments),
         milliseconds: milliseconds,
         ...config,
       });
@@ -217,30 +217,25 @@ class Animated {
   /**
    * Used to start and stop a spinning animation.
    * @param {number} degrees 
-   * @param {number} milliseconds 
    * @return {Animated}
    */
-  toggleSpin(degrees, milliseconds) {
+  toggleSpin(degrees) {
     if (this.sentinels.spin) {
       this.sentinels.spin = false;
     }
     else {
       this.sentinels.spin = true;
-      let transformation = new Transformation({
+      let transformation = {
         rotation: this.rotation + degrees,
-        animate: true,
-        milliseconds: milliseconds,
-        waitForFinish: false,
         callback: ()=>{
           if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
-            this.sendToQueue(transformation);
+            this.addTransformation(transformation);
           }
         },
-      });
-      this.sendToQueue(transformation);
+      };
+      return transformation;
     }
-    return this;
   }
 
   /**
