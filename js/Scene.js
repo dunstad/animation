@@ -17,9 +17,7 @@ class Scene {
   setup() {
 
     return new Promise((resolve, reject)=>{
-      let loader = new Loader(this.player.svgElement, this.svgLabelToPathMap);
-    
-      loader.then((assets)=>{
+      new Loader(this.player.svgElement, this.svgLabelToPathMap).then((assets)=>{
         Object.assign(this.assets, assets);
         resolve(this.assets);
       })
