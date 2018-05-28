@@ -15,9 +15,6 @@ class Transformation {
     // number
     this.milliseconds = transformationObject.milliseconds;
 
-    // boolean
-    this.animate = transformationObject.animate;
-
     // an array of four functions
     this.easing = transformationObject.easing;
 

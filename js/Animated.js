@@ -5,14 +5,21 @@ class Animated {
    * @param {object} element 
    */
   constructor(element) {
+    
     this.element = element;
     this.animationQueue = new AnimationQueue();
     try {this.element.vivus = new Vivus(this.element.node);}
-    catch {}
+    catch {;}
+    
     this.sentinels = {
       spin: false,
       pulse: false,
     };
+
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait]) {
+      this[func.name] = this.makeAnimationHelper(func);
+    }
+
   }
 
   /**
@@ -22,7 +29,7 @@ class Animated {
     let transformation = this.animationQueue.next();
     if (transformation) {
       
-      if (transformation.animate) {
+      if (transformation.milliseconds) {
         this.element.animate(
           this.getStateString(transformation),
           transformation.milliseconds,
@@ -124,123 +131,87 @@ class Animated {
   }
 
   /**
+   * Used to help us repeat code a bit less in our animation helper functions.
+   * @param {object} transformationObject 
+   */
+  addTransformation(transformationObject) {
+    transformationObject.easing = [
+      transformationObject.easingX || mina.linear,
+      transformationObject.easingY || mina.linear,
+      transformationObject.easingRotate || mina.linear,
+      transformationObject.easingScale || mina.linear,
+    ];
+    transformationObject.waitForFinish == undefined && (transformationObject.waitForFinish = true);
+    return this.sendToQueue(new Transformation(transformationObject));
+  }
+
+  /**
+   * Helps us repeat less code while writing animation helper functions.
+   * Returned functions additionally accept an optional easing parameter
+   * and a config object parameter.
+   * @param {function} func 
+   */
+  makeAnimationHelper(func) {
+    return function() { // not an arrow function so we have access to arguments
+      let [milliseconds, config] = Array.prototype.slice.call(arguments, func.length);
+      if (typeof milliseconds == 'object' && !config) {
+        config = milliseconds;
+        milliseconds = undefined;
+      }
+      return this.addTransformation({
+        ...func(...arguments),
+        milliseconds: milliseconds,
+        ...config,
+      });
+    }
+  }
+
+  /**
    * Moves this to the absolute coordinates provided.
    * @param {number} x 
    * @param {number} y 
-   * @param {number} milliseconds
-   * @param {function} easing
-   * @param {boolean} waitForFinish
-   * @return {Animated}
    */
-  move(x, y, milliseconds, easing, waitForFinish) {
-    easing = easing || mina.linear;
-    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    let transformation = new Transformation({
-      location: {x: x, y: y},
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      easing: [easing, easing, mina.linear, mina.linear],
-      waitForFinish: waitForFinish,
-    });
-    return this.sendToQueue(transformation);
+  move(x, y) {
+    return {location: {x: x, y: y}};
   }
-
+  
   /**
    * Moves this to the absolute x coordinate provided.
    * @param {number} x 
-   * @param {number} milliseconds
-   * @param {function} easing
-   * @param {boolean} waitForFinish
-   * @return {Animated}
    */
-  moveX(x, milliseconds, easing, waitForFinish) {
-    easing = easing || mina.linear;
-    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    let transformation = new Transformation({
-      location: {x: x},
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      easing: [easing, mina.linear, mina.linear, mina.linear],
-      waitForFinish: waitForFinish,
-    });
-    return this.sendToQueue(transformation);
+  moveX(x) {
+    return {location: {x: x}};
   }
-
+  
   /**
    * Moves this to the absolute y coordinate provided.
    * @param {number} y 
-   * @param {number} milliseconds
-   * @param {function} easing
-   * @param {boolean} waitForFinish
-   * @return {Animated}
    */
-  moveY(y, milliseconds, easing, waitForFinish) {
-    easing = easing || mina.linear;
-    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    let transformation = new Transformation({
-      location: {y: y},
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      easing: [mina.linear, easing, mina.linear, mina.linear],
-      waitForFinish: waitForFinish,
-    });
-    return this.sendToQueue(transformation);
+  moveY(y) {
+    return {location: {y: y}};
   }
-
+  
   /**
    * Rotates this to the absolute degree provided.
    * @param {number} degrees 
-   * @param {number} milliseconds
-   * @param {function} easing
-   * @param {boolean} waitForFinish
-   * @return {Animated}
    */
-  rotate(degrees, milliseconds, easing, waitForFinish) {
-    easing = easing || mina.linear;
-    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    let transformation = new Transformation({
-      rotation: degrees,
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      easing: [mina.linear, mina.linear, easing, mina.linear],
-      waitForFinish: waitForFinish,
-    });
-    return this.sendToQueue(transformation);
+  rotate(degrees) {
+    return {rotation: degrees};
   }
 
   /**
    * Scales this to the absolute ratio provided.
    * @param {number} ratio 
-   * @param {number} milliseconds
-   * @param {function} easing
-   * @param {boolean} waitForFinish
-   * @return {Animated}
    */
-  scale(ratio, milliseconds, easing, waitForFinish) {
-    easing = easing || mina.linear;
-    waitForFinish = waitForFinish != undefined ? waitForFinish : true;
-    let transformation = new Transformation({
-      scalar: ratio,
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      easing: [mina.linear, mina.linear, mina.linear, easing],
-      waitForFinish: waitForFinish,
-    });
-    return this.sendToQueue(transformation);
+  scale(ratio) {
+    return {scalar: ratio};
   }
 
   /**
    * Used to time animations without using setTimeout
-   * @param {number} milliseconds 
-   * @return {Animated}
    */
-  wait(milliseconds) {
-    let transformation = new Transformation({
-      milliseconds: milliseconds,
-      animate: Boolean(milliseconds),
-      waitForFinish: true,
-    });
-    return this.sendToQueue(transformation);
+  wait() {
+    return {};
   }
 
   /**
