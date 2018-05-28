@@ -15,15 +15,17 @@ class Scene {
   }
 
   setup() {
+
+    return new Promise((resolve, reject)=>{
+      let loader = new Loader(this.player.svgElement, this.svgLabelToPathMap);
     
-    loader = new Loader(this.player.svgElement, this.svgLabelToPathMap);
-    
-    loader.then((assets)=>{
-      for (let name in assets) {
-        this.assets[name] = assets[name];
-      }
-      this.onload();
-    })
+      loader.then((assets)=>{
+        for (let name in assets) {
+          this.assets[name] = assets[name];
+        }
+        resolve();
+      })
+    });
 
   }
 

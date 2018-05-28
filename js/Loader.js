@@ -17,6 +17,10 @@ class Loader {
       this.promises.push(this.load(svgContainer, svgData[name], name));
     }
 
+    return new Promise((resolve, reject)=>{
+      Promise.all(this.promises).then(()=>{resolve(this.assets)}).catch(console.error);
+    });
+
   }
 
   /**
@@ -35,9 +39,5 @@ class Loader {
       });
     });
   };
-
-  then(callback) {
-    Promise.all(this.promises).then((results)=>{callback(this.assets)});
-  }
 
 }
