@@ -3,6 +3,12 @@ class Scene {
   /**
    * Used to give a scene the assets and actions it needs to run.
    * actions should return a Promise
+   * example:
+   * (assets)=>{
+   *   return new Promise((resolve, reject)=>{
+   *     assets['mail'].moveX(100).run(resolve)
+   *   });
+   * }
    * @param {Player} player 
    * @param {object} svgLabelToPathMap 
    * @param {function} actions 
