@@ -217,7 +217,6 @@ class Animated {
   /**
    * Used to start and stop a spinning animation.
    * @param {number} degrees 
-   * @return {Animated}
    */
   toggleSpin(degrees) {
     if (this.sentinels.spin) {
@@ -227,13 +226,12 @@ class Animated {
       this.sentinels.spin = true;
       let transformation = {
         rotation: this.rotation + degrees,
-        waitForFinish: false,
         milliseconds: arguments[1],
+        waitForFinish: false,
         callback: ()=>{
           if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
-            console.log(transformation)
           }
         },
       };
@@ -244,48 +242,34 @@ class Animated {
   /**
    * Used to start and stop a pulsing animation.
    * @param {number} scalar 
-   * @param {number} milliseconds 
-   * @param {function} easingOut
-   * @param {function} easingIn
-   * @return {Animated}
    */
-  togglePulse(scalar, milliseconds, easingOut, easingIn) {
-
-    easingIn = easingIn || easingOut || mina.linear;
-    easingOut = easingOut || mina.linear;
-    
+  togglePulse(scalar) {
     if (this.sentinels.pulse) {
       this.sentinels.pulse = false;
     }
     else {
       this.sentinels.pulse = true;
-      let scaleUp = new Transformation({
+      let scaleUp = {
         scalar: scalar,
-        animate: true,
-        milliseconds: milliseconds,
-        easing: [mina.linear, mina.linear, mina.linear, easingOut],
+        milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
-          this.sendToQueue(scaleDown);
+          this.addTransformation(scaleDown);
         },
-      });
+      };
 
-      let scaleDown = new Transformation({
+      let scaleDown = {
         scalar: this.scalar,
-        animate: true,
-        milliseconds: milliseconds,
-        easing: [mina.linear, mina.linear, mina.linear, easingIn],
+        milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
           if (this.sentinels.pulse) {
-            this.sendToQueue(scaleUp);
+            this.addTransformation(scaleUp);
           }
         },
-      });
-
-      this.sendToQueue(scaleUp);
+      };
+      return scaleUp;
     }
-    return this;
   }
 
   get rotation() {
