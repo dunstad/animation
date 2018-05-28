@@ -4,12 +4,20 @@ class Scene {
 
   }
 
+  setup() {
+
+
+
+  }
+
   play() {
     
+
+
   }
 
   runWhenOver(callback) {
-    
+    this.callback = callback;
   }
 
 }

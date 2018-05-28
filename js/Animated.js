@@ -224,6 +224,19 @@ class Animated {
   }
 
   /**
+   * Used to time animations without using setTimeout
+   * @param {number} milliseconds 
+   */
+  wait(milliseconds) {
+    let transformation = new Transformation({
+      milliseconds: milliseconds,
+      animate: Boolean(milliseconds),
+      waitForFinish: true,
+    });
+    return this.sendToQueue(transformation);
+  }
+
+  /**
    * Used to start and stop a spinning animation.
    * @param {number} degrees 
    * @param {number} milliseconds 
