@@ -227,10 +227,13 @@ class Animated {
       this.sentinels.spin = true;
       let transformation = {
         rotation: this.rotation + degrees,
+        waitForFinish: false,
+        milliseconds: arguments[1],
         callback: ()=>{
           if (this.sentinels.spin) {
             transformation.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
+            console.log(transformation)
           }
         },
       };
