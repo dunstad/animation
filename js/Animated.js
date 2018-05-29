@@ -16,7 +16,7 @@ class Animated {
       pulse: false,
     };
 
-    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin]) {
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin, this.togglePulse]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
@@ -257,7 +257,7 @@ class Animated {
           this.addTransformation(scaleDown);
         },
       };
-
+      
       let scaleDown = {
         scalar: this.scalar,
         milliseconds: arguments[1],
