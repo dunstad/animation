@@ -293,12 +293,24 @@ class Animated {
     return {x: locationInfo[1], y: locationInfo[2]};
   }
 
+  set location(coordinates) {
+    this.element.attr(this.getStateString(new Transformation({location: coordinates})));
+  }
+
+  get x() {
+    return this.location.x;
+  }
+  
   set x(coordinate) {
-    this.element.attr(this.getStateString(new Transformation({location: {x: coordinate}})));
+    this.location = {x: coordinate};
+  }
+
+  get y() {
+    return this.location.y;
   }
 
   set y(coordinate) {
-    this.element.attr(this.getStateString(new Transformation({location: {y: coordinate}})));
+    this.location = {y: coordinate};
   }
 
   /**
