@@ -74,7 +74,7 @@ tests = [
    */
   function testAutoMerge(animated) {
     animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.moveY(100, 1000, mina.easeinout, false)}, 2000);
+    setTimeout(()=>{animated.moveY(100, 1000, {easingY: mina.easeinout, waitForFinish: false})}, 2000);
   },
   
   /**
@@ -82,8 +82,8 @@ tests = [
    */
   function testAutoMerge2(animated) {
     animated.moveX(300, 1000*4);
-    animated.moveY(100, 1000*4, undefined, false);
-    animated.rotate(360, 1000*4, undefined, false);
+    animated.moveY(100, 1000*4, {waitForFinish: false});
+    animated.rotate(360, 1000*4, {waitForFinish: false});
   },
   
   /**
@@ -91,8 +91,8 @@ tests = [
    */
   function testMergeWithQueue(animated) {
     animated.moveX(300, 1000*1);
-    animated.moveY(100, 1000*1, undefined, true);
-    animated.rotate(360, 1000*2, undefined, false);
+    animated.moveY(100, 1000*1);
+    animated.rotate(360, 1000*2, {waitForFinish: false});
   },
 
   /**
@@ -100,7 +100,7 @@ tests = [
    */
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
-    animated.moveX(100, 1000, undefined, false);
+    animated.moveX(100, 1000, {waitForFinish: false});
     setTimeout(()=>{animated.toggleSpin(360, 1000);}, 1500);
   },
 
