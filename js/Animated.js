@@ -72,7 +72,7 @@ class Animated {
    * Represents the current transformation state of this as a transformation string.
    * The transform parameter allows the resulting string to be a transformation
    * from the current state.
-   * @param {object} transformation
+   * @param {Transformation} transformation
    */
   getStateString(transformation) {
     transformation = transformation || new Transformation();
@@ -275,14 +275,30 @@ class Animated {
   get rotation() {
     return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="r")[1];
   }
+
+  set rotation(degree) {
+    this.element.attr(this.getStateString(new Transformation({rotation: degree})));
+  }
   
   get scalar() {
     return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="s")[1];
+  }
+
+  set scalar(scalar) {
+    this.element.attr(this.getStateString(new Transformation({scalar: scalar})));
   }
   
   get location() {
     let locationInfo = Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="t");
     return {x: locationInfo[1], y: locationInfo[2]};
+  }
+
+  set x(coordinate) {
+    this.element.attr(this.getStateString(new Transformation({location: {x: coordinate}})));
+  }
+
+  set y(coordinate) {
+    this.element.attr(this.getStateString(new Transformation({location: {y: coordinate}})));
   }
 
   /**
