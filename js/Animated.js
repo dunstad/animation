@@ -30,8 +30,11 @@ class Animated {
     if (transformation) {
       
       if (transformation.milliseconds) {
-        this.element.animate(
-          this.getStateString(transformation),
+        let animation = Snap.animate(this??, 10, function (val) {
+            rect.attr({
+                x: val
+            });
+          },
           transformation.milliseconds,
           ()=>{
             // processing before callbacks so they can tell when we're animating
@@ -39,9 +42,19 @@ class Animated {
             if (transformation.callback) {
               transformation.callback();
             }
-          },
+          }
         );
-        let animation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
+        // this.element.animate(
+        //   this.getStateString(transformation),
+        //   transformation.milliseconds,
+        //   ()=>{
+        //     // processing before callbacks so they can tell when we're animating
+        //     this.process();
+        //     if (transformation.callback) {
+        //       transformation.callback();
+        //     }
+        //   },
+        // );
         animation.originalCallback = transformation.callback;
         animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
