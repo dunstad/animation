@@ -3,14 +3,8 @@ class Transformation {
   constructor(transformationObject) {
     transformationObject = transformationObject || {};
 
-    // {x: number, y: number}, can leave out either x or y
-    this.location = transformationObject.location;
-
-    // number
-    this.rotation = transformationObject.rotation;
-
-    // number
-    this.scalar = transformationObject.scalar;
+    // {string: number, ...}
+    this.propertyValueMap = transformationObject.propertyValueMap || {};
 
     // number
     this.milliseconds = transformationObject.milliseconds;
@@ -31,6 +25,8 @@ class Transformation {
    */
   canMergeWith(otherTransformation) {
 
+    let animationsCompatible = true;
+
     let canMergeEasingMaps = (easingMap1, easingMap2)=>{
       easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
       easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
@@ -40,27 +36,15 @@ class Transformation {
       return result;
     };
     
-    let animationsCompatible = true;
-
-    if (this.location != undefined && otherTransformation.location != undefined) {
-      if (this.location.x != undefined && otherTransformation.location.x != undefined) {
-        animationsCompatible = false;
-      }
-      if (this.location.y != undefined && otherTransformation.location.y != undefined) {
-        animationsCompatible = false;
-      }
-    }
-
-    if (this.rotation != undefined && otherTransformation.rotation != undefined) {
-      animationsCompatible = false;
-    }
-
-    if (this.scalar != undefined && otherTransformation.scalar != undefined) {
+    if (!canMergeEasingMaps(this.easing, otherTransformation.easing)) {
       animationsCompatible = false;
     }
     
-    if (!canMergeEasingMaps(this.easing, otherTransformation.easing)) {
-      animationsCompatible = false;
+    for (let propertyName of Object.keys(this.propertyValueMap)) {
+      if (this.propertyValueMap[propertyName] != undefined &&
+          otherTransformation.propertyValueMap[propertyName] != undefined) {
+        animationsCompatible = false;
+      }
     }
 
     return animationsCompatible;

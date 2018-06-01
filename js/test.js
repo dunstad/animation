@@ -42,7 +42,7 @@ tests = [
    */
   function testMergeAnimation(animated) {
     animated.rotate(90, 2000);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 500);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {scalar: 2}, animate: true, milliseconds: 1000}))}, 500);
   },
 
   /**
@@ -50,7 +50,7 @@ tests = [
    */
   function testMergeAnimation2(animated) {
     animated.rotate(360, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({scalar: 2, animate: true, milliseconds: 1000}))}, 1000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {scalar: 2}, animate: true, milliseconds: 1000}))}, 1000);
   },
 
   /**
@@ -58,7 +58,7 @@ tests = [
    */
   function testSeparateXAndY(animated) {
     animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, animate: true, milliseconds: 1000}))}, 2000);
   },
 
   /**
@@ -66,7 +66,7 @@ tests = [
    */
   function testEasingMap(animated) {
     animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({location: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, animate: true, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
   },
 
   /**

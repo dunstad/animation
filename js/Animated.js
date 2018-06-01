@@ -79,33 +79,33 @@ class Animated {
     
     let parsedTransform = Snap.parseTransformString(this.element.transform().string || 't0,0r0s1');
 
-    if (transformation.location != undefined) {
+    if (transformation.propertyValueMap.x != undefined || transformation.propertyValueMap.y != undefined) {
       let location = parsedTransform.find(e=>e[0]=='t');
       if (!location) {
         location = ['t', 0, 0];
         parsedTransform.push(location);
       }
       
-      location[1] = transformation.location.x != undefined ? transformation.location.x : location[1];
-      location[2] = transformation.location.y != undefined ? transformation.location.y : location[2];
+      location[1] = transformation.propertyValueMap.x != undefined ? transformation.propertyValueMap.x : location[1];
+      location[2] = transformation.propertyValueMap.y != undefined ? transformation.propertyValueMap.y : location[2];
     }
     
-    if (transformation.rotation !== undefined) {
+    if (transformation.propertyValueMap.rotation !== undefined) {
       let rotation = parsedTransform.find(e=>e[0]=='r');
       if (!rotation) {
         rotation = ['r', 0];
         parsedTransform.push(rotation);
       }
-      rotation[1] = transformation.rotation;
+      rotation[1] = transformation.propertyValueMap.rotation;
     }
     
-    if (transformation.scalar !== undefined) {
+    if (transformation.propertyValueMap.scalar !== undefined) {
       let scalar = parsedTransform.find(e=>e[0]=='s');
       if (!scalar) {
         scalar = ['s', 1];
         parsedTransform.push(scalar);
       }
-      scalar[1] = transformation.scalar;
+      scalar[1] = transformation.propertyValueMap.scalar;
     }
 
     return {transform: parsedTransform ? parsedTransform.toString() : ''};
@@ -172,7 +172,7 @@ class Animated {
    * @param {number} y 
    */
   move(x, y) {
-    return {location: {x: x, y: y}};
+    return {propertyValueMap: {x: x, y: y}};
   }
   
   /**
@@ -180,7 +180,7 @@ class Animated {
    * @param {number} x 
    */
   moveX(x) {
-    return {location: {x: x}};
+    return {propertyValueMap: {x: x}};
   }
   
   /**
@@ -188,7 +188,7 @@ class Animated {
    * @param {number} y 
    */
   moveY(y) {
-    return {location: {y: y}};
+    return {propertyValueMap: {y: y}};
   }
   
   /**
@@ -196,7 +196,7 @@ class Animated {
    * @param {number} degrees 
    */
   rotate(degrees) {
-    return {rotation: degrees};
+    return {propertyValueMap: {rotation: degrees}};
   }
 
   /**
@@ -204,14 +204,14 @@ class Animated {
    * @param {number} ratio 
    */
   scale(ratio) {
-    return {scalar: ratio};
+    return {propertyValueMap: {scalar: ratio}};
   }
 
   /**
    * Used to time animations without using setTimeout
    */
   wait() {
-    return {};
+    return {propertyValueMap: {}};
   }
 
   /**
@@ -225,12 +225,12 @@ class Animated {
     else {
       this.sentinels.spin = true;
       let transformation = {
-        rotation: this.rotation + degrees,
+        propertyValueMap: {rotation: this.rotation + degrees},
         milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
           if (this.sentinels.spin) {
-            transformation.rotation = this.rotation + degrees;
+            transformation.propertyValueMap.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
           }
         },
@@ -250,7 +250,7 @@ class Animated {
     else {
       this.sentinels.pulse = true;
       let scaleUp = {
-        scalar: scalar,
+        propertyValueMap: {scalar: scalar},
         milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
@@ -259,7 +259,7 @@ class Animated {
       };
       
       let scaleDown = {
-        scalar: this.scalar,
+        propertyValueMap: {scalar: this.scalar},
         milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
@@ -277,7 +277,7 @@ class Animated {
   }
 
   set rotation(degree) {
-    this.element.attr(this.getStateString(new Transformation({rotation: degree})));
+    this.element.attr(this.getStateString(new Transformation({propertyValueMap: {rotation: degree}})));
   }
   
   get scalar() {
@@ -285,7 +285,7 @@ class Animated {
   }
 
   set scalar(scalar) {
-    this.element.attr(this.getStateString(new Transformation({scalar: scalar})));
+    this.element.attr(this.getStateString(new Transformation({propertyValueMap: {scalar: scalar}})));
   }
   
   get location() {
@@ -294,7 +294,7 @@ class Animated {
   }
 
   set location(coordinates) {
-    this.element.attr(this.getStateString(new Transformation({location: coordinates})));
+    this.element.attr(this.getStateString(new Transformation({propertyValueMap: coordinates})));
   }
 
   get x() {
@@ -328,12 +328,12 @@ class Animated {
     let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
 
     let currentTransformation = new Transformation({
-      location: {
+      propertyValueMap: {
         x: !xNotAnimating ? currentAnimation.end[0] : undefined,
         y: !yNotAnimating ? currentAnimation.end[1] : undefined,
+        rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
+        scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
       },
-      rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
-      scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
       milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
       animate: true,
       callback: currentAnimation.originalCallback,
@@ -381,51 +381,27 @@ class Animated {
 
       let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
-      let splitNumberValue = (property) => {
-        return ((longTransformation[property] - this[property]) * durationRatio) + this[property];
+      let splitNumberValue = (propertyName) => {
+        return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
       };
 
-      for (let property of ['rotation', 'scalar']) {
+      for (let propertyName of ['rotation', 'scalar', 'x', 'y']) {
         
-        if (longTransformation[property] != undefined) {
+        if (longTransformation.propertyValueMap[propertyName] != undefined) {
           
-          firstTransformation[property] = splitNumberValue(property);
-          secondTransformation[property] = longTransformation[property];
+          firstTransformation.propertyValueMap[propertyName] = splitNumberValue(propertyName);
+          secondTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
           
         }
         
-        else if (shortTransformation[property] != undefined) {
+        else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
           
-          firstTransformation[property] = shortTransformation[property];
+          firstTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
           
         }
         
       }
       
-      let splitLocationValue = (property) => {
-        return ((longTransformation.location[property] - this.location[property]) * durationRatio) + this.location[property];
-      };
-
-      firstTransformation.location = {};
-      secondTransformation.location = {};
-
-      for (let property of ['x', 'y']) {
-        
-        if (longTransformation.location != undefined && longTransformation.location[property] != undefined) {
-          
-          firstTransformation.location[property] = splitLocationValue(property);
-          secondTransformation.location[property] = longTransformation.location[property];
-          
-        }
-        
-        else if (shortTransformation.location != undefined && shortTransformation.location[property] != undefined) {
-          
-          firstTransformation.location[property] = shortTransformation.location[property];
-
-        }
-
-      }
-
       let result = [firstTransformation];
       if (secondTransformation.milliseconds > 0) {
         result.push(secondTransformation);
