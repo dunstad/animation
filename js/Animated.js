@@ -147,7 +147,7 @@ class Animated {
 
   /**
    * Helps us repeat less code while writing animation helper functions.
-   * Returned functions additionally accept an optional easing parameter
+   * Returned functions additionally accept an optional milliseconds parameter
    * and a config object parameter.
    * @param {function} func 
    */
