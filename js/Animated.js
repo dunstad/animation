@@ -30,6 +30,7 @@ class Animated {
     if (transformation) {
       
       if (transformation.milliseconds) {
+        // Snap.animate([1, 0], [2, 90], (val)=>{mail.rotation = val[1]; mail.scalar = val[0];}, 1000)
         let animation = Snap.animate(this??, 10, function (val) {
             rect.attr({
                 x: val
