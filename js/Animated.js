@@ -68,6 +68,7 @@ class Animated {
         //   },
         // );
         this.anims[nextAnimationId] = animation;
+        animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
         animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
@@ -345,21 +346,12 @@ class Animated {
    */
   currentAnimationToTransformation() {
 
-    let currentAnimation = Object.values(this.anims).sort((a,b)=>{return b.b-a.b})[0];
+    let [id, currentAnimation] = Object.entries(this.anims).sort((a,b)=>{return b[1].b-a[1].b})[0];
     currentAnimation.stop();
+    delete this.anims[id];
     
-    let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
-    let yNotAnimating = currentAnimation.start[1] == currentAnimation.end[1];
-    let rotationNotAnimating = currentAnimation.start[2] == currentAnimation.end[2];
-    let scalarNotAnimating = currentAnimation.start[3] == currentAnimation.end[3];
-
     let currentTransformation = new Transformation({
-      propertyValueMap: {
-        x: !xNotAnimating ? currentAnimation.end[0] : undefined,
-        y: !yNotAnimating ? currentAnimation.end[1] : undefined,
-        rotation: !rotationNotAnimating ? currentAnimation.end[2] : undefined,
-        scalar: !scalarNotAnimating ? currentAnimation.end[3] : undefined,
-      },
+      propertyValueMap: currentAnimation.propertyNames.reduce((obj, k, i)=>({...obj, [k]: currentAnimation.end[i]}), {}),
       milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
       animate: true,
       callback: currentAnimation.originalCallback,
