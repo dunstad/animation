@@ -38,7 +38,6 @@ class Animated {
     if (transformation) {
       
       if (transformation.milliseconds) {
-        // Snap.animate([1, 0], [2, 90], (val)=>{mail.rotation = val[1]; mail.scalar = val[0];}, 1000)
         let propertyNames = Object.keys(transformation.propertyValueMap);
         let startValues = propertyNames.map(name=>this[name]);
         let endValues = propertyNames.map(name=>transformation.propertyValueMap[name]);
