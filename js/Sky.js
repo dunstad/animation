@@ -22,6 +22,8 @@ class Sky extends Animated {
     this.element.attr({fill: this.gradient});
     this.setColorFromTime(time);
 
+    this.toHour = this.makeAnimationHelper(this.toHour);
+
   }
 
   /**
@@ -83,6 +85,10 @@ class Sky extends Animated {
     let topColor = chroma.mix(this.skyColors[topHour], nextColor, bottomRatio).hex();
 
     this.gradient.setStops(`${topColor}-${bottomColor}`);
+  }
+
+  toHour(hour) {
+    return {propertyValueMap: {time: hour}};
   }
 
 }

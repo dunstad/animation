@@ -56,17 +56,6 @@ class Animated {
             }
           }
         );
-        // this.element.animate(
-        //   this.getStateString(transformation),
-        //   transformation.milliseconds,
-        //   ()=>{
-        //     // processing before callbacks so they can tell when we're animating
-        //     this.process();
-        //     if (transformation.callback) {
-        //       transformation.callback();
-        //     }
-        //   },
-        // );
         this.anims[nextAnimationId] = animation;
         animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
@@ -89,7 +78,7 @@ class Animated {
         };
       }
       else {
-        this.element.attr(this.getStateString(transformation));
+        Object.assign(this, transformation.propertyValueMap);
         this.process();
       }
     }
