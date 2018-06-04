@@ -20,6 +20,14 @@ class Animated {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
+    // animations currently in progress
+    this.anims = {};
+    this.nextAnimationId = 0;
+
+  }
+
+  newAnimationId() {
+    return this.nextAnimationId++;
   }
 
   /**
@@ -31,13 +39,16 @@ class Animated {
       
       if (transformation.milliseconds) {
         // Snap.animate([1, 0], [2, 90], (val)=>{mail.rotation = val[1]; mail.scalar = val[0];}, 1000)
-        let animation = Snap.animate(this??, 10, function (val) {
-            rect.attr({
-                x: val
-            });
+        let propertyNames = Object.keys(transformation.propertyValueMap);
+        let startValues = propertyNames.map(name=>this[name]);
+        let endValues = propertyNames.map(name=>transformation.propertyValueMap[name]);
+        let nextAnimationId = this.newAnimationId();
+        let animation = Snap.animate(startValues, endValues, (values)=>{
+            Object.assign(this, propertyNames.reduce((obj, k, i)=>({...obj, [k]: values[i] }), {}));
           },
           transformation.milliseconds,
           ()=>{
+            delete this.anims[nextAnimationId];
             // processing before callbacks so they can tell when we're animating
             this.process();
             if (transformation.callback) {
@@ -56,6 +67,7 @@ class Animated {
         //     }
         //   },
         // );
+        this.anims[nextAnimationId] = animation;
         animation.originalCallback = transformation.callback;
         animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
 
@@ -133,7 +145,7 @@ class Animated {
    * @return {Animated}
    */
   sendToQueue(transformation) {
-    let animating = Object.keys(this.element.anims).length;
+    let animating = Object.keys(this.anims).length;
     if (transformation.waitForFinish || !animating) {
       this.animationQueue.add(transformation);
       if (!animating) {this.process();}
@@ -329,11 +341,11 @@ class Animated {
 
   /**
    * Turns the current animation into a transformation to make it easier to
-   * merge with other animations.
+   * merge with other transformations.
    */
   currentAnimationToTransformation() {
 
-    let currentAnimation = Object.values(this.element.anims).sort((a,b)=>{return b.b-a.b})[0];
+    let currentAnimation = Object.values(this.anims).sort((a,b)=>{return b.b-a.b})[0];
     currentAnimation.stop();
     
     let xNotAnimating = currentAnimation.start[0] == currentAnimation.end[0];
@@ -483,14 +495,14 @@ class Animated {
    * Used to pause all running animations.
    */
   pause() {
-    Object.values(this.element.anims).map(anim=>anim.pause());
+    Object.values(this.anims).map(anim=>anim.pause());
   }
 
   /**
    * Used to stop all running animations.
    */
   stop() {
-    Object.values(this.element.anims).map(anim=>anim.stop());
+    Object.values(this.anims).map(anim=>anim.stop());
   }
 
 }
