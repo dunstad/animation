@@ -10,7 +10,7 @@ class Transformation {
     this.milliseconds = transformationObject.milliseconds;
 
     // an array of four functions
-    this.easing = transformationObject.easing;
+    this.easingMap = transformationObject.easingMap || {};
 
     // function
     this.callback = transformationObject.callback;
@@ -28,15 +28,13 @@ class Transformation {
     let animationsCompatible = true;
 
     let canMergeEasingMaps = (easingMap1, easingMap2)=>{
-      easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
-      easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
-      let result = easingMap1.map((e, i)=>{
-        return e == mina.linear || easingMap2[i] == mina.linear || e == easingMap2[i];
-      }).reduce((a, b)=>{return a && b});
+      let result = !Object.keys(easingMap1).some((k)=>{
+        return Object.keys(easingMap2).find(k2=>k2==k);
+      });
       return result;
     };
     
-    if (!canMergeEasingMaps(this.easing, otherTransformation.easing)) {
+    if (!canMergeEasingMaps(this.easingMap, otherTransformation.easingMap)) {
       animationsCompatible = false;
     }
     
