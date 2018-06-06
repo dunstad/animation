@@ -66,7 +66,7 @@ tests = [
    */
   function testEasingMap(animated) {
     animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, milliseconds: 1000, easing: [mina.linear, mina.easeinout, mina.linear, mina.linear]}))}, 2000);
+    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, milliseconds: 1000, easingMap: {y: mina.easeinout}}))}, 2000);
   },
 
   /**
@@ -74,7 +74,7 @@ tests = [
    */
   function testAutoMerge(animated) {
     animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.moveY(100, 1000, {easingY: mina.easeinout, waitForFinish: false})}, 2000);
+    setTimeout(()=>{animated.moveY(100, 1000, {easingMap: {y: mina.easeinout}, waitForFinish: false})}, 2000);
   },
   
   /**

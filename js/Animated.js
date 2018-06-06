@@ -58,20 +58,12 @@ class Animated {
         this.anims[nextAnimationId] = animation;
         animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
-        animation.easingMap = transformation.easing || [mina.linear, mina.linear, mina.linear, mina.linear];
+        animation.easing = propertyNames.map(name=>transformation.easingMap[name] || mina.linear);
 
         animation.update = function() {
-          var a = this,
-              res;
-          if (Array.isArray(a.start)) {
-              res = [];
-              for (var j = 0, jj = a.start.length; j < jj; j++) {
-                  res[j] = +a.start[j] +
-                      (a.end[j] - a.start[j]) * a.easingMap[j](a.s);
-              }
-          } else {
-              throw new Error("i don't think this branch ever runs");
-              res = +a.start + (a.end - a.start) * a.easingMap[0](a.s);
+          var a = this, res = [];
+          for (var j = 0, jj = a.start.length; j < jj; j++) {
+            res[j] = +a.start[j] + (a.end[j] - a.start[j]) * a.easing[j](a.s);
           }
           a.set(res);
         };
@@ -150,12 +142,6 @@ class Animated {
    * @param {object} transformationObject 
    */
   addTransformation(transformationObject) {
-    transformationObject.easing = [
-      transformationObject.easingX || mina.linear,
-      transformationObject.easingY || mina.linear,
-      transformationObject.easingRotate || mina.linear,
-      transformationObject.easingScale || mina.linear,
-    ];
     transformationObject.waitForFinish == undefined && (transformationObject.waitForFinish = true);
     return this.sendToQueue(new Transformation(transformationObject));
   }
@@ -363,23 +349,21 @@ class Animated {
       });
 
       let mergeEasingMaps = (easingMap1, easingMap2)=>{
-        easingMap1 = easingMap1 || [mina.linear, mina.linear, mina.linear, mina.linear];
-        easingMap2 = easingMap2 || [mina.linear, mina.linear, mina.linear, mina.linear];
-        return easingMap1.map((e, i)=>{return e != mina.linear ? e : easingMap2[i];});
+        return Object.assign(easingMap1, easingMap2);
       };
 
-      let mergedEasingMap = mergeEasingMaps(shortTransformation.easing, longTransformation.easing);
+      let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
 
       let firstTransformation = new Transformation({
         milliseconds: shortTransformation.milliseconds,
-        easing: mergedEasingMap,
+        easingMap: mergedEasingMap,
         animate: true,
         waitForFinish: true,
         callback: shortTransformation.callback,
       });
       let secondTransformation = new Transformation({
         milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-        easing: mergedEasingMap,
+        easingMap: mergedEasingMap,
         animate: true,
         waitForFinish: true,
         callback: longTransformation.callback,
