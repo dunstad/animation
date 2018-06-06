@@ -29,7 +29,7 @@ class Transformation {
 
     let canMergeEasingMaps = (easingMap1, easingMap2)=>{
       let result = !Object.keys(easingMap1).some((k)=>{
-        return Object.keys(easingMap2).find(k2=>k2==k);
+        return Object.keys(easingMap2).includes(k);
       });
       return result;
     };
