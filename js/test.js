@@ -27,7 +27,7 @@ tests = [
    * @param {Animated} animated
    */
   function testMoveAndRotate(animated) {
-    animated.move(100, 100, 1000).rotate(45, 1000).move(100, 50, 1000).rotate(23, 1000).move(0, 0, 1000);
+    animated.move(100, 100, 500).rotate(45, 500).move(100, 50, 500).rotate(23, 500).move(0, 0, 500);
   },
 
   /**
@@ -117,6 +117,7 @@ function runTests(animated, tests) {
     reset(animated);
     console.log(test.name);
     test(animated);
+    animated.process();
     counter++;
   };
 

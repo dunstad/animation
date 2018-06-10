@@ -129,7 +129,7 @@ class Animated {
     let animating = Object.keys(this.anims).length;
     if (transformation.waitForFinish || !animating) {
       this.animationQueue.add(transformation);
-      if (!animating) {this.process();}
+      // if (!animating) {this.process();}
     }
     else {
       this.mergeAnimation(transformation);
@@ -421,8 +421,6 @@ class Animated {
    */
   mergeAnimation(newTransformation) {
 
-    this.animationQueue.queue.unshift(newTransformation);
-
     /**
      * Recursively merges an animation with all overlapping animations in a queue.
      * @param {Transformation} transformation 
@@ -449,9 +447,22 @@ class Animated {
 
     }
 
-    mergeWithQueue(this.currentAnimationToTransformation(), this.animationQueue.queue);
+    if (Object.keys(this.anims).length) {
+      
+      this.animationQueue.queue.unshift(newTransformation);
+  
+      mergeWithQueue(this.currentAnimationToTransformation(), this.animationQueue.queue);
+  
+      this.process();
 
-    this.process();
+    }
+
+    else {
+
+      mergeWithQueue(newTransformation, this.animationQueue.queue);
+
+    }
+
 
   }
 
