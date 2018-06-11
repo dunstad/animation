@@ -50,8 +50,6 @@ Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation
 ```
 
 * a Scene's Actions should be a map of assets and lists of transformations
-  * stop transformations from automatically processing when added to queue
-  * make sure they don't stop processing once they start
 * make recording easier
 * make some tests for Sky
 * make the tests more general and easy to run
