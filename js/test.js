@@ -41,7 +41,7 @@ tests = [
    * @param {Animated} animated
    */
   function testMergeAnimation(animated) {
-    animated.rotate(90, 2000).after({propertyValueMap: {scalar: 2}, milliseconds: 1000}, 500);
+    animated.rotate(90, 2000).scale(2, 1000, {after: 500});
   },
 
   /**

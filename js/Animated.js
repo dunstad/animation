@@ -16,7 +16,7 @@ class Animated {
       pulse: false,
     };
 
-    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.after, this.toggleSpin, this.togglePulse]) {
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin, this.togglePulse]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
@@ -126,10 +126,8 @@ class Animated {
    * @return {Animated}
    */
   sendToQueue(transformation) {
-    let animating = Object.keys(this.anims).length;
-  if (transformation.waitForFinish/* || !animating*/) {
+  if (transformation.waitForFinish) {
       this.animationQueue.add(transformation);
-      // if (!animating) {this.process();}
     }
     else {
       this.mergeAnimation(transformation);
@@ -142,8 +140,25 @@ class Animated {
    * @param {object} transformationObject 
    */
   addTransformation(transformationObject) {
-    transformationObject.waitForFinish == undefined && (transformationObject.waitForFinish = true);
-    return this.sendToQueue(new Transformation(transformationObject));
+    let result = Object.assign({}, transformationObject);
+    if (result.after) {
+      let callbackTransform = Object.assign({}, transformationObject);
+      callbackTransform.waitForFinish = false;
+      let after = callbackTransform.after;
+      delete callbackTransform.after;
+      result = {
+        propertyValueMap: {},
+        milliseconds: after,
+        waitForFinish: false,
+        callback: ()=>{
+          this.addTransformation(callbackTransform);
+        },
+      };
+    }
+    else {
+      result.waitForFinish == undefined && (result.waitForFinish = true);
+    }
+    return this.sendToQueue(new Transformation(result));
   }
 
   /**
@@ -213,22 +228,6 @@ class Animated {
    */
   wait() {
     return {propertyValueMap: {}};
-  }
-
-  /**
-   * Used to specify ahead of time that we want to merge in an animation
-   * later. Essentially a better alternative to setTimeout.
-   * @param {object} transformationObject 
-   */
-  after(transformationObject) {
-    transformationObject.waitForFinish = false;
-    return {
-      propertyValueMap: {},
-      waitForFinish: false,
-      callback: ()=>{
-        this.addTransformation(transformationObject);
-      },
-    }
   }
 
   /**
