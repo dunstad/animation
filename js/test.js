@@ -48,24 +48,21 @@ tests = [
    * @param {Animated} animated
    */
   function testMergeAnimation2(animated) {
-    animated.rotate(360, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {scalar: 2}, milliseconds: 1000}))}, 1000);
+    animated.rotate(360, 1000*4).after({propertyValueMap: {scalar: 2}, milliseconds: 1000}, 1000);
   },
 
   /**
    * @param {Animated} animated
    */
   function testSeparateXAndY(animated) {
-    animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, milliseconds: 1000}))}, 2000);
+    animated.moveX(300, 1000*4).after({propertyValueMap: {y: 100}, milliseconds: 1000}, 2000);
   },
 
   /**
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.mergeAnimation(new Transformation({propertyValueMap: {y: 100}, milliseconds: 1000, easingMap: {y: mina.easeinout}}))}, 2000);
+    animated.moveX(300, 1000*4).after({propertyValueMap: {y: 100}, milliseconds: 1000, easingMap: {y: mina.easeinout}}, 2000);
   },
 
   /**
