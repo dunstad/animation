@@ -233,6 +233,7 @@ class Animated {
           if (this.sentinels.spin) {
             transformation.propertyValueMap.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
+            this.process();
           }
         },
       };
@@ -256,6 +257,7 @@ class Animated {
         waitForFinish: false,
         callback: ()=>{
           this.addTransformation(scaleDown);
+          this.process();
         },
       };
       
@@ -266,6 +268,7 @@ class Animated {
         callback: ()=>{
           if (this.sentinels.pulse) {
             this.addTransformation(scaleUp);
+            this.process();
           }
         },
       };
