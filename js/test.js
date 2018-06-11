@@ -47,30 +47,22 @@ tests = [
   /**
    * @param {Animated} animated
    */
-  function testMergeAnimation2(animated) {
-    animated.rotate(360, 1000*4).after({propertyValueMap: {scalar: 2}, milliseconds: 1000}, 1000);
-  },
-
-  /**
-   * @param {Animated} animated
-   */
   function testSeparateXAndY(animated) {
-    animated.moveX(300, 1000*4).after({propertyValueMap: {y: 100}, milliseconds: 1000}, 2000);
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000});
   },
-
+  
   /**
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 1000*4).after({propertyValueMap: {y: 100}, milliseconds: 1000, easingMap: {y: mina.easeinout}}, 2000);
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, easingMap: {y: mina.easeinout}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 1000*2);
-    setTimeout(()=>{animated.moveY(100, 500, {easingMap: {y: mina.easeinout}, waitForFinish: false})}, 1000);
+    animated.moveX(300, 1000*2).moveY(100, 500, {easingMap: {y: mina.easeinout}, waitForFinish: false, after: 1000})
   },
   
   /**
@@ -97,7 +89,7 @@ tests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {waitForFinish: false});
-    setTimeout(()=>{animated.toggleSpin(360, 1000);}, 1500);
+    animated.toggleSpin(360, 1000, {after: 1500});
   },
 
 ];
