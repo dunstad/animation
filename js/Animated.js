@@ -215,12 +215,18 @@ class Animated {
     return {propertyValueMap: {}};
   }
 
+  /**
+   * Used to specify ahead of time that we want to merge in an animation
+   * later. Essentially a better alternative to setTimeout.
+   * @param {object} transformationObject 
+   */
   after(transformationObject) {
+    transformationObject.waitForFinish = false;
     return {
       propertyValueMap: {},
+      waitForFinish: false,
       callback: ()=>{
         this.addTransformation(transformationObject);
-        this.process();
       },
     }
   }
