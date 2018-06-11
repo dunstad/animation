@@ -242,8 +242,6 @@ class Animated {
     if (this.sentinels.spin) {
       transformation = {
         propertyValueMap: {},
-        // waitForFinish: false,
-        // milliseconds: 1, // shouldn't need this
         callback: ()=>{
           this.sentinels.spin = false;
         },

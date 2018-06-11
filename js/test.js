@@ -89,7 +89,7 @@ tests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {waitForFinish: false});
-    animated.toggleSpin(360, 1000, {after: 1500});
+    mail.addTransformation({propertyValueMap: {}, after: 1500, waitForFinish: false, callback: ()=>{mail.sentinels.spin = false;}});
   },
 
 ];
