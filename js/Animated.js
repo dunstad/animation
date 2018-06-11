@@ -16,7 +16,7 @@ class Animated {
       pulse: false,
     };
 
-    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin, this.togglePulse]) {
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.after, this.toggleSpin, this.togglePulse]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
@@ -213,6 +213,16 @@ class Animated {
    */
   wait() {
     return {propertyValueMap: {}};
+  }
+
+  after(transformationObject) {
+    return {
+      propertyValueMap: {},
+      callback: ()=>{
+        this.addTransformation(transformationObject);
+        this.process();
+      },
+    }
   }
 
   /**
