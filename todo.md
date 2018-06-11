@@ -49,7 +49,6 @@ var x = {
 Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation(o)));
 ```
 
-* figure out how after() should work with things like moveY()
 * a Scene's Actions should be a map of assets and lists of transformations
 * make recording easier
 * make some tests for Sky

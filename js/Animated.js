@@ -71,6 +71,9 @@ class Animated {
       else {
         Object.assign(this, transformation.propertyValueMap);
         this.process();
+        if (transformation.callback) {
+          transformation.callback();
+        }
       }
     }
   }
@@ -235,12 +238,20 @@ class Animated {
    * @param {number} degrees 
    */
   toggleSpin(degrees) {
+    let transformation;
     if (this.sentinels.spin) {
-      this.sentinels.spin = false;
+      transformation = {
+        propertyValueMap: {},
+        // waitForFinish: false,
+        // milliseconds: 1, // shouldn't need this
+        callback: ()=>{
+          this.sentinels.spin = false;
+        },
+      };
     }
     else {
       this.sentinels.spin = true;
-      let transformation = {
+      transformation = {
         propertyValueMap: {rotation: this.rotation + degrees},
         milliseconds: arguments[1],
         waitForFinish: false,
@@ -252,8 +263,8 @@ class Animated {
           }
         },
       };
-      return transformation;
     }
+    return transformation;
   }
 
   /**
