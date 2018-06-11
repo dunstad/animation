@@ -127,7 +127,7 @@ class Animated {
    */
   sendToQueue(transformation) {
     let animating = Object.keys(this.anims).length;
-    if (transformation.waitForFinish || !animating) {
+  if (transformation.waitForFinish/* || !animating*/) {
       this.animationQueue.add(transformation);
       // if (!animating) {this.process();}
     }

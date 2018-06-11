@@ -73,8 +73,8 @@ tests = [
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 1000*4);
-    setTimeout(()=>{animated.moveY(100, 1000, {easingMap: {y: mina.easeinout}, waitForFinish: false})}, 2000);
+    animated.moveX(300, 1000*2);
+    setTimeout(()=>{animated.moveY(100, 500, {easingMap: {y: mina.easeinout}, waitForFinish: false})}, 1000);
   },
   
   /**
@@ -115,6 +115,7 @@ function runTests(animated, tests) {
   let runOneTest = ()=>{
     let test = tests[counter];
     reset(animated);
+    animated.process();
     console.log(test.name);
     test(animated);
     animated.process();
