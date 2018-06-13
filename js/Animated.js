@@ -254,6 +254,7 @@ class Animated {
         milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
+          console.log('!')
           if (this.sentinels.spin) {
             transformation.propertyValueMap.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
