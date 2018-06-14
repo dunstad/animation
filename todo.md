@@ -49,9 +49,6 @@ var x = {
 Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation(o)));
 ```
 * make waitForFinish=false work when milliseconds isn't specified
-* after fails sometimes if the milliseconds are too long
-  * callback is getting called twice in rapid succession
-  * after speeds up rotation if specified shortly before the current animation will end, until the after transformation is merged
 * after right now is sort of like a delay + waitForFinish=false, maybe make it just a delay
 * make toggle cancels easily queueable
   * seems to work fine without using after

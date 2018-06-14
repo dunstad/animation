@@ -48,11 +48,12 @@ class Animated {
           transformation.milliseconds,
           ()=>{
             delete this.anims[nextAnimationId];
-            // processing before callbacks so they can tell when we're animating
-            this.process();
             if (transformation.callback) {
               transformation.callback();
             }
+            // processing after callbacks so it doesn't stop recursing before
+            // repeating animations stick their next transform in the queue
+            this.process();
           }
         );
         this.anims[nextAnimationId] = animation;
@@ -254,11 +255,9 @@ class Animated {
         milliseconds: arguments[1],
         waitForFinish: false,
         callback: ()=>{
-          console.log('!')
           if (this.sentinels.spin) {
             transformation.propertyValueMap.rotation = this.rotation + degrees;
             this.addTransformation(transformation);
-            this.process();
           }
         },
       };
@@ -282,7 +281,6 @@ class Animated {
         waitForFinish: false,
         callback: ()=>{
           this.addTransformation(scaleDown);
-          this.process();
         },
       };
       
@@ -293,7 +291,6 @@ class Animated {
         callback: ()=>{
           if (this.sentinels.pulse) {
             this.addTransformation(scaleUp);
-            this.process();
           }
         },
       };
