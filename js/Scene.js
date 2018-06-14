@@ -1,23 +1,14 @@
 class Scene {
   
   /**
-   * Used to give a scene the assets and actions it needs to run.
-   * actions should return a Promise
-   * example:
-   * (assets)=>{
-   *   return new Promise((resolve, reject)=>{
-   *     assets['mail'].moveX(100).run(resolve)
-   *   });
-   * }
+   * Used to give a scene the assets it needs to run.
    * @param {Player} player 
    * @param {object} svgLabelToPathMap 
-   * @param {function} actions 
    */
-  constructor(player, svgLabelToPathMap, actions) {
+  constructor(player, svgLabelToPathMap) {
     this.player = player;
     this.assets = {};
     this.svgLabelToPathMap = svgLabelToPathMap;
-    this.actions = actions;
   }
 
   setup() {
@@ -26,7 +17,7 @@ class Scene {
       new Loader(this.player.svgElement, this.svgLabelToPathMap).then((assets)=>{
         Object.assign(this.assets, assets);
         resolve(this.assets);
-      })
+      }).catch(reject);
     });
 
   }
@@ -34,7 +25,13 @@ class Scene {
   play() {
     
     return new Promise((resolve, reject)=>{
-      this.actions(this.assets).then(resolve).catch(console.error);
+      let promises = [];
+      Object.keys(this.assets).forEach((key)=>{
+        promises.push(new Promise((resolve, reject)=>{
+          this.assets[key].process(resolve);
+        }));
+      });
+      Promise.all(promises).then(resolve).catch(console.error);
     });
 
   }

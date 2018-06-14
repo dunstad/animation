@@ -8,7 +8,10 @@ class Animated {
     
     this.element = element;
     this.animationQueue = new AnimationQueue();
-    try {this.element.vivus = new Vivus(this.element.node);}
+    try {
+      this.vivus = new Vivus(this.element.node, {start: 'manual'});
+      this.vivus.finish();
+    }
     catch {;}
     
     this.sentinels = {
@@ -33,7 +36,7 @@ class Animated {
   /**
    * Performs transformations waiting in the queue.
    */
-  process() {
+  process(resolve) {
     let transformation = this.animationQueue.next();
     if (transformation) {
       
@@ -53,7 +56,7 @@ class Animated {
             }
             // processing after callbacks so it doesn't stop recursing before
             // repeating animations stick their next transform in the queue
-            this.process();
+            this.process(resolve);
           }
         );
         this.anims[nextAnimationId] = animation;
@@ -71,12 +74,13 @@ class Animated {
       }
       else {
         Object.assign(this, transformation.propertyValueMap);
-        this.process();
+        this.process(resolve);
         if (transformation.callback) {
           transformation.callback();
         }
       }
     }
+    else {resolve();}
   }
 
   /**

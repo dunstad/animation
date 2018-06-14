@@ -2,15 +2,14 @@ class Loader {
 
   /**
    * Loads the given svg images.
-   * @param {object} container 
+   * @param {object} svgContainer 
    * @param {object} svgData 
    */
-  constructor(container, svgData) {
+  constructor(svgContainer, svgData) {
 
     this.promises = [];
     this.assets = {};
 
-    let svgContainer = Snap("#" + container.id);
     window['svgContainer'] = svgContainer;
 
     for (let name in svgData) {

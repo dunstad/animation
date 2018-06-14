@@ -1,18 +1,25 @@
-container = document.getElementById('container');
+var container = document.getElementById('container');
 
-svgData = {
-  'mail': '/img/basic_mail.svg',
+var svgData = {
   'cube': '/img/cube-outline.svg',
+  'mail': '/img/basic_mail.svg',
 }
 
-new Loader(container, svgData).then((assets)=>{
-  for (let name in assets) {
-    window[name] = assets[name];
-  }
+var player = new Player(Snap("#" + container.id));
+var scene = new Scene(player, svgData);
+scene.setup().then((assets)=>{
 
-  cube.element.attr({visibility: 'hidden'});
+  assets.cube.vivus.reset();
 
-});
+  assets.sky = new Sky();
+  
+  assets.mail.moveX(100, 1000).moveY(100, 1000).wait(1000).moveX(0, 1000);
+  
+  assets.sky.move(200, 200).moveX(300, 1000).moveY(300, 1000).wait(1000).moveX(200, 1000);
+  
+}).then(()=>{
+  scene.play().then(()=>{console.log('done playing!');}).catch(console.error);
+}).catch(console.error);
 
 /**
  * @param {Animated} animated 
