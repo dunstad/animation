@@ -49,7 +49,6 @@ var x = {
 Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation(o)));
 ```
 
-* after right now is sort of like a delay + waitForFinish=false, maybe make it just a delay
 * a Scene's Actions should be a map of assets and lists of transformations
 * make recording easier
 * make some tests for Sky

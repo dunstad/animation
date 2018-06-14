@@ -153,15 +153,13 @@ class Animated {
       result = {
         propertyValueMap: {},
         milliseconds: after,
-        waitForFinish: false,
+        waitForFinish: transformationObject.waitForFinish,
         callback: ()=>{
           this.addTransformation(callbackTransform);
         },
       };
     }
-    else {
-      result.waitForFinish == undefined && (result.waitForFinish = true);
-    }
+    result.waitForFinish == undefined && (result.waitForFinish = true);
     return this.sendToQueue(new Transformation(result));
   }
 

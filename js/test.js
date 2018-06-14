@@ -41,21 +41,21 @@ tests = [
    * @param {Animated} animated
    */
   function testMergeAnimation(animated) {
-    animated.rotate(90, 2000).scale(2, 1000, {after: 500});
+    animated.rotate(90, 2000).scale(2, 1000, {after: 500, waitForFinish: false});
   },
 
   /**
    * @param {Animated} animated
    */
   function testSeparateXAndY(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000});
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, waitForFinish: false});
   },
   
   /**
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, easingMap: {y: mina.easeinout}});
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, waitForFinish: false, easingMap: {y: mina.easeinout}});
   },
 
   /**
@@ -89,23 +89,31 @@ tests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {waitForFinish: false});
-    mail.addTransformation({propertyValueMap: {}, after: 1500, callback: ()=>{animated.toggleSpin();}});
+    animated.addTransformation({propertyValueMap: {}, after: 1500, waitForFinish: false, callback: ()=>{animated.toggleSpin();}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testMergeWithoutMilliseconds(animated) {
-    mail.moveX(100);
-    mail.moveY(100, 1000, {waitForFinish: false});
+    animated.moveX(100);
+    animated.moveY(100, 1000, {waitForFinish: false});
   },
 
   /**
    * @param {Animated} animated
    */
   function testMergeWithoutMilliseconds2(animated) {
-    mail.moveX(100, 1000);
-    mail.moveY(100, {waitForFinish: false});
+    animated.moveX(100, 1000);
+    animated.moveY(100, {waitForFinish: false});
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testAfterWithoutMerge(animated) {
+    animated.moveX(100, 1000);
+    animated.moveY(100, 1000, {after: 500});
   },
 
 ];
