@@ -100,6 +100,14 @@ tests = [
     mail.moveY(100, 1000, {waitForFinish: false});
   },
 
+  /**
+   * @param {Animated} animated
+   */
+  function testMergeWithoutMilliseconds2(animated) {
+    mail.moveX(100, 1000);
+    mail.moveY(100, {waitForFinish: false});
+  },
+
 ];
 
 for (let test of tests) {
