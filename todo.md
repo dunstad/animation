@@ -50,6 +50,7 @@ Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation
 ```
 
 * a Scene's Actions should be a map of assets and lists of transformations
+* make animation helper config parameter object a class (mostly so it's easy to document)
 * make recording easier
 * make some tests for Sky
 * make the tests more general and easy to run
