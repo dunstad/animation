@@ -50,9 +50,9 @@ Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation
 ```
 
 * a Scene's Actions should be a map of assets and lists of transformations
-* make animation helper config parameter object a class (mostly so it's easy to document)
 * make recording easier
+* make animation helper config parameter object a class (mostly so it's easy to document)
+* make the tests automatic (basically add asserts for where the object ought to be)
 * make some tests for Sky
-* make the tests more general and easy to run
 * test howler + web audio recorder for audio exporting
 * correct animations for time lost during processing?
