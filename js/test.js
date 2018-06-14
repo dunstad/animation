@@ -18,8 +18,8 @@ scene.setup().then((assets)=>{
   assets.sky.move(200, 200).moveX(300, 1000).moveY(300, 1000).wait(1000).moveX(200, 1000);
   
 }).then(()=>{
-  scene.play().then(()=>{console.log('done playing!');}).catch(console.error);
-}).catch(console.error);
+  return scene.play();
+}).then(()=>{console.log('done playing!');}).catch(console.error);
 
 /**
  * @param {Animated} animated 
