@@ -48,10 +48,9 @@ var x = {
 
 Object.keys(x).forEach(key=>x[key] = x[key].map(o=>window[key].addTransformation(o)));
 ```
+
 * make waitForFinish=false work when milliseconds isn't specified
 * after right now is sort of like a delay + waitForFinish=false, maybe make it just a delay
-* make toggle cancels easily queueable
-  * seems to work fine without using after
 * a Scene's Actions should be a map of assets and lists of transformations
 * make recording easier
 * make some tests for Sky

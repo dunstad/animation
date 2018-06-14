@@ -243,6 +243,7 @@ class Animated {
     if (this.sentinels.spin) {
       transformation = {
         propertyValueMap: {},
+        waitForFinish: false,
         callback: ()=>{
           this.sentinels.spin = false;
         },
@@ -270,8 +271,15 @@ class Animated {
    * @param {number} scalar 
    */
   togglePulse(scalar) {
+    let transformation;
     if (this.sentinels.pulse) {
-      this.sentinels.pulse = false;
+      transformation = {
+        propertyValueMap: {},
+        waitForFinish: false,
+        callback: ()=>{
+          this.sentinels.pulse = false;
+        },
+      };
     }
     else {
       this.sentinels.pulse = true;
@@ -294,8 +302,9 @@ class Animated {
           }
         },
       };
-      return scaleUp;
+      transformation = scaleUp;
     }
+    return transformation;
   }
 
   get rotation() {
@@ -303,6 +312,7 @@ class Animated {
   }
 
   set rotation(degree) {
+    if (typeof degree != 'number') {throw new Error('rotation must be a number');}
     this.element.attr(this.getStateString(new Transformation({propertyValueMap: {rotation: degree}})));
   }
   
@@ -367,76 +377,89 @@ class Animated {
    */
   merge(transformation, otherTransformation) {
 
-    if (transformation.canMergeWith(otherTransformation)) {
+    let result;
 
-      let [shortTransformation, longTransformation] = [transformation, otherTransformation].sort((a, b)=>{
-        return a.milliseconds - b.milliseconds;
-      });
+    if (transformation.milliseconds && otherTransformation.milliseconds) {
 
-      let mergeEasingMaps = (easingMap1, easingMap2)=>{
-        return Object.assign(easingMap1, easingMap2);
-      };
+      if (transformation.canMergeWith(otherTransformation)) {
 
-      let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
+        let [shortTransformation, longTransformation] = [transformation, otherTransformation].sort((a, b)=>{
+          return a.milliseconds - b.milliseconds;
+        });
 
-      let firstTransformation = new Transformation({
-        milliseconds: shortTransformation.milliseconds,
-        easingMap: mergedEasingMap,
-        animate: true,
-        waitForFinish: true,
-        callback: shortTransformation.callback,
-      });
-      let secondTransformation = new Transformation({
-        milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-        easingMap: mergedEasingMap,
-        animate: true,
-        waitForFinish: true,
-        callback: longTransformation.callback,
-      });
-
-      let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
-
-      let splitNumberValue = (propertyName) => {
-        return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
-      };
-
-      for (let propertyName of ['rotation', 'scalar', 'x', 'y']) {
-        
-        if (longTransformation.propertyValueMap[propertyName] != undefined) {
-          
-          firstTransformation.propertyValueMap[propertyName] = splitNumberValue(propertyName);
-          secondTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
-          
-        }
-        
-        else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
-          
-          firstTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
-          
-        }
-        
-      }
-      
-      let result = [firstTransformation];
-      if (secondTransformation.milliseconds > 0) {
-        result.push(secondTransformation);
-      }
-      else {
-        let firstCallback = firstTransformation.callback;
-        firstTransformation.callback = ()=>{
-          firstCallback && firstCallback();
-          secondTransformation.callback && secondTransformation.callback();
+        let mergeEasingMaps = (easingMap1, easingMap2)=>{
+          return Object.assign(easingMap1, easingMap2);
         };
+
+        let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
+
+        let firstTransformation = new Transformation({
+          milliseconds: shortTransformation.milliseconds,
+          easingMap: mergedEasingMap,
+          animate: true,
+          waitForFinish: true,
+          callback: shortTransformation.callback,
+        });
+        let secondTransformation = new Transformation({
+          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+          easingMap: mergedEasingMap,
+          animate: true,
+          waitForFinish: true,
+          callback: longTransformation.callback,
+        });
+
+        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+
+        let splitNumberValue = (propertyName) => {
+          return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
+        };
+
+        for (let propertyName of ['rotation', 'scalar', 'x', 'y']) {
+          
+          if (longTransformation.propertyValueMap[propertyName] != undefined) {
+            
+            firstTransformation.propertyValueMap[propertyName] = splitNumberValue(propertyName);
+            secondTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
+            
+          }
+          
+          else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
+            
+            firstTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
+            
+          }
+          
+        }
+        
+        result = [firstTransformation];
+        if (secondTransformation.milliseconds > 0) {
+          result.push(secondTransformation);
+        }
+        else {
+          let firstCallback = firstTransformation.callback;
+          firstTransformation.callback = ()=>{
+            firstCallback && firstCallback();
+            secondTransformation.callback && secondTransformation.callback();
+          };
+        }
+
+      }
+    
+      else {
+        console.error(transformation, otherTransformation);
+        throw new Error('incompatible transformations');
       }
 
-      return result;
-      
     }
 
     else {
-      console.error(transformation, otherTransformation);
-      throw new Error('incompatible transformations');
+
+      // instantaneous transformations should happen first
+      result = [otherTransformation, transformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
+
     }
+
+    return result;
 
   }
 

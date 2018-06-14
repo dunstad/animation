@@ -89,7 +89,15 @@ tests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {waitForFinish: false});
-    mail.addTransformation({propertyValueMap: {}, after: 1500, waitForFinish: false, callback: ()=>{mail.sentinels.spin = false;}});
+    mail.addTransformation({propertyValueMap: {}, after: 1500, callback: ()=>{animated.toggleSpin();}});
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testMergeWithoutMilliseconds(animated) {
+    mail.moveX(100);
+    mail.moveY(100, 1000, {waitForFinish: false});
   },
 
 ];
