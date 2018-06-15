@@ -3,36 +3,50 @@ class Scene {
   /**
    * Used to give a scene the assets it needs to run.
    * @param {Player} player 
-   * @param {object} svgLabelToPathMap 
    */
-  constructor(player, svgLabelToPathMap) {
+  constructor(player) {
     this.player = player;
-    this.assets = {};
-    this.svgLabelToPathMap = svgLabelToPathMap;
+    this.actors = [];
   }
 
-  setup() {
-
-    return new Promise((resolve, reject)=>{
-      new Loader(this.player.svgElement, this.svgLabelToPathMap).then((assets)=>{
-        Object.assign(this.assets, assets);
-        resolve(this.assets);
-      }).catch(reject);
-    });
-
+  /**
+   * Add an actor to the scene. Its AnimationQueue will be processed when the Scene plays.
+   * @param {Animated} animated 
+   */
+  addActor(animated) {
+    this.actors.push(animated);
   }
 
-  play() {
+  /**
+   * Convenience method used to add multiple actors at once.
+   * @param {Animated[]} animatedArray 
+   */
+  addActors(animatedArray) {
+    for (let animated of animatedArray) {
+      this.addActor(animated);
+    }
+  }
+
+  async play() {
+
+    let loadingActorPromises = [];
+    for (let actor of this.actors) {
+      if (actor.loadingPromise) {
+        loadingActorPromises.push(actor.loadingPromise);
+      }
+    }
+
+    await Promise.all(loadingActorPromises);
+      
+    let processingPromises = [];
     
-    return new Promise((resolve, reject)=>{
-      let promises = [];
-      Object.keys(this.assets).forEach((key)=>{
-        promises.push(new Promise((resolve, reject)=>{
-          this.assets[key].process(resolve);
-        }));
-      });
-      Promise.all(promises).then(resolve).catch(console.error);
-    });
+    for (let actor of this.actors) {
+      processingPromises.push(new Promise((resolve, reject)=>{
+        actor.process(resolve);
+      }));
+    }
+    
+    return await Promise.all(processingPromises);
 
   }
 
