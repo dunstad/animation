@@ -24,6 +24,8 @@ class Player {
    
   svgToVideoFrame() {
 
+    let frameCount = this.frameCount;
+
     let svgImage = this.svgToImageBlob();
     
     let canvasElement = document.createElement('canvas');
@@ -34,10 +36,17 @@ class Player {
   
     svgImage.onload = ()=>{
       context.drawImage(svgImage, 0, 0);
-      this.capturer.capture(canvasElement);
+      canvasElement.toBlob(blob=>this.zip.file(`png_${frameCount}.png`, blob), 'image/png');
+      // let pngDataURL = canvasElement.toDataURL("image/png");
+      // fetch(pngDataURL)
+      //   .then(res=>res.blob())
+      //   .then(blob=>this.tar.append(`png_${frameCount}`, blob))
+      //   .catch(error=>console.error(error));
     };
 
     this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
+
+    this.frameCount++;
   
   }
 
@@ -76,20 +85,14 @@ class Player {
 
   recordPNG() {
 
-    this.capturer = new CCapture({
-      format: 'png',
-      framerate: 60,
-      verbose: true,
-    });
+    this.frameCount = 0;
+    this.zip = new JSZip();
 
     this.play().then(()=>{
-      this.capturer.stop();
-      this.capturer.save();
+      this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
       cancelAnimationFrame(this.requestId);
     });
 
-    this.capturer.start();
-    
     this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
 
   }
