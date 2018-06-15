@@ -21,6 +21,26 @@ class Player {
     this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
   }
 
+   
+  svgToVideoFrame() {
+
+    let svgImage = this.svgToImageBlob();
+    
+    let canvasElement = document.createElement('canvas');
+    canvasElement.width = 640;
+    canvasElement.height = 360;
+  
+    let context = canvasElement.getContext('2d');
+  
+    svgImage.onload = ()=>{
+      context.drawImage(svgImage, 0, 0);
+      this.capturer.capture(canvasElement);
+    };
+
+    this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
+  
+  }
+
   loadScene(scene) {
     this.scene = scene;
   }
@@ -55,6 +75,22 @@ class Player {
   }
 
   recordPNG() {
+
+    this.capturer = new CCapture({
+      format: 'png',
+      framerate: 60,
+      verbose: true,
+    });
+
+    this.play().then(()=>{
+      this.capturer.stop();
+      this.capturer.save();
+      cancelAnimationFrame(this.requestId);
+    });
+
+    this.capturer.start();
+    
+    this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
 
   }
 

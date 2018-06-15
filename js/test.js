@@ -21,7 +21,8 @@ scene.addActors([mail, sky]);
 
 player.loadScene(scene);
 // player.play();
-player.recordGIF();
+// player.recordGIF();
+player.recordPNG();
 
 /**
  * @param {Animated} animated 
