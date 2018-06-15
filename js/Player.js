@@ -2,22 +2,24 @@ class Player {
 
   constructor(svgElement) {
     this.svgElement = svgElement;
+    // make this do nothing
+    Snap.prefixURL = a=>a;
   }
 
   svgToImageBlob() {
     let img = new Image();
-    let serialized = new XMLSerializer().serializeToString(this.svgElement);
+    let serialized = new XMLSerializer().serializeToString(this.svgElement.node);
     let svgBlob = new Blob([serialized], {type: "image/svg+xml"});
     let url = URL.createObjectURL(svgBlob);
     img.src = url;
     return img;
-  };
-
+  }
+  
   svgToGIFFrame() {
-    let img = svgToImageBlob(this.svgElement);
+    let img = this.svgToImageBlob();
     img.onload = ()=>{this.gif.addFrame(img, {delay: 1000 / 60});};
-    this.requestId = requestAnimationFrame(this.svgToGIFFrame);
-  };
+    this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
+  }
 
   loadScene(scene) {
     this.scene = scene;
@@ -43,12 +45,12 @@ class Player {
       window.open(URL.createObjectURL(blob));
     });
 
-    this.requestId = requestAnimationFrame(svgToGIFFrame);
-
-    this.scene.runWhenFinished(()=>{
+    this.scene.play().then(()=>{
       this.gif.render();
       cancelAnimationFrame(this.requestId);
     });
+    
+    this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
 
   }
 

@@ -1,7 +1,7 @@
 class Scene {
   
   /**
-   * Used to give a scene the assets it needs to run.
+   * Used to set which player controls the scene.
    * @param {Player} player 
    */
   constructor(player) {
