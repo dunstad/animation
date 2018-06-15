@@ -25,8 +25,8 @@ class Player {
     this.scene = scene;
   }
   
-  play() {
-    this.scene.play();
+  async play() {
+    return await this.scene.play();
   }
 
   recordGIF() {
@@ -45,7 +45,7 @@ class Player {
       window.open(URL.createObjectURL(blob));
     });
 
-    this.scene.play().then(()=>{
+    this.play().then(()=>{
       this.gif.render();
       cancelAnimationFrame(this.requestId);
     });
