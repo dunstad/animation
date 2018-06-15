@@ -1,6 +1,6 @@
 class Sky extends Animated {
   
-  constructor(width, height, time) {
+  constructor(svgContainer, width, height, time) {
     
     super(svgContainer.rect(10, 10, width || 100, height || 100));
 

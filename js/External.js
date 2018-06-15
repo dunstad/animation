@@ -1,19 +1,19 @@
 class External extends Animated {
   
-  constructor(svgImagePath) {
-    
-   this.svgImagePath = svgImagePath;
+  constructor(svgContainer, svgImagePath) {
 
+    super(svgContainer.group());
+    this.svgImagePath = svgImagePath;
+    this.loadingPromise = this.load();
+    
   }
 
   load() {
 
     return new Promise((resolve, reject)=>{
-
       Snap.load(this.svgImagePath, (loadedFragment)=>{
-        resolve(super(svgContainer.group().append(loadedFragment)));
+        resolve(this.element.append(loadedFragment));
       });
-
     });
 
   }

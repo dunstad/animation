@@ -1,18 +1,21 @@
 var container = document.getElementById('container');
+var svgContainer = Snap("#" + container.id);
 
-var player = new Player(Snap("#" + container.id));
+var player = new Player(svgContainer);
 var scene = new Scene(player);
 
-let cube = new External('/img/cube-outline.svg');  
-let mail = new External('/img/basic_mail.svg');  
+// let cube = new External(svgContainer, '/img/cube-outline.svg');  
+// cube.vivus.reset();
 
-cube.vivus.reset();
+let mail = new External(svgContainer, '/img/basic_mail.svg');  
 
-let sky = new Sky();
+let sky = new Sky(svgContainer);
 
 mail.moveX(100, 1000).moveY(100, 1000).wait(1000).moveX(0, 1000);
 
 sky.move(200, 200).moveX(300, 1000).moveY(300, 1000).wait(1000).moveX(200, 1000);
+
+scene.addActors([mail, sky]);
 
 scene.play().then(()=>{console.log('done playing!');}).catch(console.error);
 
