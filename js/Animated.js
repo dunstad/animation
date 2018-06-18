@@ -80,7 +80,7 @@ class Animated {
         }
       }
     }
-    else {resolve();}
+    else {if (resolve) {resolve();}}
   }
 
   /**
