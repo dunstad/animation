@@ -35,14 +35,7 @@ tests = [
    * @param {Animated} animated
    */
   function testMoveAndRotate(animated) {
-    animated.move(100, 100, 500, {
-      callback: ()=>{
-        if (!(animated.x == 100 && animated.y == 100)) {
-          throw new Error('animation assertion failed');
-        }
-        else {console.log('animation assertion passed');}
-      },
-    }).rotate(45, 500).move(100, 50, 500).rotate(23, 500).move(0, 0, 500);
+    animated.move(100, 100, 500).rotate(45, 500).move(100, 50, 500).rotate(23, 500).move(0, 0, 500);
   },
 
   /**
