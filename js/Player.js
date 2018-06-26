@@ -2,6 +2,11 @@ class Player {
 
   constructor(svgElement) {
     this.svgElement = svgElement;
+    
+    // these are used to make sure we process frames in order
+    this.frameCount = 0;
+    this.frames = [];
+
     // make this do nothing
     Snap.prefixURL = a=>a;
   }
@@ -18,6 +23,7 @@ class Player {
   svgToGIFFrame() {
     let img = this.svgToImageBlob();
     img.onload = ()=>{this.gif.addFrame(img, {delay: 1000 / 60});};
+    this.frameCount++;
   }
    
   svgToVideoFrame() {
@@ -35,11 +41,6 @@ class Player {
     svgImage.onload = ()=>{
       context.drawImage(svgImage, 0, 0);
       canvasElement.toBlob(blob=>this.zip.file(`png_${frameCount}.png`, blob), 'image/png');
-      // let pngDataURL = canvasElement.toDataURL("image/png");
-      // fetch(pngDataURL)
-      //   .then(res=>res.blob())
-      //   .then(blob=>this.tar.append(`png_${frameCount}`, blob))
-      //   .catch(error=>console.error(error));
     };
 
     this.frameCount++;
@@ -79,6 +80,7 @@ class Player {
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
       this.gif.render();
+      this.frameCount = 0;
     });
     
   }
@@ -96,6 +98,7 @@ class Player {
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
       this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
+      this.frameCount = 0;
     });
 
   }
