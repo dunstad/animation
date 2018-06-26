@@ -18,9 +18,7 @@ class Player {
   svgToGIFFrame() {
     let img = this.svgToImageBlob();
     img.onload = ()=>{this.gif.addFrame(img, {delay: 1000 / 60});};
-    this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
   }
-
    
   svgToVideoFrame() {
 
@@ -43,8 +41,6 @@ class Player {
       //   .then(blob=>this.tar.append(`png_${frameCount}`, blob))
       //   .catch(error=>console.error(error));
     };
-
-    this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
 
     this.frameCount++;
   
@@ -74,7 +70,6 @@ class Player {
       window.open(URL.createObjectURL(blob));
     });
     
-    // this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
     mina.setFrameFunction((timestamp)=>{
       mina.frame(timestamp);
       this.svgToGIFFrame();
@@ -93,7 +88,6 @@ class Player {
     this.frameCount = 0;
     this.zip = new JSZip();
     
-    // this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
     mina.setFrameFunction((timestamp)=>{
       mina.frame(timestamp);
       this.svgToVideoFrame();
