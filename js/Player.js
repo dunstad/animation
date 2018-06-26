@@ -73,27 +73,36 @@ class Player {
     this.gif.on('finished', (blob)=>{
       window.open(URL.createObjectURL(blob));
     });
-
-    this.play().then(()=>{
-      this.gif.render();
-      cancelAnimationFrame(this.requestId);
+    
+    // this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
+    mina.setFrameFunction((timestamp)=>{
+      mina.frame(timestamp);
+      this.svgToGIFFrame();
+      console.log('!')
     });
     
-    this.requestId = requestAnimationFrame(this.svgToGIFFrame.bind(this));
-
+    this.play().then(()=>{
+      mina.setFrameFunction(mina.frame);
+      this.gif.render();
+    });
+    
   }
-
+  
   recordPNG() {
-
+    
     this.frameCount = 0;
     this.zip = new JSZip();
-
-    this.play().then(()=>{
-      this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
-      cancelAnimationFrame(this.requestId);
+    
+    // this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
+    mina.setFrameFunction((timestamp)=>{
+      mina.frame(timestamp);
+      this.svgToVideoFrame();
     });
 
-    this.requestId = requestAnimationFrame(this.svgToVideoFrame.bind(this));
+    this.play().then(()=>{
+      mina.setFrameFunction(mina.frame);
+      this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
+    });
 
   }
 

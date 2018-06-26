@@ -9,15 +9,15 @@ var scene = new Scene(player);
 
 let mail = new External(svgContainer, '/img/basic_mail.svg');  
 
-// let sky = new Sky(svgContainer);
+let sky = new Sky(svgContainer);
 
-// mail.moveX(100, 1000).moveY(100, 1000).wait(1000).moveX(0, 1000);
+mail.moveX(100, 1000).moveY(100, 1000).wait(1000).moveX(0, 1000);
 
-// sky.move(200, 200).moveX(300, 1000).moveY(300, 1000).wait(1000).moveX(200, 1000);
+sky.move(200, 200).moveX(300, 1000).moveY(300, 1000).wait(1000).moveX(200, 1000);
 
-// scene.addActors([mail, sky]);
+scene.addActors([mail, sky]);
 
-// player.loadScene(scene);
+player.loadScene(scene);
 // player.play();
 // player.recordGIF();
 // player.recordPNG();
