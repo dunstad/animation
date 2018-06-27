@@ -22,26 +22,19 @@ class Player {
   
   svgToGIFFrame() {
     let img = this.svgToImageBlob();
-    img.onload = ()=>{this.gif.addFrame(img, {delay: 1000 / 60});};
+    this.frames[this.frameCount] = new Promise((resolve, reject)=>{
+      img.onload = resolve;
+    });
     this.frameCount++;
   }
    
   svgToVideoFrame() {
 
-    let frameCount = this.frameCount;
-
     let svgImage = this.svgToImageBlob();
-    
-    let canvasElement = document.createElement('canvas');
-    canvasElement.width = 640;
-    canvasElement.height = 360;
   
-    let context = canvasElement.getContext('2d');
-  
-    svgImage.onload = ()=>{
-      context.drawImage(svgImage, 0, 0);
-      canvasElement.toBlob(blob=>this.zip.file(`png_${frameCount}.png`, blob), 'image/png');
-    };
+    this.frames[this.frameCount] = new Promise((resolve, reject)=>{
+      svgImage.onload = ()=>{resolve(svgImage);};
+    });
 
     this.frameCount++;
   
@@ -56,6 +49,8 @@ class Player {
   }
 
   recordGIF() {
+
+    this.frameCount = 0;
     
     this.gif = new GIF({
       workers: 2,
@@ -79,8 +74,14 @@ class Player {
     
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
-      this.gif.render();
-      this.frameCount = 0;
+      Promise.all(this.frames).then((images)=>{
+        for (let img of images) {
+          this.gif.addFrame(img, {delay: 1000 / 60});
+          console.log('?')
+        }
+        this.gif.render();
+        this.frameCount = 0;
+      }).catch(console.error);
     });
     
   }
@@ -97,8 +98,36 @@ class Player {
 
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
-      this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
-      this.frameCount = 0;
+      Promise.all(this.frames).then((images)=>{
+
+        let blobs = [];
+
+        for (let [index, svgImage] of images.entries()) {
+
+          let canvasElement = document.createElement('canvas');
+          canvasElement.width = 640;
+          canvasElement.height = 360;
+        
+          let context = canvasElement.getContext('2d');
+
+          context.drawImage(svgImage, 0, 0);
+          blobs.push(new Promise((resolve, reject)=>{
+            canvasElement.toBlob(resolve, 'image/png');
+          }));
+          
+        }
+        
+        Promise.all(blobs).then((blobs)=>{
+
+          for (let [index, blob] of blobs.entries()) {
+            this.zip.file(`png_${index}.png`, blob);
+          }
+          this.zip.generateAsync({type: 'blob'}).then(blob=>saveAs(blob, 'scene.zip'));
+          this.frameCount = 0;
+
+        }).catch(console.error);
+
+      }).catch(console.error);
     });
 
   }

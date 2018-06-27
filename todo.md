@@ -1,5 +1,3 @@
-* make recording smooth
-  * counter to make sure frames are processed in order?
 * wrap vivus in methods so it uses the AnimationQueue
 * make animation helper config parameter object a class (mostly so it's easy to document)
 * make some tests for Sky
