@@ -1,4 +1,5 @@
 #### animation
+* figure out why vivus is no longer working for mail (probably related to the External class)
 * wrap vivus in methods so it uses the AnimationQueue
 
 #### audio
