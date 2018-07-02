@@ -27,9 +27,10 @@ player.loadScene(scene);
  */
 function reset(animated) {
   animated.move(0, 0).rotate(0).scale(1);
+  animated.animationQueue.queue = [];
 }
 
-tests = [
+animatedTests = [
 
   /**
    * @param {Animated} animated
@@ -126,7 +127,24 @@ tests = [
 
 ];
 
-for (let test of tests) {
+let skyTests = [
+  /**
+   * @param {Sky} sky
+   */
+  function testTimeIncrement(sky) {
+    sky.toHour(12, 4000);
+  },
+
+  /**
+   * @param {Sky} sky
+   */
+  function testMidnightLoop(sky) {
+    sky.toHour(20);
+    sky.toHour(28, 4000);
+  }
+];
+
+for (let test of animatedTests + skyTests) {
   window[test.name] = test;
 }
 
