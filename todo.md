@@ -1,6 +1,5 @@
 #### animation
 * wrap vivus in methods so it uses the AnimationQueue
-* make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### audio
 * test howler + web audio recorder for audio exporting
