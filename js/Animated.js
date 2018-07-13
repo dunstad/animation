@@ -8,11 +8,13 @@ class Animated {
     
     this.element = element;
     this.animationQueue = new AnimationQueue();
-    try {
-      this.vivus = new Vivus(this.element.node, {start: 'manual'});
-      this.vivus.finish();
+    if (!(this instanceof External)) {
+      try {
+        this.vivus = new Vivus(this.element.node, {start: 'manual'});
+        this.vivus.finish();
+      }
+      catch {;}
     }
-    catch {;}
     
     this.sentinels = {
       spin: false,
