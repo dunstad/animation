@@ -173,6 +173,9 @@ class Animated {
    * Helps us repeat less code while writing animation helper functions.
    * Returned functions additionally accept an optional milliseconds parameter
    * and a config object parameter.
+   * The config parameter is mostly options for the Transformation object,
+   * but also has an after option which, when given a millisecond number,
+   * will wait that long to merge the transformation into the queue. 
    * @param {function} func 
    */
   makeAnimationHelper(func) {
