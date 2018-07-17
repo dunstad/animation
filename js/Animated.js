@@ -10,8 +10,8 @@ class Animated {
     this.animationQueue = new AnimationQueue();
     if (!(this instanceof External)) {
       try {
-        this.vivus = new Vivus(this.element.node, {start: 'manual'});
-        this.vivus.finish();
+        this._vivus = new Vivus(this.element.node, {start: 'manual'});
+        this._vivus.finish();
       }
       catch {;}
     }
@@ -21,7 +21,7 @@ class Animated {
       pulse: false,
     };
 
-    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.wait, this.toggleSpin, this.togglePulse]) {
+    for (let func of [this.move, this.moveX, this.moveY, this.rotate, this.scale, this.draw, this.wait, this.toggleSpin, this.togglePulse]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
 
@@ -232,6 +232,14 @@ class Animated {
   }
 
   /**
+   * Uses Vivus to draw paths to the completion provided.
+   * @param {number} ratio 
+   */
+  draw(ratio) {
+    return {propertyValueMap: {vivus: ratio}};
+  }
+
+  /**
    * Used to time animations without using setTimeout
    */
   wait() {
@@ -351,6 +359,14 @@ class Animated {
 
   set y(coordinate) {
     this.location = {y: coordinate};
+  }
+
+  get vivus() {
+    return this._vivus.currentFrame / this._vivus.frameLength;
+  }
+
+  set vivus(ratio) {
+    this._vivus.setFrameProgress(ratio);
   }
 
   /**

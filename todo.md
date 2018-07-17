@@ -1,5 +1,4 @@
 #### animation
-* wrap vivus in methods so it uses the AnimationQueue (use setter/getter combo with setFrameProgress)
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### audio

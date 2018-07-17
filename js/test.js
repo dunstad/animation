@@ -26,7 +26,7 @@ player.loadScene(scene);
  * @param {Animated} animated 
  */
 function reset(animated) {
-  animated.move(0, 0).rotate(0).scale(1);
+  animated.move(0, 0).rotate(0).scale(1).draw(1);
 }
 
 tests = [
@@ -122,6 +122,14 @@ tests = [
   function testAfterWithoutMerge(animated) {
     animated.moveX(100, 1000);
     animated.moveY(100, 1000, {after: 500});
+  },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testVivus(animated) {
+    animated.draw(0);
+    animated.draw(1, 2000);
   },
 
 ];

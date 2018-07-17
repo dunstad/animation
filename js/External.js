@@ -13,8 +13,8 @@ class External extends Animated {
     return new Promise((resolve, reject)=>{
       Snap.load(this.svgImagePath, (loadedFragment)=>{
         let test = this.element.append(loadedFragment)
-        this.vivus = new Vivus(this.element.node.firstElementChild, {start: 'manual'});
-        this.vivus.finish();
+        this._vivus = new Vivus(this.element.node.firstElementChild, {start: 'manual'});
+        this._vivus.finish();
         resolve(this.element);
       });
     });
