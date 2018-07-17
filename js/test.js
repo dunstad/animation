@@ -5,7 +5,7 @@ var player = new Player(svgContainer);
 var scene = new Scene(player);
 
 // let cube = new External(svgContainer, '/img/cube-outline.svg');  
-// cube.vivus.reset();
+// cube.draw(0);
 
 let mail = new External(svgContainer, '/img/basic_mail.svg');  
 
