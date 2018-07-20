@@ -23,7 +23,7 @@ class Player {
   svgToGIFFrame() {
     let img = this.svgToImageBlob();
     this.frames[this.frameCount] = new Promise((resolve, reject)=>{
-      img.onload = resolve;
+      img.onload = ()=>{resolve(img);};
     });
     this.frameCount++;
   }
