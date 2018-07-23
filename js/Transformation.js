@@ -9,7 +9,7 @@ class Transformation {
     // number
     this.milliseconds = transformationObject.milliseconds;
 
-    // an array of four functions
+    // a map of properties to easing functions
     this.easingMap = transformationObject.easingMap || {};
 
     // function
