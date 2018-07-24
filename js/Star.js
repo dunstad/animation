@@ -22,6 +22,10 @@ class Star extends Animated{
 
     }
 
+    if (Array.isArray(fillColor)) {
+      fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
+    }
+
     this.element.append(svgContainer.path(pathString).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
 
   }
