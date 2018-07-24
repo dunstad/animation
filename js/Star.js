@@ -4,26 +4,25 @@ class Star extends Animated{
 
     super(svgContainer.group());
 
-    let points = [];
     let startX = 0;
     let startY = 0;
-
+    
     let twoPi = 2 * Math.PI;
+    
+    let pointX = startX + radius * Math.sin(0);
+    let pointY = startY - radius * Math.cos(0);
+    let pathString = `M ${pointX} ${pointY} `;
 
-    let prevPointX = startX + radius * Math.sin(0);
-    let prevPointY = startY - radius * Math.cos(0);
-
-    for (let theta = 0; theta <= twoPi; theta += (twoPi / numPoints)) {
+    for (let theta = (twoPi / numPoints); theta <= twoPi; theta += (twoPi / numPoints)) {
       
-      let pointX = startX + radius * Math.sin(theta);
-      let pointY = startY - radius * Math.cos(theta);
+      pointX = startX + radius * Math.sin(theta);
+      pointY = startY - radius * Math.cos(theta);
 
-      this.element.append(svgContainer.path(`M ${prevPointX} ${prevPointY} Q 0 0 ${pointX} ${pointY}`));
-
-      prevPointX = pointX;
-      prevPointY = pointY;
+      pathString += `Q 0 0 ${pointX} ${pointY} `;
 
     }
+
+    this.element.append(svgContainer.path(pathString).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
 
   }
 
