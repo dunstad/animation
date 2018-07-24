@@ -6,17 +6,17 @@ class Star extends Animated{
     if (Array.isArray(fillColor)) {
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
-
-    super(svgContainer.path(Star.makePath(radius, numPoints)).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
-
+    
+    super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
+    
   }
 
   /**
    * Generates path strings used to draw stars, and to animate the number of points
-   * @param {number} radius 
    * @param {number} numPoints 
+   * @param {number} radius 
    */
-  static makePath(radius, numPoints) {
+  static makePath(numPoints, radius) {
 
     let startX = 0;
     let startY = 0;
