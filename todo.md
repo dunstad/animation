@@ -15,6 +15,7 @@
     * time property, setting it changes the hands
 
 #### animation
+* add svg morphing with flubber
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### audio
