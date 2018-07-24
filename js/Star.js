@@ -2,8 +2,6 @@ class Star extends Animated{
 
   constructor(svgContainer, numPoints, radius, fillColor, borderColor) {
 
-    super(svgContainer.group());
-
     let startX = 0;
     let startY = 0;
     
@@ -26,7 +24,7 @@ class Star extends Animated{
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
 
-    this.element.append(svgContainer.path(pathString).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
+    super(svgContainer.path(pathString).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
 
   }
 
