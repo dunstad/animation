@@ -1,7 +1,4 @@
 #### components
-  * star
-    * variable number of points
-    * different colors of course
   * cloud
     * various colors
     * should be able to generate different shapes
