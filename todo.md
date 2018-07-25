@@ -16,6 +16,7 @@
 
 #### animation
 * add svg morphing with flubber
+* skeletal animation (joints)
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### audio
