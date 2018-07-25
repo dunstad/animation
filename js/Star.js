@@ -9,9 +9,9 @@ class Star extends Animated{
     
     super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
     
+    this.numPoints = numPoints;
+    
     this.radius = radius;
-    this.morphStatus = 0;
-    this.morphFunction;
     this.toPoints = this.makeAnimationHelper(this.toPoints);
 
   }
@@ -45,17 +45,19 @@ class Star extends Animated{
 
   }
 
-  get morph() {
-    return this.morphStatus;
+  get points() {
+    return this.numPoints;
   }
 
-  set morph(ratio) {
-    this.element.node.setAttribute('d', this.morphFunction(ratio));
+  set points(numPoints) {
+    let remainder = numPoints % 1;
+    let newPathString = flubber.interpolate(Star.makePath(Math.floor(numPoints), this.radius), Star.makePath(Math.floor(numPoints) + 1, this.radius))(remainder);
+    this.element.node.setAttribute('d', newPathString);
+    this.numPoints = numPoints;
   }
 
   toPoints(numPoints) {
-    this.morphFunction = flubber.interpolate(this.element.node.getAttribute('d'), Star.makePath(numPoints, this.radius));
-    return {propertyValueMap: {morph: 1}};
+    return {propertyValueMap: {points: numPoints}};
   }
 
 }

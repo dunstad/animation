@@ -15,6 +15,9 @@
     * time property, setting it changes the hands
 
 #### animation
+* when using gradients, render to gif is glitchy
+  * it seems like gif frames are being created before the image fully renders to canvas
+  * need to find a way to wait for the canvas to render fully before making the frame
 * add svg morphing with flubber
 * skeletal animation (joints)
 * make animation helper config parameter object a class (mostly so it's easy to document)
