@@ -1,7 +1,7 @@
 class Star extends Animated{
 
   constructor(svgContainer, numPoints, radius, fillColor, borderColor) {
-
+    
     // lets us pass two colors as an array to fill with a radial gradient
     if (Array.isArray(fillColor)) {
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
@@ -9,6 +9,11 @@ class Star extends Animated{
     
     super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
     
+    this.radius = radius;
+    this.morphStatus = 0;
+    this.morphFunction;
+    this.toPoints = this.makeAnimationHelper(this.toPoints);
+
   }
 
   /**
@@ -38,6 +43,19 @@ class Star extends Animated{
 
     return pathString;
 
+  }
+
+  get morph() {
+    return this.morphStatus;
+  }
+
+  set morph(ratio) {
+    this.element.node.setAttribute('d', this.morphFunction(ratio));
+  }
+
+  toPoints(numPoints) {
+    this.morphFunction = flubber.interpolate(this.element.node.getAttribute('d'), Star.makePath(numPoints, this.radius));
+    return {propertyValueMap: {morph: 1}};
   }
 
 }
