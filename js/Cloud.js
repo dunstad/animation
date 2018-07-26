@@ -18,9 +18,28 @@ class Cloud extends Animated {
    */
   static makePath(numArcs, length) {
 
-    let pathString = `M ${length} 0 `;
+    let pathString = `M 0 0 `;
 
+    let xPoints = [];
+
+    let arcLength = length / numArcs;
+    for (let i = 0; i < numArcs; i++) {
+      xPoints.push(arcLength * (i + 1));
+    }
+
+    for (let i = 0; i < xPoints.length; i++) {
+      let plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      xPoints[i] += (Math.random() * (length * .075) * plusOrMinus);
+    }
+
+    xPoints.sort((a, b) => a - b);
+    console.log(xPoints)
+
+    for (let i = 0; i <= numArcs; i++) {
+      pathString += `A ${length / (numArcs * 2)} ${length / (numArcs * 2)} 0 0 1 ${xPoints[i]} 0 `;
+    }
     
+    pathString += `C ${length + (length * 1.5 / numArcs)} ${length * 2 / numArcs} ${-length * 1.5 / numArcs} ${length * 2 / numArcs} 0 0`;
 
     return pathString;
 

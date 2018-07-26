@@ -34,7 +34,7 @@ sky.move(-10, -10).process();
 //   star.toPoints(numPoints, transitionTime);
 // }
 
-let cloud = new Cloud(svgContainer, 4, 50, 'white');
+let cloud = new Cloud(svgContainer, 4, 100, 'white');
 cloud.move(200, 200).process();
 
 scene.addActors([sky, cloud]);
