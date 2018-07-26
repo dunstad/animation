@@ -20,24 +20,12 @@ class Player {
     return img;
   }
   
-  svgToGIFFrame() {
+  svgToFrame() {
     let img = this.svgToImageBlob();
     this.frames[this.frameCount] = new Promise((resolve, reject)=>{
       img.onload = ()=>{resolve(img);};
     });
     this.frameCount++;
-  }
-   
-  svgToVideoFrame() {
-
-    let svgImage = this.svgToImageBlob();
-  
-    this.frames[this.frameCount] = new Promise((resolve, reject)=>{
-      svgImage.onload = ()=>{resolve(svgImage);};
-    });
-
-    this.frameCount++;
-  
   }
 
   loadScene(scene) {
@@ -51,6 +39,9 @@ class Player {
   recordGIF() {
 
     this.frameCount = 0;
+
+    this.recordingStart = Date.now();
+    mina.time = ()=>{return this.recordingStart;}
     
     this.gif = new GIF({
       workers: 2,
@@ -68,12 +59,14 @@ class Player {
     
     mina.setFrameFunction((timestamp)=>{
       mina.frame(timestamp);
-      this.svgToGIFFrame();
+      this.recordingStart += 16;
+      this.svgToFrame();
       console.log('!')
     });
     
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
+      mina.time = Date.now;
       Promise.all(this.frames).then((images)=>{
         for (let img of images) {
           this.gif.addFrame(img, {delay: 1000 / 60});
@@ -90,14 +83,19 @@ class Player {
     
     this.frameCount = 0;
     this.zip = new JSZip();
+
+    this.recordingStart = Date.now();
+    mina.time = ()=>{return this.recordingStart;}
     
     mina.setFrameFunction((timestamp)=>{
       mina.frame(timestamp);
-      this.svgToVideoFrame();
+      this.recordingStart += 16;
+      this.svgToFrame();
     });
 
     this.play().then(()=>{
       mina.setFrameFunction(mina.frame);
+      mina.time = Date.now;
       Promise.all(this.frames).then((images)=>{
 
         let blobs = [];
