@@ -10,6 +10,13 @@
     * maybe have a numeric season property to determine leaf color
   * analog clock
     * time property, setting it changes the hands
+  * moon
+    * different phases
+    * random craters?
+  * eye
+    * has a pupil and iris
+    * should be able to look in whatever direction
+    * maybe a parent class for a set of eyes, since they'll generally all be looking at the same point at once
   * robot arm
     * not super general maybe as far as use in lots of scenes goes
     * will probably be super fun to make though
