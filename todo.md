@@ -18,6 +18,8 @@
 * when using gradients, render to gif is glitchy
   * it seems like gif frames are being created before the image fully renders to canvas
   * need to find a way to wait for the canvas to render fully before making the frame
+* gif frames are only being created when requestAnimationFrame is called
+  * this means when scenes take a long time to draw, we're skipping over lots of frames
 * add svg morphing with flubber
 * skeletal animation (joints)
 * make animation helper config parameter object a class (mostly so it's easy to document)

@@ -23,22 +23,22 @@ sky.move(-10, -10).process();
 let star = new Star(svgContainer, 2, 40, '#ffffc0');
 star.move(320, 100).process();
 
-let maxPoints = 7;
-let transitionTime = 1000;
+// let maxPoints = 7;
+// let transitionTime = 1000;
 
-for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
-  star.toPoints(numPoints, transitionTime);
-}
+// for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
+//   star.toPoints(numPoints, transitionTime);
+// }
 
-for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
-  star.toPoints(numPoints, transitionTime);
-}
+// for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
+//   star.toPoints(numPoints, transitionTime);
+// }
 
 scene.addActors([sky, star]);
 
 player.loadScene(scene);
 // player.play();
-player.recordGIF();
+// player.recordGIF();
 // player.recordPNG();
 
 /**
