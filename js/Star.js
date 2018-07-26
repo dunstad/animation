@@ -1,4 +1,4 @@
-class Star extends Animated{
+class Star extends Animated {
 
   constructor(svgContainer, numPoints, radius, fillColor, borderColor) {
     
@@ -7,7 +7,7 @@ class Star extends Animated{
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
     
-    super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor, 'fill-rule': 'evenodd'}));
+    super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor}));
     
     this.numPoints = numPoints;
     
