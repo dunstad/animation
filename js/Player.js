@@ -47,7 +47,7 @@ class Player {
     
     this.gif = new GIF({
       workers: 2,
-      quality: 100,
+      quality: 10,
       width: 640,
       height: 360,
       workerScript: '/lib/gif.worker.js',
@@ -63,7 +63,6 @@ class Player {
       mina.frame(timestamp);
       this.recordingStart += 16;
       this.svgToFrame();
-      console.log('!')
     });
     
     this.play().then(()=>{
@@ -72,7 +71,6 @@ class Player {
       Promise.all(this.frames).then((images)=>{
         for (let img of images) {
           this.gif.addFrame(img, {delay: 1000 / 60});
-          console.log('?')
         }
         this.gif.render();
         this.frameCount = 0;
