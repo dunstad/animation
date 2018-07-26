@@ -10,22 +10,24 @@ class Player {
     // make this do nothing
     Snap.prefixURL = a=>a;
   }
+  
+  svgToFrame() {
 
-  svgToImageBlob() {
     let img = new Image();
     let serialized = new XMLSerializer().serializeToString(this.svgElement.node);
     let svgBlob = new Blob([serialized], {type: "image/svg+xml"});
     let url = URL.createObjectURL(svgBlob);
-    img.src = url;
-    return img;
-  }
-  
-  svgToFrame() {
-    let img = this.svgToImageBlob();
+    
+    // onload needs to be added before src it seems
+    // "As soon as you assign the src a value, the image will load.
+    // If it loads before the onload is reached, your onload will not fire."
     this.frames[this.frameCount] = new Promise((resolve, reject)=>{
       img.onload = ()=>{resolve(img);};
     });
     this.frameCount++;
+
+    img.src = url;
+
   }
 
   loadScene(scene) {
