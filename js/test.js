@@ -20,21 +20,24 @@ var scene = new Scene(player);
 let sky = new Sky(svgContainer, 640, 360, 21);
 sky.move(-10, -10).process();
 
-let star = new Star(svgContainer, 2, 40, '#ffffc0');
-star.move(320, 100).process();
+// let star = new Star(svgContainer, 2, 40, '#ffffc0');
+// star.move(320, 100).process();
 
-let maxPoints = 7;
-let transitionTime = 500;
+// let maxPoints = 7;
+// let transitionTime = 500;
 
-for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
-  star.toPoints(numPoints, transitionTime);
-}
+// for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
+//   star.toPoints(numPoints, transitionTime);
+// }
 
-for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
-  star.toPoints(numPoints, transitionTime);
-}
+// for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
+//   star.toPoints(numPoints, transitionTime);
+// }
 
-scene.addActors([sky, star]);
+let cloud = new Cloud(svgContainer, 4, 50, 'white');
+cloud.move(200, 200).process();
+
+scene.addActors([sky, cloud]);
 
 player.loadScene(scene);
 player.play();

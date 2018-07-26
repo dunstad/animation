@@ -18,7 +18,11 @@ class Cloud extends Animated {
    */
   static makePath(numArcs, length) {
 
+    let pathString = `M ${length} 0 `;
+
     
+
+    return pathString;
 
   }
 
