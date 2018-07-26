@@ -37,16 +37,16 @@ sky.move(-10, -10).process();
 let cloud = new Cloud(svgContainer, 3, 100, 'white');
 cloud.move(200, 200).process();
 
-// let maxArcs = 8;
-// let transitionTime = 2000;
+let maxArcs = 8;
+let transitionTime = 1000;
 
-// for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
-//   cloud.toBumps(numArcs, transitionTime);
-// }
+for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
+  cloud.toBumps(numArcs, transitionTime);
+}
 
-// for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
-//   cloud.toBumps(numArcs, transitionTime);
-// }
+for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
+  cloud.toBumps(numArcs, transitionTime);
+}
 
 scene.addActors([sky, cloud]);
 

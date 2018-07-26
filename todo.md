@@ -1,7 +1,4 @@
 #### components
-  * cloud
-    * need to tweak the bottom curve still
-    * make length animatable
   * tree
     * i kind of like the idea of using pythagoras trees, might be too weird though
     * should have different shapes that can be generated

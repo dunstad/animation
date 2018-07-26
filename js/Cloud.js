@@ -41,14 +41,13 @@ class Cloud extends Animated {
       xPoints[i] += (Math.random() * (length * .075) * plusOrMinus);
     }
 
-    xPoints.push(length);
     xPoints.sort((a, b) => a - b);
 
-    for (let i = 0; i <= numBumps; i++) {
+    for (let i = 0; i <= numBumps - 1; i++) {
       pathString += `A ${length / (numBumps * 2)} ${length / (numBumps * 2)} 0 0 1 ${xPoints[i]} 0 `;
     }
     
-    pathString += `C ${length + (length * 2.5 / numBumps)} ${length * 2 / numBumps} ${-length * 2.5 / numBumps} ${length * 2 / numBumps} 0 0`;
+    pathString += `C ${length + (length * 3 / numBumps)} ${length * 1.5 / numBumps} ${-length * 3 / numBumps} ${length * 1.5 / numBumps} 0 0`;
 
     return pathString;
 
@@ -64,9 +63,9 @@ class Cloud extends Animated {
       this.forms[Math.floor(numBumps)] = Cloud.makePath(Math.floor(numBumps), this.length);
     }
     if (!this.forms[Math.floor(numBumps + 1)]) {
-      this.forms[Math.floor(numBumps) + 1] = Cloud.makePath(Math.floor(numBumps), this.length);
+      this.forms[Math.floor(numBumps) + 1] = Cloud.makePath(Math.floor(numBumps) + 1, this.length);
     }
-    let newPathString = flubber.interpolate(this.forms[Math.floor(numBumps)], this.forms[Math.floor(numBumps) + 1])(remainder);
+    let newPathString = flubber.interpolate(this.forms[Math.floor(numBumps)], this.forms[Math.floor(numBumps) + 1], {maxSegmentLength: 5})(remainder);
     this.element.node.setAttribute('d', newPathString);
     this.numBumps = numBumps;
   }
