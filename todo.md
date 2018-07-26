@@ -1,6 +1,4 @@
 #### components
-  * cloud
-    * not sure if it needs to get smaller when it gets more humps
   * tree
     * i kind of like the idea of using pythagoras trees, might be too weird though
     * should have different shapes that can be generated

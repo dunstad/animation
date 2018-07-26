@@ -47,7 +47,7 @@ class Cloud extends Animated {
       pathString += `A ${length / (numBumps * 2)} ${length / (numBumps * 2)} 0 0 1 ${xPoints[i]} 0 `;
     }
     
-    pathString += `C ${length + (length * 3 / numBumps)} ${length * 1.5 / numBumps} ${-length * 3 / numBumps} ${length * 1.5 / numBumps} 0 0`;
+    pathString += `C ${length + (length * 3 / numBumps)} ${length / 2} ${-length * 3 / numBumps} ${length / 2} 0 0`;
 
     return pathString;
 
