@@ -1,9 +1,7 @@
 #### components
   * cloud
-    * various colors
-    * should be able to generate different shapes
-    * look at how clouds can be made from lots of long thin ovals
-    * morphing clouds into other clouds would be neat
+    * need to tweak the bottom curve still
+    * make length animatable
   * tree
     * i kind of like the idea of using pythagoras trees, might be too weird though
     * should have different shapes that can be generated
