@@ -16,6 +16,7 @@
 
 #### animation
 * skeletal animation (joints)
+  * should be doable with groups inside groups for every successive joint
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### audio
