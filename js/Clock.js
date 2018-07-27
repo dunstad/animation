@@ -25,11 +25,24 @@ class Clock extends Animated {
     }
     
     let width = radius * .05;
+
     let secondHand = svgContainer.rect(0, 0, width, radius * .9);
-    secondHand.attr({fill: 'black'});
+    secondHand.attr({fill: 'red'});
     secondHand.transform(`r${180},0,0`);
     this.element.append(secondHand);
     this.secondHand = secondHand;
+    
+    let minuteHand = svgContainer.rect(0, 0, width, radius * .9);
+    minuteHand.attr({fill: 'black'});
+    minuteHand.transform(`r${180},0,0`);
+    this.element.append(minuteHand);
+    this.minuteHand = minuteHand;
+
+    let hourHand = svgContainer.rect(0, 0, width, radius * .5);
+    hourHand.attr({fill: 'black'});
+    hourHand.transform(`r${180},0,0`);
+    this.element.append(hourHand);
+    this.hourHand = hourHand;
     
     this.timeValue = 0;
     this.toTime = this.makeAnimationHelper(this.toTime);
@@ -42,7 +55,9 @@ class Clock extends Animated {
 
   set time(timeValue) {
     timeValue = timeValue % 12;
-    this.secondHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
+    // this.secondHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
+    this.minuteHand.transform(`r${180 + (timeValue % 12) * 360},0,0`);
+    this.hourHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
     this.timeValue = timeValue;
   }
 
