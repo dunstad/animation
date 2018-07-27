@@ -20,7 +20,7 @@ class Moon extends Animated {
 
     this.phaseRatio = 0;
     this.darkMoon = darkMoon;
-    this.darkMoon.transform(`t${-radius * 2},0`);
+    this.darkMoon.transform(`t${radius * 2},0`);
 
     this.radius = radius;
 
@@ -34,7 +34,7 @@ class Moon extends Animated {
 
   set phase(ratio) {
     ratio = ratio % 1;
-    this.darkMoon.transform(`t${this.radius * 4 * ratio - this.radius * 2},0`);
+    this.darkMoon.transform(`t${-1 * (this.radius * 4 * ratio - this.radius * 2)},0`);
     this.phaseRatio = ratio;
   }
 
