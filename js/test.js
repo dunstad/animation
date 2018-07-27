@@ -20,9 +20,9 @@ var scene = new Scene(player);
 let sky = new Sky(svgContainer, 640, 360, 21);
 sky.move(-10, -10).process();
 
-let moon = new Moon(svgContainer, 50);
-moon.move(100, 100).process();
-moon.toPhase(1, 20000);
+// let moon = new Moon(svgContainer, 50);
+// moon.move(100, 100).process();
+// moon.toPhase(1, 20000);
 
 // let star = new Star(svgContainer, 2, 40, '#ffffc0');
 // star.move(320, 100).process();
@@ -38,21 +38,24 @@ moon.toPhase(1, 20000);
 //   star.toPoints(numPoints, transitionTime);
 // }
 
-let cloud = new Cloud(svgContainer, 3, 100, 'white');
-cloud.move(200, 200).process();
+// let cloud = new Cloud(svgContainer, 3, 100, 'white');
+// cloud.move(200, 200).process();
 
-let maxArcs = 8;
-let transitionTime = 10000;
+// let maxArcs = 8;
+// let transitionTime = 10000;
 
-for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
-  cloud.toBumps(numArcs, transitionTime);
-}
+// for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
+//   cloud.toBumps(numArcs, transitionTime);
+// }
 
-for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
-  cloud.toBumps(numArcs, transitionTime);
-}
+// for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
+//   cloud.toBumps(numArcs, transitionTime);
+// }
 
-scene.addActors([sky, cloud, moon]);
+let clock = new Clock(svgContainer, 50);
+clock.move(100, 100).process();
+
+scene.addActors([sky, clock]);
 
 player.loadScene(scene);
 player.play();

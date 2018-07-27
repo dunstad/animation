@@ -1,7 +1,4 @@
 #### components
-  * moon
-    * for some reason, queueing up a phase animation while one is running overwrites it
-      * does this affect other components as well?
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -19,6 +16,7 @@
     * also lets us get skeletal animation features implemented
 
 #### animation
+* really need to figure out some structure for separating and storing scenes
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)
   * should be doable with groups inside groups for every successive joint
