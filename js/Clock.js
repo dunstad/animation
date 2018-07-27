@@ -21,8 +21,15 @@ class Clock extends Animated {
       mark.attr({fill: 'black'});
       mark.transform(`r${angle} t${-width / 2}, ${-radius * .8}`);
       this.element.append(mark);
-
+      
     }
+    
+    let width = radius * .05;
+    let secondHand = svgContainer.rect(0, 0, width, radius * .9);
+    secondHand.attr({fill: 'black'});
+    secondHand.transform(`r${180},0,0`);
+    this.element.append(secondHand);
+    this.secondHand = secondHand;
     
     this.timeValue = 0;
     this.toTime = this.makeAnimationHelper(this.toTime);
@@ -35,6 +42,7 @@ class Clock extends Animated {
 
   set time(timeValue) {
     timeValue = timeValue % 12;
+    this.secondHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
     this.timeValue = timeValue;
   }
 
