@@ -3,7 +3,7 @@
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
   * analog clock
-    * time property, setting it changes the hands
+    * marks and hands aren't aligned quite right after hands rotate
   * eye
     * has a pupil and iris
     * should be able to look in whatever direction
