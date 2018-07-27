@@ -12,17 +12,34 @@ class Moon extends Animated {
     brightMoon.attr({fill: '#ffffc0'});
     this.element.append(brightMoon);
     
-    let darkMoon = new Animated(svgContainer.circle(10, 10, radius));
-    // darkMoon.element.attr({fill: 'black', 'mask': brightMoon});
-    darkMoon.element.attr({fill: 'black'});
-    this.element.append(darkMoon.element);
+    let darkMoon = svgContainer.circle(10, 10, radius);
+    darkMoon.attr({fill: 'black', opacity: .7});
+    this.element.append(darkMoon);
 
-    this.darkMoon = darkMoon;
-
-    // brightMoon.attr({'mask': moonClip});
-    // moonClip.attr({'mask': darkMoon.element});
     this.element.attr({mask: moonClip});
 
+    this.phaseRatio = 0;
+    this.darkMoon = darkMoon;
+    this.darkMoon.transform(`t${-radius * 2},0`);
+
+    this.radius = radius;
+
+    this.toPhase = this.makeAnimationHelper(this.toPhase);
+
+  }
+
+  get phase() {
+    return this.phaseRatio;
+  }
+
+  set phase(ratio) {
+    ratio = ratio % 1;
+    this.darkMoon.transform(`t${this.radius * 4 * ratio - this.radius * 2},0`);
+    this.phaseRatio = ratio;
+  }
+
+  toPhase(ratio) {
+    return {propertyValueMap: {phase: ratio}};
   }
   
 }

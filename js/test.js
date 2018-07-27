@@ -22,7 +22,6 @@ sky.move(-10, -10).process();
 
 let moon = new Moon(svgContainer, 50);
 moon.move(100, 100).process();
-moon.darkMoon.moveX(50).process();
 
 // let star = new Star(svgContainer, 2, 40, '#ffffc0');
 // star.move(320, 100).process();
