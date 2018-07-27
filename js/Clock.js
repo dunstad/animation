@@ -55,8 +55,8 @@ class Clock extends Animated {
 
   set time(timeValue) {
     timeValue = timeValue % 12;
-    // this.secondHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
-    this.minuteHand.transform(`r${180 + (timeValue % 12) * 360},0,0`);
+    this.secondHand.transform(`r${180 + (timeValue % 1) * 60 * 360},0,0`);
+    this.minuteHand.transform(`r${180 + (timeValue % 1) * 360},0,0`);
     this.hourHand.transform(`r${180 + (timeValue / 12) * 360},0,0`);
     this.timeValue = timeValue;
   }
