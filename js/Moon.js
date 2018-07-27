@@ -4,15 +4,29 @@ class Moon extends Animated {
   
     super(svgContainer.group());
 
-    let moonClip = svgContainer.circle(10, 10, radius);
+    let moonClip = svgContainer.circle(0, 0, radius);
     moonClip.attr({fill: 'white'});
     this.element.append(moonClip);
 
-    let brightMoon = svgContainer.circle(10, 10, radius);
-    brightMoon.attr({fill: '#ffffc0'});
+    let moonColor = '#ffffc0';
+    let brightMoon = svgContainer.circle(0, 0, radius);
+    brightMoon.attr({fill: moonColor});
     this.element.append(brightMoon);
+
+    let craterColor = chroma(moonColor).darken().hex();
+    let numCraters = Math.floor(Math.random() * Math.floor(5)) + 10;
+    function craterCoordInsideMoon(craterRadius) {
+      return (Math.random() * (radius - craterRadius) * 2) + craterRadius - radius;
+    }
+    for (let i = 0; i < numCraters; i++) {
+      let craterRadius = Math.random() * radius * .1 + radius * .1;
+      let crater = svgContainer.circle(0, 0, craterRadius);
+      crater.attr({fill: craterColor});
+      this.element.append(crater);
+      crater.transform(`t${craterCoordInsideMoon(craterRadius)},${craterCoordInsideMoon(craterRadius)}`);
+    }
     
-    let darkMoon = svgContainer.circle(10, 10, radius);
+    let darkMoon = svgContainer.circle(0, 0, radius);
     darkMoon.attr({fill: 'black', opacity: .7});
     this.element.append(darkMoon);
 

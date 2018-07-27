@@ -22,6 +22,7 @@ sky.move(-10, -10).process();
 
 let moon = new Moon(svgContainer, 50);
 moon.move(100, 100).process();
+moon.toPhase(1, 20000);
 
 // let star = new Star(svgContainer, 2, 40, '#ffffc0');
 // star.move(320, 100).process();
@@ -41,7 +42,7 @@ let cloud = new Cloud(svgContainer, 3, 100, 'white');
 cloud.move(200, 200).process();
 
 let maxArcs = 8;
-let transitionTime = 1000;
+let transitionTime = 10000;
 
 for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
   cloud.toBumps(numArcs, transitionTime);
