@@ -30,7 +30,7 @@ class Clock extends Animated {
   }
 
   get time() {
-    return this.phaseRatio;
+    return this.timeValue;
   }
 
   set time(timeValue) {
