@@ -1,10 +1,8 @@
 #### components
   * moon
-    * random craters
     * for some reason, queueing up a phase animation while one is running overwrites it
       * does this affect other components as well?
   * tree
-    * i kind of like the idea of using pythagoras trees, might be too weird though
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
   * analog clock
