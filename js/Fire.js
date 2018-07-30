@@ -7,7 +7,16 @@ class Fire extends Animated {
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
 
-    super(svgContainer.path(Fire.makePath()).attr({fill: fillColor, stroke: borderColor}));
+    let currentPath = Fire.makePath();
+
+    super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor}));
+
+    this.currentPath = currentPath;
+    this.newPath = Fire.makePath();
+    this.interpolator = flubber.interpolate(this.currentPath, this.newPath, {maxSegmentLength: 2});
+    this.ratio = 0;
+
+    this.toStatus = this.makeAnimationHelper(this.toStatus);
 
   }
 
@@ -16,28 +25,33 @@ class Fire extends Animated {
    */
   static makePath() {
 
-    let startX = 0;
-    let startY = 0;
+    let topX = 0;
+    let topY = -50;
     
-    let twoPi = 2 * Math.PI;
-    
-    let pointX = startX + 50 * Math.sin(0);
-    let pointY = startY - 50 * Math.cos(0);
-    let pathString = `M ${pointX} ${pointY} `;
+    let leftControlX = -15 - 35 * Math.random();
+    let leftControlY = topY * Math.random();
 
-    for (let theta = (twoPi / 4); theta <= twoPi; theta += (twoPi / 4)) {
-      
-      pointX = startX + 50 * Math.sin(theta);
-      pointY = startY - 50 * Math.cos(theta);
-
-      pathString += `Q 0 0 ${pointX} ${pointY} `;
-
-    }
-
-    let pathString = `M 0, 0 Q`;
+    let pathString = `M 0 0 Q ${leftControlX} ${leftControlY} ${topX} ${topY}`;
 
     return pathString;
 
+  }
+
+  newPath() {
+
+  }
+
+  get status() {
+    return this.ratio;
+  }
+
+  set status(ratio) {
+    this.element.node.setAttribute('d', this.interpolator(ratio));
+    this.ratio = ratio;
+  }
+
+  toStatus(ratio) {
+    return {propertyValueMap: {status: ratio}};
   }
 
 }

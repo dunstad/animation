@@ -55,7 +55,7 @@ sky.move(-10, -10).process();
 // let clock = new Clock(svgContainer, 50);
 // clock.move(100, 100).process();
 
-let fire = new Fire(svgContainer, 'yellow');
+let fire = new Fire(svgContainer, 'yellow', 'white');
 fire.move(100, 100).process();
 
 scene.addActors([sky, fire]);
