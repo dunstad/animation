@@ -1,4 +1,7 @@
 #### components
+  * fire
+    * i want to do this with generated paths like the cloud and star
+    * seems pretty tricky though
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -25,3 +28,5 @@
 
 #### maybe
 * correct animations for time lost during processing?
+  * when playing in real time, the effect of this is that animations play sliiightly faster than they otherwise would
+  * not sure if there is any effect when rendering to gif or png
