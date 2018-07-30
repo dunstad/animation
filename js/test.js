@@ -58,6 +58,10 @@ sky.move(-10, -10).process();
 let fire = new Fire(svgContainer, 'yellow', 'white');
 fire.move(100, 100).process();
 
+for (let i = 0; i < 10; i++) {
+  fire.toStatus(1, 1000, {callback: ()=>{fire.newPath();}});
+}
+
 scene.addActors([sky, fire]);
 
 player.loadScene(scene);
