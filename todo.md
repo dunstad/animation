@@ -26,6 +26,7 @@
   * the moon might need a darker shadow
 
 #### animation
+* shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * really need to figure out some structure for separating and storing scenes
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)

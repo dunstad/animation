@@ -13,7 +13,7 @@ class Animated {
         this._vivus = new Vivus(this.element.node, {start: 'manual'});
         this._vivus.finish();
       }
-      catch {;}
+      catch {console.log(`no vivus for ${this.constructor.name}`);}
     }
     
     this.sentinels = {
