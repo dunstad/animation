@@ -1,8 +1,10 @@
 #### components
-  * fire
-    * i want to do this with generated paths like the cloud and star
-    * seems pretty tricky though
+  * flame
+    * use a linear gradient rather than a radial one i think
     * it should glow
+  * fire
+    * manage a group of flames easily
+    * add smoke particles
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -30,8 +32,8 @@
 
 
 #### animation
-* shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * really need to figure out some structure for separating and storing scenes
+* shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)
   * should be doable with groups inside groups for every successive joint

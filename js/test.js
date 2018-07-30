@@ -55,14 +55,24 @@ sky.move(-10, -10).process();
 // let clock = new Clock(svgContainer, 50);
 // clock.move(100, 100).process();
 
-let fire = new Fire(svgContainer, 'yellow', 'white');
-fire.move(100, 100).process();
+let fire1 = new Flame(svgContainer, 'red');
+fire1.move(100, 100).process();
 
-for (let i = 0; i < 10; i++) {
-  fire.toStatus(1, 1000, {callback: ()=>{fire.newPath();}});
+let fire2 = new Flame(svgContainer, 'orange');
+fire2.move(100, 100).process();
+
+let fire3 = new Flame(svgContainer, 'yellow');
+fire3.move(100, 100).process();
+
+let duration = 1000;
+
+for (let i = 0; i < 100; i++) {
+  fire1.toStatus(1, duration, {callback: ()=>{fire1.newPath();}});
+  fire2.toStatus(1, duration, {callback: ()=>{fire2.newPath();}});
+  fire3.toStatus(1, duration, {callback: ()=>{fire3.newPath();}});
 }
 
-scene.addActors([sky, fire]);
+scene.addActors([sky, fire1, fire2, fire3]);
 
 player.loadScene(scene);
 player.play();
