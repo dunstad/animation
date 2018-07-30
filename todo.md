@@ -24,6 +24,10 @@
   * i'm sure there's a prettier way to draw clouds
   * fancier clock hands, numbers instead of blank marks?
   * the moon might need a darker shadow
+  * twinkle animation for stars
+  * ticking animation for clock
+  * make a sky with automatic sun, moon, stars, easily controllable clouds
+
 
 #### animation
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
