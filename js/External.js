@@ -15,7 +15,7 @@ class External extends Animated {
         let test = this.element.append(loadedFragment)
         this._vivus = new Vivus(this.element.node.firstElementChild, {start: 'manual'});
         this._vivus.finish();
-        resolve(this.element);
+        resolve(this);
       });
     });
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
-<svg width="174.83mm" height="190.11mm" version="1.1" viewBox="0 0 174.82974 190.11166" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<svg x="0px" y="0px" viewBox="0 0 174.83 190.11" width="174.83px" height="190.11px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 <metadata>
 <rdf:RDF>
 <cc:Work rdf:about="">
@@ -10,8 +10,6 @@
 </cc:Work>
 </rdf:RDF>
 </metadata>
-<g transform="translate(-.27561 1.5363)">
-<g transform="matrix(3.0109 0 0 3.0109 -219.75 -510.68)">
 <g fill="none" stroke-linejoin="round" stroke-linecap="round">
 <path d="m100.26 170.12 29.811 6.161v41.385l-29.811-8.7274z" points="130.06803,176.28099 130.06803,217.66638 100.25722,208.93902 100.25722,170.11995 " stroke="#ffd4db"/>
 <path d="m74.167 220.67 30.523 10.327 25.378-13.328-29.811-8.7274z" points="104.6901,230.99487 130.06803,217.66638 100.25722,208.93902 74.166855,220.66751 " stroke="#fd7b90"/>

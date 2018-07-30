@@ -15,6 +15,7 @@ class Scene {
    */
   addActor(animated) {
     this.actors.push(animated);
+    return this;
   }
 
   /**
@@ -25,6 +26,7 @@ class Scene {
     for (let animated of animatedArray) {
       this.addActor(animated);
     }
+    return this;
   }
 
   async play() {
