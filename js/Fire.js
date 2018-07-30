@@ -25,12 +25,14 @@ class Fire extends Animated {
    */
   static makePath() {
 
-    let flipFactor = 1;
+    let flipFactor = Math.random() > .5 ? 1 : -1;
 
     let topX = 0 * flipFactor;
     let topY = -50;
+
+    let width = 50;
     
-    let leftControlX = (-15 - 35 * Math.random()) * flipFactor;
+    let leftControlX = (-width * .3 - width * .7 * Math.random()) * flipFactor;
     let leftControlY = topY * .25 + (topY * .5) * Math.random();
 
     let rightControlCenterX = 0 * flipFactor;
