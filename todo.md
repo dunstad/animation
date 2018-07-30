@@ -2,6 +2,7 @@
   * fire
     * i want to do this with generated paths like the cloud and star
     * seems pretty tricky though
+    * it should glow
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -15,6 +16,14 @@
     * not super general maybe as far as use in lots of scenes goes
     * will probably be super fun to make though
     * also lets us get skeletal animation features implemented
+  * gears
+    * generate a gear with any number of teeth
+    * transmission class to match up their rotations?
+    * customizable teeth?
+  * add optional glow for moon and star
+  * i'm sure there's a prettier way to draw clouds
+  * fancier clock hands, numbers instead of blank marks?
+  * the moon might need a darker shadow
 
 #### animation
 * really need to figure out some structure for separating and storing scenes
