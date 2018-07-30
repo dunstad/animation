@@ -75,9 +75,6 @@ for (let i = 0; i < 100; i++) {
 scene.addActors([sky, fire1, fire2, fire3]);
 
 player.loadScene(scene);
-player.play();
-// player.recordGIF();
-// player.recordPNG();
 
 /**
  * @param {Animated} animated 
