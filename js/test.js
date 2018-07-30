@@ -52,10 +52,13 @@ sky.move(-10, -10).process();
 //   cloud.toBumps(numArcs, transitionTime);
 // }
 
-let clock = new Clock(svgContainer, 50);
-clock.move(100, 100).process();
+// let clock = new Clock(svgContainer, 50);
+// clock.move(100, 100).process();
 
-scene.addActors([sky, clock]);
+let fire = new Fire(svgContainer);
+fire.move(100, 100).process();
+
+scene.addActors([sky, fire]);
 
 player.loadScene(scene);
 player.play();
