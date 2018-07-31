@@ -32,7 +32,6 @@
 
 
 #### animation
-* sky gradient not loading properly after scene change
 * make play button restart a scene after it's been played once
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
