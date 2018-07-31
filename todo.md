@@ -32,7 +32,7 @@
 
 
 #### animation
-* really need to figure out some structure for separating and storing scenes
+* make the player able to properly unload a scene and load up a new one
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)
