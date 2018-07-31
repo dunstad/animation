@@ -12,7 +12,25 @@ function makeScene(setupFunc) {
 
 }
 
-player.loadScene(makeScene(scenes['animate sky']));
+let sceneSelect = document.getElementById('sceneSelect');
+for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
+  let sceneOption = document.createElement('option');
+  sceneOption.value = sceneName;
+  sceneOption.textContent = sceneName;
+  sceneSelect.appendChild(sceneOption);
+}
+
+function onSceneSelect(e) {
+  localStorage.setItem('currentScene', e.target.value);
+  player.loadScene(makeScene(scenes[currentSceneName]));
+}
+
+sceneSelect.addEventListener('change', onSceneSelect);
+
+let currentSceneName = localStorage.getItem('currentScene') || sceneSelect.value;
+sceneSelect.value = currentSceneName;
+
+player.loadScene(makeScene(scenes[currentSceneName]));
 
 /**
  * @param {Animated} animated 

@@ -30,44 +30,66 @@ var scenes = {
 
   },
 
+  'moon phases': (scene)=>{
+
+    let sky = new Sky(svgContainer, 640, 360, 21);
+    sky.move(-10, -10).process();
+
+    let moon = new Moon(svgContainer, 50);
+    moon.move(100, 100).process();
+    moon.toPhase(1, 20000);
+
+    scene.addActors([sky, moon]);
+
+  },
+
+  'star morphing': (scene)=>{
+
+    let sky = new Sky(svgContainer, 640, 360, 21);
+    sky.move(-10, -10).process();
+
+    let star = new Star(svgContainer, 2, 40, '#ffffc0');
+    star.move(320, 100).process();
+
+    let maxPoints = 7;
+    let transitionTime = 500;
+
+    for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
+      star.toPoints(numPoints, transitionTime);
+    }
+
+    for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
+      star.toPoints(numPoints, transitionTime);
+    }
+
+    scene.addActors([sky, star]);
+    
+  },
+  
+  'cloud morphing': (scene)=>{
+    
+    let sky = new Sky(svgContainer, 640, 360, 21);
+    sky.move(-10, -10).process();
+    
+    let cloud = new Cloud(svgContainer, 3, 100, 'white');
+    cloud.move(200, 200).process();
+
+    let maxArcs = 8;
+    let transitionTime = 10000;
+
+    for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
+      cloud.toBumps(numArcs, transitionTime);
+    }
+
+    for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
+      cloud.toBumps(numArcs, transitionTime);
+    }
+    
+    scene.addActors([sky, cloud]);
+
+  },
+
 };
-
-
-
-
-// let moon = new Moon(svgContainer, 50);
-// moon.move(100, 100).process();
-// moon.toPhase(1, 20000);
-
-
-// let star = new Star(svgContainer, 2, 40, '#ffffc0');
-// star.move(320, 100).process();
-
-// let maxPoints = 7;
-// let transitionTime = 500;
-
-// for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
-//   star.toPoints(numPoints, transitionTime);
-// }
-
-// for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
-//   star.toPoints(numPoints, transitionTime);
-// }
-
-
-// let cloud = new Cloud(svgContainer, 3, 100, 'white');
-// cloud.move(200, 200).process();
-
-// let maxArcs = 8;
-// let transitionTime = 10000;
-
-// for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
-//   cloud.toBumps(numArcs, transitionTime);
-// }
-
-// for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
-//   cloud.toBumps(numArcs, transitionTime);
-// }
 
 
 // let clock = new Clock(svgContainer, 50);
