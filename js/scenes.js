@@ -89,26 +89,44 @@ var scenes = {
 
   },
 
+  'clock': (scene)=>{
+
+    let clock = new Clock(svgContainer, 50);
+    clock.move(100, 100).process();
+
+    clock.toTime(1, 1000 * 60);
+
+    scene.addActor(clock);
+
+  },
+
+  'fire': (scene)=>{
+
+    let fire1 = new Flame(svgContainer, 'red');
+    fire1.move(100, 100).process();
+
+    let fire2 = new Flame(svgContainer, 'orange');
+    fire2.move(100, 100).process();
+
+    let fire3 = new Flame(svgContainer, 'yellow');
+    fire3.move(100, 100).process();
+
+    let duration = 1000;
+
+    for (let i = 0; i < 100; i++) {
+      fire1.toStatus(1, duration, {callback: ()=>{fire1.newPath();}});
+      fire2.toStatus(1, duration, {callback: ()=>{fire2.newPath();}});
+      fire3.toStatus(1, duration, {callback: ()=>{fire3.newPath();}});
+    }
+
+    scene.addActors([fire1, fire2, fire3]);
+
+  },
+
+  '': (scene)=>{
+
+
+
+  },
+
 };
-
-
-// let clock = new Clock(svgContainer, 50);
-// clock.move(100, 100).process();
-
-
-// let fire1 = new Flame(svgContainer, 'red');
-// fire1.move(100, 100).process();
-
-// let fire2 = new Flame(svgContainer, 'orange');
-// fire2.move(100, 100).process();
-
-// let fire3 = new Flame(svgContainer, 'yellow');
-// fire3.move(100, 100).process();
-
-// let duration = 1000;
-
-// for (let i = 0; i < 100; i++) {
-//   fire1.toStatus(1, duration, {callback: ()=>{fire1.newPath();}});
-//   fire2.toStatus(1, duration, {callback: ()=>{fire2.newPath();}});
-//   fire3.toStatus(1, duration, {callback: ()=>{fire3.newPath();}});
-// }
