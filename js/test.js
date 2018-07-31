@@ -22,7 +22,8 @@ for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
 
 function onSceneSelect(e) {
   localStorage.setItem('currentScene', e.target.value);
-  player.loadScene(makeScene(scenes[currentSceneName]));
+  player.clearScene();
+  player.loadScene(makeScene(scenes[e.target.value]));
 }
 
 sceneSelect.addEventListener('change', onSceneSelect);

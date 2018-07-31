@@ -30,6 +30,12 @@ class Player {
 
   }
 
+  clearScene() {
+    while (this.svgElement.node.lastChild) {
+      this.svgElement.node.removeChild(this.svgElement.node.lastChild);
+    }
+  }
+
   loadScene(scene) {
     this.scene = scene;
   }
