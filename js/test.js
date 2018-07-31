@@ -22,7 +22,7 @@ for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
 
 function onSceneSelect(e) {
   localStorage.setItem('currentScene', e.target.value);
-  player.clearScene();
+  player.svgElement.clear();
   player.loadScene(makeScene(scenes[e.target.value]));
 }
 
