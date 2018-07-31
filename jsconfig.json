@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES6"
+  },
+  "include": [
+    "js/*",
+  ],
+  "typeAcquisition": {
+    "include": [
+      "chroma-js",
+      "howler",
+      "rythm",
+      "snapsvg",
+      "vivus",
+      // these don't seem to exist
+      // "flubber",
+      // "gif",
+      // "WebAudioRecorder",
+    ]
+  }
+}
