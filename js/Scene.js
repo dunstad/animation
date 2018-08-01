@@ -29,6 +29,17 @@ class Scene {
     return this;
   }
 
+  /**
+   * Used to add all actors and set where they're going to move.
+   * @param {function} setupFunc 
+   */
+  prepareActors(setupFunc) {
+    if (setupFunc) {this.setupFunc = setupFunc;}
+    this.actors = [];
+    this.setupFunc(this);
+    console.log(setupFunc)
+  }
+
   async play() {
 
     let loadingActorPromises = [];
@@ -50,6 +61,18 @@ class Scene {
     
     return await Promise.all(processingPromises);
 
+  }
+
+  pause() {
+    for (let actor of this.actors) {
+      actor.pause();
+    }
+  }
+
+  resume() {
+    for (let actor of this.actors) {
+      actor.resume();
+    }
   }
 
 }

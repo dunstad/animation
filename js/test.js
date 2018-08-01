@@ -6,7 +6,7 @@ function makeScene(setupFunc) {
 
   let scene = new Scene(player);
 
-  setupFunc(scene);
+  scene.prepareActors(setupFunc);
   
   return scene;
 

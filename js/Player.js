@@ -30,12 +30,30 @@ class Player {
 
   }
   
+  /**
+   * Used to ready a scene to be played.
+   * @param {Scene} scene 
+   */
   loadScene(scene) {
     this.scene = scene;
   }
   
   async play() {
     return await this.scene.play();
+  }
+
+  pause() {
+    this.scene.pause();
+  }
+
+  resume() {
+    this.scene.resume();
+  }
+
+  restart() {
+    this.svgElement.clear();
+    this.scene.prepareActors(this.scene.setupFunc);
+    this.play();
   }
 
   recordGIF() {

@@ -545,6 +545,13 @@ class Animated {
   }
 
   /**
+   * Used to resume all paused animations.
+   */
+  resume() {
+    Object.values(this.anims).map(anim=>anim.resume());
+  }
+
+  /**
    * Used to stop all running animations.
    */
   stop() {
