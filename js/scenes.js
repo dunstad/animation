@@ -102,6 +102,9 @@ var scenes = {
 
   'fire': (scene)=>{
 
+    let sky = new Sky(svgContainer, 640, 360, 21);
+    sky.move(-10, -10).process();
+
     let fire1 = new Flame(svgContainer, 'red');
     fire1.move(100, 100).process();
 
@@ -111,15 +114,19 @@ var scenes = {
     let fire3 = new Flame(svgContainer, 'yellow');
     fire3.move(100, 100).process();
 
+    let fire4 = new Flame(svgContainer, ['yellow', 'white']);
+    fire4.move(200, 100).process();
+
     let duration = 1000;
 
     for (let i = 0; i < 100; i++) {
       fire1.toStatus(1, duration, {callback: ()=>{fire1.newPath();}});
       fire2.toStatus(1, duration, {callback: ()=>{fire2.newPath();}});
       fire3.toStatus(1, duration, {callback: ()=>{fire3.newPath();}});
+      fire4.toStatus(1, duration, {callback: ()=>{fire4.newPath();}});
     }
 
-    scene.addActors([fire1, fire2, fire3]);
+    scene.addActors([sky, fire1, fire2, fire3, fire4]);
 
   },
 

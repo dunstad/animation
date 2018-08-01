@@ -1,6 +1,5 @@
 #### components
   * flame
-    * use a linear gradient rather than a radial one i think
     * it should glow
   * fire
     * manage a group of flames easily
