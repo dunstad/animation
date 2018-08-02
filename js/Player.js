@@ -52,8 +52,7 @@ class Player {
 
   restart() {
     this.svgElement.clear();
-    this.scene.prepareActors(this.scene.setupFunc);
-    this.play();
+    this.scene.prepareActors(this.scene.setupFunc).then(()=>{console.log(this);this.play();});
   }
 
   recordGIF() {

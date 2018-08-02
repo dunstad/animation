@@ -33,11 +33,19 @@ class Scene {
    * Used to add all actors and set where they're going to move.
    * @param {function} setupFunc 
    */
-  prepareActors(setupFunc) {
+  async prepareActors(setupFunc) {
     if (setupFunc) {this.setupFunc = setupFunc;}
     this.actors = [];
     this.setupFunc(this);
-    console.log(setupFunc)
+
+    let loadingActorPromises = [];
+    for (let actor of this.actors) {
+      if (actor.loadingPromise) {
+        loadingActorPromises.push(actor.loadingPromise);
+      }
+    }
+
+    return await Promise.all(loadingActorPromises);
   }
 
   async play() {

@@ -3,10 +3,10 @@ var scenes = {
   'draw cube': (scene)=>{
     
     let cube = new External(svgContainer, '/img/cube-outline.svg');
+    scene.addActor(cube);
     cube.loadingPromise.then((loadedCube)=>{
       loadedCube.draw(0).move(0, 0).process();
       loadedCube.draw(1, 2000).move(100, 100, 1000);
-      scene.addActor(loadedCube);
     });
 
   },
@@ -14,9 +14,9 @@ var scenes = {
   'move mail': (scene)=>{
     
     let mail = new External(svgContainer, '/img/basic_mail.svg');
+    scene.addActor(mail);
     mail.loadingPromise.then((loadedMail)=>{
       loadedMail.moveX(100, 1000).moveY(100, 1000).wait(1000).moveX(0, 1000);
-      scene.addActor(loadedMail);
     });
 
   },
