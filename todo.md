@@ -21,6 +21,7 @@
     * generate a gear with any number of teeth
     * transmission class to match up their rotations?
     * customizable teeth?
+  * alphabet letters using paths
   * add optional glow for moon and star
   * i'm sure there's a prettier way to draw clouds
   * fancier clock hands, numbers instead of blank marks?
