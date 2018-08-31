@@ -57,8 +57,43 @@ class Alphabet extends Animated {
       'z': 'M 39.404 4.346 L 7.227 47.9 L 41.553 47.9 L 41.553 52.832 L 0 52.832 L 0 48.535 L 32.031 5.029 L 0.977 5.029 L 0.977 0 L 39.404 0 L 39.404 4.346 Z',
     };
 
-    super(svgContainer.path(letterPathMap[letter]));
+    let currentPath = letterPathMap[letter];
 
+    super(svgContainer.path(currentPath));
+
+    this.letterPathMap = letterPathMap;
+
+    this.currentPath = currentPath;
+    this.nextPath = this.currentPath;
+
+    this.ratio = 0;
+
+    this.toStatus = this.makeAnimationHelper(this.toStatus);
+
+  }
+
+  /**
+   * Used to morph one letter into another.
+   * @param {string} letter 
+   */
+  newPath(letter) {
+    this.currentPath = this.nextPath;
+    this.nextPath = this.letterPathMap[letter];
+    this.interpolator = flubber.interpolate(this.currentPath, this.nextPath, {maxSegmentLength: 1});
+    this.status = 0;
+  }
+
+  get status() {
+    return this.ratio;
+  }
+
+  set status(ratio) {
+    this.element.node.setAttribute('d', this.interpolator(ratio));
+    this.ratio = ratio;
+  }
+
+  toStatus(ratio) {
+    return {propertyValueMap: {status: ratio}};
   }
 
 }

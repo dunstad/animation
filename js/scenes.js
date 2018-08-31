@@ -130,9 +130,19 @@ var scenes = {
 
   },
 
-  '': (scene)=>{
+  'letter morph': (scene)=>{
 
+    let letterA = new Alphabet(svgContainer, 'A');
 
+    letterA.move(100, 100).process();
+
+    // letterA.newPath('B');
+    // letterA.toStatus(1, 2000);
+    
+    letterA.newPath('E');
+    letterA.toStatus(1, 4000, {easingMap: {status: mina.easeinout}});
+
+    scene.addActor(letterA);
 
   },
 

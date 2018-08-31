@@ -1,6 +1,9 @@
 #### components
+  * alphabet letters using paths
+    * need to make fillcolor and strokecolor parameters work
+    * how do we queue up different letter morphs? how does it work for flames?
   * flame
-    * it should glow
+    * random timing for morph lengths to seem more natural?
   * fire
     * manage a group of flames easily
     * add smoke particles
@@ -21,8 +24,7 @@
     * generate a gear with any number of teeth
     * transmission class to match up their rotations?
     * customizable teeth?
-  * alphabet letters using paths
-  * add optional glow for moon and star
+  * add optional glow for moon, star, and flame
   * i'm sure there's a prettier way to draw clouds
   * fancier clock hands, numbers instead of blank marks?
   * the moon might need a darker shadow
