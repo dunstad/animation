@@ -100,33 +100,33 @@ var scenes = {
 
   },
 
-  'fire': (scene)=>{
+  'flame': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
     sky.move(-10, -10).process();
 
-    let fire1 = new Flame(svgContainer, 'red');
-    fire1.move(100, 100).process();
+    let flame1 = new Flame(svgContainer, 'red');
+    flame1.move(100, 100).process();
 
-    let fire2 = new Flame(svgContainer, 'orange');
-    fire2.move(100, 100).process();
+    let flame2 = new Flame(svgContainer, 'orange');
+    flame2.move(100, 100).process();
 
-    let fire3 = new Flame(svgContainer, 'yellow');
-    fire3.move(100, 100).process();
+    let flame3 = new Flame(svgContainer, 'yellow');
+    flame3.move(100, 100).process();
 
-    let fire4 = new Flame(svgContainer, ['yellow', 'white']);
-    fire4.move(200, 100).process();
+    let flame4 = new Flame(svgContainer, ['yellow', 'white']);
+    flame4.move(200, 100).process();
 
     let duration = 1000;
 
     for (let i = 0; i < 100; i++) {
-      fire1.toStatus(1, duration, {callback: ()=>{fire1.newPath();}});
-      fire2.toStatus(1, duration, {callback: ()=>{fire2.newPath();}});
-      fire3.toStatus(1, duration, {callback: ()=>{fire3.newPath();}});
-      fire4.toStatus(1, duration, {callback: ()=>{fire4.newPath();}});
+      flame1.toStatus(1, duration, {callback: ()=>{flame1.newPath();}});
+      flame2.toStatus(1, duration, {callback: ()=>{flame2.newPath();}});
+      flame3.toStatus(1, duration, {callback: ()=>{flame3.newPath();}});
+      flame4.toStatus(1, duration, {callback: ()=>{flame4.newPath();}});
     }
 
-    scene.addActors([sky, fire1, fire2, fire3, fire4]);
+    scene.addActors([sky, flame1, flame2, flame3, flame4]);
 
   },
 
