@@ -437,7 +437,8 @@ class Animated {
           return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
         };
 
-        for (let propertyName of ['rotation', 'scalar', 'x', 'y']) {
+        // create an array of all properties used in either transformation to loop through (no duplicates)
+        for (let propertyName of Object.keys(Object.assign(longTransformation.propertyValueMap, shortTransformation.propertyValueMap))) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
             
