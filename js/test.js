@@ -37,8 +37,8 @@ player.loadScene(makeScene(scenes[currentSceneName]));
  * @param {Animated} animated 
  */
 function reset(animated) {
-  animated.move(0, 0).rotate(0).scale(1).draw(1);
   animated.animationQueue.queue = [];
+  animated.move(0, 0).rotate(0).scale(1).draw(1);
 }
 
 animatedTests = [

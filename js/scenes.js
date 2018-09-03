@@ -137,10 +137,10 @@ var scenes = {
     letterA.move(100, 100).process();
 
     letterA.newPath('B');
-    letterA.toStatus(1, 2000, {callback: ()=>{letterA.newPath('E');}});
+    letterA.toStatus(1, 2000, {easingMap: {status: mina.easeinout}, callback: ()=>{letterA.newPath('E');}});
     
     letterA.toStatus(1, 4000, {easingMap: {status: mina.easeinout}});
-    // letterA.scale(.5, 2000, {waitForFinish: false, easingMap: {scalar: mina.easein}});
+    letterA.scale(.5, 2000, {waitForFinish: false, easingMap: {scalar: mina.easein}});
     // letterA.scale(1, 2000, {after: 2000, easingMap: {scalar: mina.easeout}});
 
     scene.addActor(letterA);
