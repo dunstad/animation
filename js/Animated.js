@@ -435,7 +435,7 @@ class Animated {
 
         let splitNumberValue = (propertyName) => {
           return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
-        }; 
+        };
 
         console.log(shortTransformation.propertyValueMap)
         console.log(longTransformation.propertyValueMap)
