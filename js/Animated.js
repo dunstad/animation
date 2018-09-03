@@ -437,10 +437,9 @@ class Animated {
           return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
         };
 
-        console.log(shortTransformation.propertyValueMap)
-        console.log(longTransformation.propertyValueMap)
-        console.log(Object.keys(Object.assign(longTransformation.propertyValueMap, shortTransformation.propertyValueMap)))
-        // why does order matter here? what should the order be?
+        // order matters here because of easing functions
+        // if an animation using easein gets split in two,
+        // it looks different depending on where the split happens.
         for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status']) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
