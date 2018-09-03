@@ -1,7 +1,6 @@
 #### components
   * alphabet letters using paths
     * need to make fillcolor and strokecolor parameters work
-    * how do we queue up different letter morphs? how does it work for flames?
   * flame
     * random timing for morph lengths to seem more natural?
   * fire
