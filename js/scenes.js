@@ -140,8 +140,8 @@ var scenes = {
     letterA.toStatus(1, 2000, {easingMap: {status: mina.easeinout}, callback: ()=>{letterA.newPath('E');}});
     
     letterA.toStatus(1, 4000, {easingMap: {status: mina.easeinout}});
-    letterA.scale(.5, 2000, {waitForFinish: false, easingMap: {scalar: mina.easein}});
-    // letterA.scale(1, 2000, {after: 2000, easingMap: {scalar: mina.easeout}});
+    letterA.scale(.5, 2000, {waitForFinish: false, after: 2000, easingMap: {scalar: mina.easein}});
+    // letterA.scale(1, 2000, {waitForFinish: false, after: 4000, easingMap: {scalar: mina.easeout}});
 
     scene.addActor(letterA);
 
