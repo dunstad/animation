@@ -425,7 +425,7 @@ class Animated {
         });
         let secondTransformation = new Transformation({
           milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-          easingMap: mergedEasingMap,
+          easingMap: longTransformation.easingMap,
           animate: true,
           waitForFinish: true,
           callback: longTransformation.callback,

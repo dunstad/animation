@@ -33,7 +33,6 @@
 
 
 #### animation
-* fix merging with 'after' parameter (example in letter morph scene)
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)
