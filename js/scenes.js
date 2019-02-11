@@ -148,4 +148,19 @@ var scenes = {
 
   },
 
+  'star and cloud vivus': (scene)=>{
+
+    let star = new Star(svgContainer, 4, 40, 'white', 'black');
+    star.move(320, 100).process();
+
+    let cloud = new Cloud(svgContainer, 3, 100, 'white', 'black');
+    cloud.move(200, 200).process();
+
+    star.draw(0);
+    cloud.draw(0);
+
+    scene.addActors([star, cloud]);
+    
+  },
+
 };
