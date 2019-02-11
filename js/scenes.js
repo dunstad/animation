@@ -165,7 +165,9 @@ var scenes = {
 
   'eye': (scene)=>{
 
-    let eye = new Eye(svgContainer, 50, 10);
+    svgContainer.rect(0, 0, 1000, 500).attr({fillColor: 'gray'});
+
+    let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).process();
 
     scene.addActor(eye);

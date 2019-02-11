@@ -8,7 +8,6 @@
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
   * eye
-    * has a pupil and iris
     * should be able to look in whatever direction
     * maybe a parent class for a set of eyes, since they'll generally all be looking at the same point at once
     * should be able to blink
