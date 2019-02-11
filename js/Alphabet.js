@@ -59,7 +59,7 @@ class Alphabet extends Animated {
 
     let currentPath = letterPathMap[letter];
 
-    super(svgContainer.path(currentPath));
+    super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
 
     this.letterPathMap = letterPathMap;
 

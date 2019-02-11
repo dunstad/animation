@@ -132,7 +132,7 @@ var scenes = {
 
   'letter morph': (scene)=>{
 
-    let letterA = new Alphabet(svgContainer, 'A');
+    let letterA = new Alphabet(svgContainer, 'A', 'white', 'black');
 
     letterA.move(100, 100).process();
 
@@ -161,6 +161,15 @@ var scenes = {
 
     scene.addActors([star, cloud]);
     
+  },
+
+  'eye': (scene)=>{
+
+    let eye = new Eye(svgContainer, 50, 10);
+    eye.move(100, 100).process();
+
+    scene.addActor(eye);
+
   },
 
 };

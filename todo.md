@@ -1,6 +1,4 @@
 #### components
-  * alphabet letters using paths
-    * need to make fillcolor and strokecolor parameters work
   * flame
     * random timing for morph lengths to seem more natural?
   * fire
