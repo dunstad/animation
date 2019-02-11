@@ -170,6 +170,8 @@ var scenes = {
     let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).process();
 
+    eye.toPhase(1, 20000);
+
     scene.addActor(eye);
 
   },
