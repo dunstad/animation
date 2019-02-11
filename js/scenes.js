@@ -132,19 +132,29 @@ var scenes = {
 
   'letter morph': (scene)=>{
 
-    let letterA = new Alphabet(svgContainer, 'A', 'white', 'black');
+    let robotoA = new Alphabet(svgContainer, 'Roboto', 'A', 'white', 'black');
 
-    letterA.move(100, 100).process();
+    robotoA.move(100, 100).process();
 
-    letterA.newPath('B');
-    letterA.toStatus(1, 2000, {easingMap: {status: mina.easeinout}, callback: ()=>{letterA.newPath('E');}});
+    robotoA.newPath('Roboto', 'B');
+    robotoA.toStatus(1, 2000, {easingMap: {status: mina.easeinout}, callback: ()=>{robotoA.newPath('Roboto', 'E');}});
     
-    letterA.toStatus(1, 2000, {easingMap: {status: mina.easein}});
-    // letterA.toStatus(1, 2000, {easingMap: {status: mina.easeout}});
-    // letterA.scale(.5, 2000, {waitForFinish: false, after: 2000, easingMap: {scalar: mina.easein}});
-    letterA.scale(1, 2000, {waitForFinish: false, after: 4000, easingMap: {scalar: mina.easeout}});
+    robotoA.toStatus(1, 2000, {easingMap: {status: mina.easein}});
+    // robotoA.toStatus(1, 2000, {easingMap: {status: mina.easeout}});
+    // robotoA.scale(.5, 2000, {waitForFinish: false, after: 2000, easingMap: {scalar: mina.easein}});
+    robotoA.scale(1, 2000, {waitForFinish: false, after: 4000, easingMap: {scalar: mina.easeout}});
+    
+    let stencilA = new Alphabet(svgContainer, 'Allerta Stencil', 'A', 'white', 'black');
 
-    scene.addActor(letterA);
+    stencilA.move(100, 200).process();
+
+    stencilA.newPath('Allerta Stencil', 'B');
+    stencilA.toStatus(1, 2000, {easingMap: {status: mina.easeinout}, callback: ()=>{stencilA.newPath('Allerta Stencil', 'E');}});
+    
+    stencilA.toStatus(1, 2000, {easingMap: {status: mina.easein}});
+    stencilA.scale(1, 2000, {waitForFinish: false, after: 4000, easingMap: {scalar: mina.easeout}});
+
+    scene.addActors([robotoA, stencilA]);
 
   },
 
