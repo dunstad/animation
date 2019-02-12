@@ -181,7 +181,13 @@ var scenes = {
     let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).process();
 
-    eye.toPhase(1, 20000);
+    // eye.toPhase(1, 20000);
+
+    eye.look(0, 50, 1000);
+    eye.look(90, 50, 1000);
+    eye.look(180, 50, 1000);
+    eye.look(270, 50, 1000);
+    eye.look(360, 50, 1000);
 
     scene.addActor(eye);
 
