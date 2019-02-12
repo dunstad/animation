@@ -1,4 +1,6 @@
 #### components
+  * alphabet
+    * fix letter morphing
   * flame
     * random timing for morph lengths to seem more natural?
   * fire
@@ -8,7 +10,6 @@
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
   * eye
-    * should be able to look in whatever direction
     * maybe a parent class for a set of eyes, since they'll generally all be looking at the same point at once
     * should be able to blink
       * maybe other settings for the eyelids too, perhaps eyebrows for expressions?

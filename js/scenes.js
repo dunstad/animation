@@ -183,11 +183,14 @@ var scenes = {
 
     // eye.toPhase(1, 20000);
 
-    eye.look(0, 50, 1000);
-    eye.look(90, 50, 1000);
-    eye.look(180, 50, 1000);
-    eye.look(270, 50, 1000);
-    eye.look(360, 50, 1000);
+    eye.wait(500);
+    eye.look(0, 50, 250);
+    eye.look(0, -50, 2000);
+    eye.look(90, 50, 500);
+    eye.look(180, 50, 400);
+    eye.look(270, 50, 300);
+    eye.look(360, 50, 200);
+    eye.look(360, 0, 100);
 
     scene.addActor(eye);
 
