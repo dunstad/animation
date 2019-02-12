@@ -118,12 +118,17 @@ class Alphabet extends Animated {
     
     let currentPath = letterPathMap[fontName][letter];
 
+    // super(svgContainer.group());
+    // this.element.append(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
     super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
 
     this.letterPathMap = letterPathMap;
 
     this.currentPath = currentPath;
     this.nextPath = this.currentPath;
+
+    this.fillColor = fillColor;
+    this.strokeColor = strokeColor;
 
     this.ratio = 0;
 
@@ -138,7 +143,22 @@ class Alphabet extends Animated {
   newPath(fontName, letter) {
     this.currentPath = this.nextPath;
     this.nextPath = this.letterPathMap[fontName][letter];
-    this.interpolator = flubber.interpolate(this.currentPath, this.nextPath, {maxSegmentLength: 1});
+
+    // this.element.children().forEach(e=>e.remove());
+    // for (let pathString of flubber.separate(this.currentPath, flubber.splitPathString(this.nextPath))) {
+    //   this.element.append(svgContainer.path(pathString).attr({fill: this.fillColor, stroke: this.strokeColor}));
+    // }
+
+    // this.interpolators = flubber.combine(flubber.splitPathString(this.currentPath), this.nextPath, {maxSegmentLength: 1})
+    this.interpolator = flubber.separate(this.currentPath, flubber.splitPathString(this.nextPath), {maxSegmentLength: 1, single: true})
+
+    // this.interpolator = (ratio)=>{
+    //   for (let i = 0; i < this.interpolators.length; i++) {
+    //     let interpolator = this.interpolators[i];
+    //     let child = this.element.children()[i]
+    //     child.attr('d', interpolator(ratio));
+    //   }
+    // };
     this.status = 0;
   }
 
