@@ -440,7 +440,7 @@ class Animated {
         // order matters here because of easing functions
         // if an animation using easein gets split in two,
         // it looks different depending on where the split happens.
-        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status']) {
+        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'lookAngle', 'lookMagnitude', 'topEyelidOpen', 'bottomEyelidOpen']) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
             

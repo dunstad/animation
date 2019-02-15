@@ -181,7 +181,8 @@ var scenes = {
     let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).openTop(1).openBottom(1).process();
 
-    eye.openTop(.5, 500).openBottom(.5, 500, {waitForFinish: false});
+    eye.wait(500);
+    eye.openTop(.5, 500).openBottom(.5, 500, {waitForFinish: false, after: 500});
     eye.look(0, 50, 250);
     eye.look(0, -50, 2000);
     eye.look(90, 50, 500);
@@ -189,6 +190,8 @@ var scenes = {
     eye.look(270, 50, 300);
     eye.look(360, 50, 200);
     eye.look(360, 0, 100);
+    eye.openTop(.5, 100, {waitForFinish: false});
+    // eye.openBottom(.5, 100, {waitForFinish: false, after: 4550});
 
     scene.addActor(eye);
 
