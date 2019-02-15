@@ -179,11 +179,9 @@ var scenes = {
     svgContainer.rect(0, 0, 1000, 500).attr({fillColor: 'gray'});
 
     let eye = new Eye(svgContainer, 50, 20, 10);
-    eye.move(100, 100).process();
+    eye.move(100, 100).openTop(1).openBottom(1).process();
 
-    // eye.toPhase(1, 20000);
-
-    eye.wait(500);
+    eye.openTop(.5, 500).openBottom(.5, 500, {waitForFinish: false});
     eye.look(0, 50, 250);
     eye.look(0, -50, 2000);
     eye.look(90, 50, 500);
