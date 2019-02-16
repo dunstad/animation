@@ -440,7 +440,7 @@ class Animated {
         // order matters here because of easing functions
         // if an animation using easein gets split in two,
         // it looks different depending on where the split happens.
-        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'lookAngle', 'lookMagnitude', 'topEyelidOpen', 'bottomEyelidOpen']) {
+        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'topEyelidOpen', 'bottomEyelidOpen', 'lookAngle', 'lookMagnitude']) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
             
@@ -502,6 +502,9 @@ class Animated {
      */
     let mergeWithQueue = (transformation, queue)=>{
 
+      console.log('trans', transformation.propertyValueMap)
+      queue.forEach(i=>console.log('q', i.propertyValueMap))
+
       if (!queue.length) {queue.push(transformation);}
 
       else {
@@ -509,6 +512,7 @@ class Animated {
         let firstQueued = queue.shift();
         let mergeResult = this.merge(transformation, firstQueued);
         
+        // queue merging should stop when original transformation is in
         if (mergeResult[1]) {
           
           mergeWithQueue(mergeResult[1], queue);
