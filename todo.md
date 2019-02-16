@@ -10,9 +10,8 @@
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
   * eye
-    * maybe a parent class for a set of eyes, since they'll generally all be looking at the same point at once
-    * should be able to blink
-      * maybe other settings for the eyelids too, perhaps eyebrows for expressions?
+    * bug with translation strings for looking and merging
+      * just make it an Animated instead?
   * robot arm
     * not super general maybe as far as use in lots of scenes goes
     * will probably be super fun to make though

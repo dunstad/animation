@@ -186,18 +186,18 @@ var scenes = {
     // eye.look(0, 50, 500);
     // eye.openTop(.5, 500, {waitForFinish: false, after: 500}).openBottom(.5, 500, {waitForFinish: false, after: 500});
 
-    // eye.wait(500);
-    // eye.openTop(.5, 500).openBottom(.5, 500, {waitForFinish: false, after: 500});
-    eye.look(0, 50, 10000);
-    eye.look(0, 50, 1);
-    // eye.look(0, -50, 2000);
-    // eye.look(90, 50, 500);
-    // eye.look(180, 50, 400);
-    // eye.look(270, 50, 300);
-    // eye.look(360, 50, 200);
-    // eye.look(360, 0, 100);
-    eye.openTop(.5, 100, {waitForFinish: false});
-    // eye.openBottom(.5, 100, {waitForFinish: false});
+    eye.wait(500);
+    eye.look(0, 50, 250);
+    eye.openTop(.5, 500, {waitForFinish: false, after: 750})
+    eye.openBottom(.5, 500, {waitForFinish: false, after: 750});
+    eye.look(0, -50, 1000);
+    eye.look(90, 50, 500);
+    eye.look(180, 50, 400);
+    eye.look(270, 50, 300);
+    eye.look(360, 50, 200);
+    eye.look(360, 0, 100);
+    eye.openTop(1, 100, {waitForFinish: false, after: 3150});
+    eye.openBottom(1, 100, {waitForFinish: false, after: 3150});
 
     scene.addActor(eye);
 

@@ -440,7 +440,7 @@ class Animated {
         // order matters here because of easing functions
         // if an animation using easein gets split in two,
         // it looks different depending on where the split happens.
-        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'topEyelidOpen', 'bottomEyelidOpen', 'lookAngle', 'lookMagnitude']) {
+        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'lookAngle', 'lookMagnitude', 'topEyelidOpen', 'bottomEyelidOpen']) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
             
@@ -500,10 +500,7 @@ class Animated {
      * @param {Transformation} transformation 
      * @param {AnimationQueue} queue 
      */
-    let mergeWithQueue = (transformation, queue)=>{
-
-      console.log('trans', transformation.propertyValueMap)
-      queue.forEach(i=>console.log('q', i.propertyValueMap))
+    let mergeWithQueue = (transformation, remainingTime, queue)=>{
 
       if (!queue.length) {queue.push(transformation);}
 
@@ -511,11 +508,24 @@ class Animated {
 
         let firstQueued = queue.shift();
         let mergeResult = this.merge(transformation, firstQueued);
+
+        remainingTime -= firstQueued.milliseconds;
         
         // queue merging should stop when original transformation is in
         if (mergeResult[1]) {
+
+          if (remainingTime > 0) {
+            
+            mergeWithQueue(mergeResult[1], remainingTime, queue);
+
+          }
+
+          else {
+
+            queue.unshift(mergeResult[1]);
+
+          }
           
-          mergeWithQueue(mergeResult[1], queue);
           
         }
         
@@ -529,7 +539,9 @@ class Animated {
       
       this.animationQueue.queue.unshift(newTransformation);
   
-      mergeWithQueue(this.currentAnimationToTransformation(), this.animationQueue.queue);
+      let currentAnimation = this.currentAnimationToTransformation();
+      let remainingTime = currentAnimation.milliseconds;
+      mergeWithQueue(currentAnimation, remainingTime, this.animationQueue.queue);
   
       this.process();
 
@@ -537,7 +549,8 @@ class Animated {
 
     else {
 
-      mergeWithQueue(newTransformation, this.animationQueue.queue);
+      let remainingTime = newTransformation.milliseconds;
+      mergeWithQueue(newTransformation, remainingTime, this.animationQueue.queue);
 
     }
 
