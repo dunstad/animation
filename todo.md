@@ -20,6 +20,7 @@
     * generate a gear with any number of teeth
     * transmission class to match up their rotations?
     * customizable teeth?
+  * a lot of classes should probably use a config object for appearance stuff
   * add optional glow for moon, star, and flame
   * i'm sure there's a prettier way to draw clouds
   * fancier clock hands, numbers instead of blank marks?
