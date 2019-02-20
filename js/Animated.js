@@ -440,6 +440,25 @@ class Animated {
         // order matters here because of easing functions
         // if an animation using easein gets split in two,
         // it looks different depending on where the split happens.
+
+
+        // this should help get rid of the need to specify every property:
+
+        // function orderProperties(propertyNames) {
+        //   let order = ['c', 'a', 'b'];
+          
+        //   let inOrder = propertyNames.filter(name=>order.indexOf(name) !== -1);
+        //   inOrder.sort((a, b)=>order.indexOf(a) - order.indexOf(b));
+        
+        //   let outOfOrder = propertyNames.filter(name=>order.indexOf(name) === -1);
+        //   outOfOrder.sort();
+        
+        //   console.log(inOrder)
+        //   console.log(outOfOrder)
+        
+        //   return inOrder.concat(outOfOrder);
+        // }
+
         for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'lookAngle', 'lookMagnitude', 'topEyelidOpen', 'bottomEyelidOpen']) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
