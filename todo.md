@@ -31,6 +31,11 @@
 
 #### animation
 * fix merge code so i don't have to keep manually adding new property names
+* {waitForFinish: false} always sending to the start of the queue is inconvenient
+  * make it merge onto the back of the queue instead
+    * this would eliminate the need for 'after' as well
+    * example that would be made possible: thing.move(0, 0).move(10, 10).spin(90, merge)
+    * current version: thing.move(0, 0).move(10, 10).spin(90, merge, after: duration of first move)
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)
