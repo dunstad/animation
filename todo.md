@@ -31,7 +31,6 @@
 
 
 #### animation
-* fix merge code so i don't have to keep manually adding new property names
 * 'after', or merging onto the back of the queue, requires reading the queue to figure out what values attributes are expected to have at the time of merging
   * otherwise the values end up being 0 and the animations appear to reset before progressing
 * {waitForFinish: false} always sending to the start of the queue is inconvenient

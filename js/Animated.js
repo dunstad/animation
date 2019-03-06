@@ -444,22 +444,27 @@ class Animated {
 
         // this should help get rid of the need to specify every property:
 
-        // function orderProperties(propertyNames) {
-        //   let order = ['c', 'a', 'b'];
+        function orderProperties(propertyNames) {
+          let order = ['rotation', 'scalar', 'x', 'y'];
           
-        //   let inOrder = propertyNames.filter(name=>order.indexOf(name) !== -1);
-        //   inOrder.sort((a, b)=>order.indexOf(a) - order.indexOf(b));
+          let inOrder = propertyNames.filter(name=>order.indexOf(name) !== -1);
+          inOrder.sort((a, b)=>order.indexOf(a) - order.indexOf(b));
         
-        //   let outOfOrder = propertyNames.filter(name=>order.indexOf(name) === -1);
-        //   outOfOrder.sort();
+          let outOfOrder = propertyNames.filter(name=>order.indexOf(name) === -1);
+          outOfOrder.sort();
         
-        //   console.log(inOrder)
-        //   console.log(outOfOrder)
-        
-        //   return inOrder.concat(outOfOrder);
-        // }
+          return inOrder.concat(outOfOrder);
+        }
 
-        for (let propertyName of ['rotation', 'scalar', 'x', 'y', 'status', 'lookAngle', 'lookMagnitude', 'topEyelidOpen', 'bottomEyelidOpen']) {
+        let propertyNames = new Set(
+          orderProperties(
+            Object.keys(longTransformation.propertyValueMap).concat(Object.keys(shortTransformation.propertyValueMap))
+          )
+        );
+
+        console.log(propertyNames)
+
+        for (let propertyName of propertyNames) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
             
