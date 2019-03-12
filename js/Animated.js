@@ -462,8 +462,6 @@ class Animated {
           )
         );
 
-        console.log(propertyNames)
-
         for (let propertyName of propertyNames) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {

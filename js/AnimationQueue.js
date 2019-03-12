@@ -18,4 +18,8 @@ class AnimationQueue {
     return result;
   }
 
+  finalState() {
+    return this.queue.map(t=>t.propertyValueMap).reduce((accumulator, currentValue)=>{return {...accumulator, ...currentValue};}, {});
+  }
+
 }
