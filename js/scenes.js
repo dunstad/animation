@@ -143,8 +143,8 @@ var scenes = {
     
     robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}});
     // robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.easeout}});
-    // robotoA.scale(.5, transitionTime, {waitForFinish: false, after: 2000, easingMap: {scalar: mina.easein}});
-    // robotoA.scale(1, transitionTime, {waitForFinish: false, after: 4000, easingMap: {scalar: mina.easeout}});
+    // robotoA.scale(.5, transitionTime, {merge: 'start', after: 2000, easingMap: {scalar: mina.easein}});
+    // robotoA.scale(1, transitionTime, {merge: 'start', after: 4000, easingMap: {scalar: mina.easeout}});
     
     let stencilA = new Alphabet(svgContainer, 'Allerta Stencil', 'A', 'white', 'black');
 
@@ -184,20 +184,20 @@ var scenes = {
     // eye.wait(500);
     // eye.look(0, -50, 500);
     // eye.look(0, 50, 500);
-    // eye.openTop(.5, 500, {waitForFinish: false, after: 500}).openBottom(.5, 500, {waitForFinish: false, after: 500});
+    // eye.openTop(.5, 500, {merge: 'start', after: 500}).openBottom(.5, 500, {merge: 'start', after: 500});
 
     eye.wait(500);
     eye.look(0, 50, 250);
-    eye.openTop(.5, 500, {waitForFinish: false, after: 750})
-    eye.openBottom(.5, 500, {waitForFinish: false, after: 750});
+    eye.openTop(.5, 500, {merge: 'start', after: 750})
+    eye.openBottom(.5, 500, {merge: 'start', after: 750});
     eye.look(0, -50, 1000);
     eye.look(90, 50, 500);
     eye.look(180, 50, 400);
     eye.look(270, 50, 300);
     eye.look(360, 50, 200);
     eye.look(360, 0, 100);
-    eye.openTop(1, 100, {waitForFinish: false, after: 3150});
-    eye.openBottom(1, 100, {waitForFinish: false, after: 3150});
+    eye.openTop(1, 100, {merge: 'start', after: 3150});
+    eye.openBottom(1, 100, {merge: 'start', after: 3150});
 
     scene.addActor(eye);
 

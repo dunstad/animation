@@ -15,8 +15,8 @@ class Transformation {
     // function
     this.callback = transformationObject.callback;
 
-    // boolean
-    this.waitForFinish = transformationObject.waitForFinish;
+    // 'start', 'end', a number from 0 to 1, or undefined
+    this.merge = transformationObject.merge;
   }
 
   /**

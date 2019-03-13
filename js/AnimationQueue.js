@@ -8,13 +8,22 @@ class AnimationQueue {
     return this.queue.length;
   }
 
-  add(transformation) {
-    this.queue.push(transformation);
+  /**
+   * Used to add transformations to the queue.
+   */
+  add() {
+    this.queue.push(...arguments);
   }
 
   next() {
     let result;
     result = this.queue.shift();
+    return result;
+  }
+
+  last() {
+    let result;
+    result = this.queue.pop();
     return result;
   }
 

@@ -136,7 +136,7 @@ class Animated {
    * @return {Animated}
    */
   sendToQueue(transformation) {
-  if (transformation.waitForFinish) {
+  if (transformation.merge === undefined) {
       this.animationQueue.add(transformation);
     }
     else {
@@ -153,19 +153,18 @@ class Animated {
     let result = Object.assign({}, transformationObject);
     if (result.after) {
       let callbackTransform = Object.assign({}, transformationObject);
-      callbackTransform.waitForFinish = false;
+      callbackTransform.merge = 'start';
       let after = callbackTransform.after;
       delete callbackTransform.after;
       result = {
         propertyValueMap: {},
         milliseconds: after,
-        waitForFinish: transformationObject.waitForFinish,
+        merge: transformationObject.merge,
         callback: ()=>{
           this.addTransformation(callbackTransform);
         },
       };
     }
-    result.waitForFinish == undefined && (result.waitForFinish = true);
     return this.sendToQueue(new Transformation(result));
   }
 
@@ -258,7 +257,7 @@ class Animated {
     if (this.sentinels.spin) {
       transformation = {
         propertyValueMap: {},
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.sentinels.spin = false;
         },
@@ -269,7 +268,7 @@ class Animated {
       transformation = {
         propertyValueMap: {rotation: this.rotation + degrees},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           if (this.sentinels.spin) {
             transformation.propertyValueMap.rotation = this.rotation + degrees;
@@ -290,7 +289,7 @@ class Animated {
     if (this.sentinels.pulse) {
       transformation = {
         propertyValueMap: {},
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.sentinels.pulse = false;
         },
@@ -301,7 +300,7 @@ class Animated {
       let scaleUp = {
         propertyValueMap: {scalar: scalar},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.addTransformation(scaleDown);
         },
@@ -310,7 +309,7 @@ class Animated {
       let scaleDown = {
         propertyValueMap: {scalar: this.scalar},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           if (this.sentinels.pulse) {
             this.addTransformation(scaleUp);
@@ -425,14 +424,12 @@ class Animated {
           milliseconds: shortTransformation.milliseconds,
           easingMap: mergedEasingMap,
           animate: true,
-          waitForFinish: true,
           callback: shortTransformation.callback,
         });
         let secondTransformation = new Transformation({
           milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
           easingMap: longTransformation.easingMap,
           animate: true,
-          waitForFinish: true,
           callback: longTransformation.callback,
         });
 
@@ -541,14 +538,14 @@ class Animated {
      */
     let mergeWithQueue = (transformation, queue)=>{
 
-      if (!queue.length) {queue.push(transformation);}
+      if (!queue.length) {queue.add(transformation);}
 
       else {
 
-        let lastQueued = queue.pop();
+        let lastQueued = queue.last();
         let mergeResult = this.merge(transformation, lastQueued);
 
-        queue.push(...mergeResult);
+        queue.add(...mergeResult);
 
       }
 
@@ -557,14 +554,14 @@ class Animated {
     // Now that we're merging onto the back of the queue, whether an
     // animation is in progress only matters if the queue is empty.
     // Otherwise, we just merge with the end of the queue.
-    if (Object.keys(this.anims).length && !queue.length) {
+    if (Object.keys(this.anims).length && !this.animationQueue.length) {
 
       console.log('merging with animation in progress!')
       
-      this.animationQueue.queue.push(newTransformation);
+      this.animationQueue.add(newTransformation);
   
       let currentAnimation = this.currentAnimationToTransformation();
-      mergeWithQueue(currentAnimation, this.animationQueue.queue);
+      mergeWithQueue(currentAnimation, this.animationQueue);
   
       this.process();
 
@@ -574,7 +571,7 @@ class Animated {
 
       console.log('merging with end of queue!')
 
-      mergeWithQueue(newTransformation, this.animationQueue.queue);
+      mergeWithQueue(newTransformation, this.animationQueue);
 
     }
 

@@ -61,28 +61,28 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testMergeAnimation(animated) {
-    animated.rotate(90, 2000).scale(2, 1000, {after: 500, waitForFinish: false});
+    animated.rotate(90, 2000).scale(2, 1000, {after: 500, merge: 'start'});
   },
 
   /**
    * @param {Animated} animated
    */
   function testSeparateXAndY(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, waitForFinish: false});
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, merge: 'start'});
   },
   
   /**
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, waitForFinish: false, easingMap: {y: mina.easeinout}});
+    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, merge: 'start', easingMap: {y: mina.easeinout}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 1000*2).moveY(100, 500, {easingMap: {y: mina.easeinout}, waitForFinish: false, after: 1000})
+    animated.moveX(300, 1000*2).moveY(100, 500, {easingMap: {y: mina.easeinout}, merge: 'start', after: 1000})
   },
   
   /**
@@ -90,8 +90,8 @@ animatedTests = [
    */
   function testAutoMerge2(animated) {
     animated.moveX(300, 1000*4);
-    animated.moveY(100, 1000*4, {waitForFinish: false});
-    animated.rotate(360, 1000*4, {waitForFinish: false});
+    animated.moveY(100, 1000*4, {merge: 'start'});
+    animated.rotate(360, 1000*4, {merge: 'start'});
   },
   
   /**
@@ -99,8 +99,8 @@ animatedTests = [
    */
   function testMergeWithQueue(animated) {
     animated.moveX(300, 1000*1);
-    animated.rotate(360, 1000*2, {waitForFinish: false});
-    animated.moveY(100, 1000*1, {waitForFinish: false});
+    animated.rotate(360, 1000*2, {merge: 'start'});
+    animated.moveY(100, 1000*1, {merge: 'start'});
   },
 
   /**
@@ -108,9 +108,9 @@ animatedTests = [
    */
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
-    animated.moveX(100, 1000, {waitForFinish: false});
+    animated.moveX(100, 1000, {merge: 'start'});
     animated.wait(500);
-    animated.wait(500, {waitForFinish: false, callback: ()=>{animated.toggleSpin();}});
+    animated.wait(500, {merge: 'start', callback: ()=>{animated.toggleSpin();}});
   },
 
   /**
@@ -118,7 +118,7 @@ animatedTests = [
    */
   function testMergeWithoutMilliseconds(animated) {
     animated.moveX(100);
-    animated.moveY(100, 1000, {waitForFinish: false});
+    animated.moveY(100, 1000, {merge: 'start'});
   },
 
   /**
@@ -126,7 +126,7 @@ animatedTests = [
    */
   function testMergeWithoutMilliseconds2(animated) {
     animated.moveX(100, 1000);
-    animated.moveY(100, {waitForFinish: false});
+    animated.moveY(100, {merge: 'start'});
   },
 
   /**
