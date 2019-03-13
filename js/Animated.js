@@ -420,18 +420,38 @@ class Animated {
 
         let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
 
-        let firstTransformation = new Transformation({
-          milliseconds: shortTransformation.milliseconds,
-          easingMap: mergedEasingMap,
-          animate: true,
-          callback: shortTransformation.callback,
-        });
-        let secondTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-          easingMap: longTransformation.easingMap,
-          animate: true,
-          callback: longTransformation.callback,
-        });
+        let firstTransformation, secondTransformation;
+
+        if (shortTransformation.merge === 'start') {
+
+          firstTransformation = new Transformation({
+            milliseconds: shortTransformation.milliseconds,
+            easingMap: mergedEasingMap,
+            animate: true,
+            callback: shortTransformation.callback,
+          });
+          secondTransformation = new Transformation({
+            milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+            easingMap: longTransformation.easingMap,
+            animate: true,
+            callback: longTransformation.callback,
+          });
+
+        }
+
+        else if (shortTransformation.merge === 'end') {
+
+
+
+        }
+
+        // in this case, merge should be a number from 0 to 1
+        else {
+          
+
+
+        }
+
 
         let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
