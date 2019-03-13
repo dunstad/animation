@@ -395,6 +395,7 @@ class Animated {
 
   /**
    * Used to allow different animations to run at the same time by combining them.
+   * @param {Transformation} transformation 
    * @param {Transformation} otherTransformation 
    * @return {Transformation[]}
    */
@@ -433,7 +434,16 @@ class Animated {
 
         let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
+        /**
+         * Find what the property value will be when the merged animation starts,
+         * then split the animation between that value and the final one.
+         * @param {String} propertyName 
+         */
         let splitNumberValue = (propertyName) => {
+          let valueAfterQueue = this.animationQueue.finalState()[propertyName];
+          if (valueAfterQueue === undefined) {
+            valueAfterQueue = this[propertyName];
+          }
           return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
         };
 
@@ -522,48 +532,30 @@ class Animated {
      * @param {Transformation} transformation 
      * @param {AnimationQueue} queue 
      */
-    let mergeWithQueue = (transformation, remainingTime, queue)=>{
+    let mergeWithQueue = (transformation, queue)=>{
 
       if (!queue.length) {queue.push(transformation);}
 
       else {
 
-        let firstQueued = queue.shift();
-        let mergeResult = this.merge(transformation, firstQueued);
+        let lastQueued = queue.pop();
+        let mergeResult = this.merge(transformation, lastQueued);
 
-        remainingTime -= firstQueued.milliseconds;
-        
-        // queue merging should stop when original transformation is in
-        if (mergeResult[1]) {
-
-          if (remainingTime > 0) {
-            
-            mergeWithQueue(mergeResult[1], remainingTime, queue);
-
-          }
-
-          else {
-
-            queue.unshift(mergeResult[1]);
-
-          }
-          
-          
-        }
-        
-        queue.unshift(mergeResult[0]);
+        queue.push(...mergeResult);
 
       }
 
     }
 
-    if (Object.keys(this.anims).length) {
+    // Now that we're merging onto the back of the queue, whether an
+    // animation is in progress only matters if the queue is empty.
+    // Otherwise, we just merge with the end of the queue.
+    if (Object.keys(this.anims).length && !queue.length) {
       
-      this.animationQueue.queue.unshift(newTransformation);
+      this.animationQueue.queue.push(newTransformation);
   
       let currentAnimation = this.currentAnimationToTransformation();
-      let remainingTime = currentAnimation.milliseconds;
-      mergeWithQueue(currentAnimation, remainingTime, this.animationQueue.queue);
+      mergeWithQueue(currentAnimation, this.animationQueue.queue);
   
       this.process();
 
@@ -571,8 +563,7 @@ class Animated {
 
     else {
 
-      let remainingTime = newTransformation.milliseconds;
-      mergeWithQueue(newTransformation, remainingTime, this.animationQueue.queue);
+      mergeWithQueue(newTransformation, this.animationQueue.queue);
 
     }
 
