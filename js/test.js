@@ -109,7 +109,8 @@ animatedTests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {waitForFinish: false});
-    animated.addTransformation({propertyValueMap: {}, after: 1500, waitForFinish: false, callback: ()=>{animated.toggleSpin();}});
+    animated.wait(500);
+    animated.wait(500, {waitForFinish: false, callback: ()=>{animated.toggleSpin();}});
   },
 
   /**

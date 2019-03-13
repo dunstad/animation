@@ -31,35 +31,27 @@
 
 
 #### animation
-* 'after', or merging onto the back of the queue, requires reading the queue to figure out what values attributes are expected to have at the time of merging
-  * otherwise the values end up being 0 and the animations appear to reset before progressing
-* {waitForFinish: false} always sending to the start of the queue is inconvenient
-  
-  ```
-  possible merge
-  |--------------------------||--------------------------|
-                                      |---------|
+```
+possible merge
+|--------------------------||--------------------------|
+                                    |---------|
 
-  current behavior
-  |--------------------------||--------------------------|
-  |---------|
+current behavior
+|--------------------------||--------------------------|
+|---------|
 
-  alternative 1
-  |--------------------------||--------------------------|
-                              |---------|
+alternative 1
+|--------------------------||--------------------------|
+                            |---------|
 
-  alternative 2
-  |--------------------------||--------------------------|
-                                               |---------|
-  ```
-  * make it merge onto the back of the queue instead?
-    * this would eliminate the need for 'after' as well
-    * example that would be made possible: thing.move(0, 0).move(10, 10).spin(90, merge)
-    * current version: thing.move(0, 0).move(10, 10).spin(90, merge, after: duration of first move)
-  * in addition to merging to the back, have three alignment options
-    * align to start, like alternative 1 above
-    * align to end, like alternative 2 above
-    * accept a status number from 0 to 1, and merge the second animation into the first when its progress reaches that point
+alternative 2
+|--------------------------||--------------------------|
+                                              |---------|
+```
+* add merging alignment options
+  * ~~align to start, like alternative 1 above~~ current behavior
+  * align to end, like alternative 2 above
+  * accept a status number from 0 to 1, and merge the second animation into the first when its progress reaches that point
 
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
