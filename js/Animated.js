@@ -136,7 +136,9 @@ class Animated {
    * @return {Animated}
    */
   sendToQueue(transformation) {
-  if (transformation.merge === undefined) {
+  // merge being 1 is the same as adding onto the end of the queue normally
+  // there's really no reason it should be used, but might as well allow it
+  if (transformation.merge === undefined || transformation.merge === 1) {
       this.animationQueue.add(transformation);
     }
     else {
@@ -422,7 +424,7 @@ class Animated {
 
         let firstTransformation, secondTransformation;
 
-        if (shortTransformation.merge === 'start') {
+        if (shortTransformation.merge === 'start' || shortTransformation.merge === 0) {
 
           firstTransformation = new Transformation({
             milliseconds: shortTransformation.milliseconds,
@@ -441,11 +443,23 @@ class Animated {
 
         else if (shortTransformation.merge === 'end') {
 
-
+          firstTransformation = new Transformation({
+            milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+            easingMap: longTransformation.easingMap,
+            animate: true,
+            callback: longTransformation.callback,
+          });
+          secondTransformation = new Transformation({
+            milliseconds: shortTransformation.milliseconds,
+            easingMap: mergedEasingMap,
+            animate: true,
+            callback: shortTransformation.callback,
+          });
 
         }
 
-        // in this case, merge should be a number from 0 to 1
+        // in this case, merge should be a number greater than 0 and less than 1
+        // 0 is handled above, and 1 is handled in sendToQueue
         else {
           
 
