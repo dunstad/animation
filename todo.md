@@ -38,15 +38,11 @@ possible merge
 
 current behavior
 |--------------------------||--------------------------|
-|---------|
-
-alternative 1
-|--------------------------||--------------------------|
                             |---------|
 
 alternative 2
 |--------------------------||--------------------------|
-                                              |---------|
+                                             |---------|
 ```
 * add merging alignment options
   * ~~align to start, like alternative 1 above~~ current behavior
