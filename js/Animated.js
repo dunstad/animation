@@ -401,6 +401,10 @@ class Animated {
    */
   merge(transformation, otherTransformation) {
 
+    console.log('merging!');
+    console.log(transformation);
+    console.log(otherTransformation);
+
     let result;
 
     if (transformation.milliseconds && otherTransformation.milliseconds) {
@@ -517,6 +521,9 @@ class Animated {
 
     }
 
+    console.log('merge result!');
+    console.log(result);
+
     return result;
 
   }
@@ -528,7 +535,7 @@ class Animated {
   mergeAnimation(newTransformation) {
 
     /**
-     * Recursively merges an animation with all overlapping animations in a queue.
+     * Merges an animation onto the end of a queue.
      * @param {Transformation} transformation 
      * @param {AnimationQueue} queue 
      */
@@ -551,6 +558,8 @@ class Animated {
     // animation is in progress only matters if the queue is empty.
     // Otherwise, we just merge with the end of the queue.
     if (Object.keys(this.anims).length && !queue.length) {
+
+      console.log('merging with animation in progress!')
       
       this.animationQueue.queue.push(newTransformation);
   
@@ -562,6 +571,8 @@ class Animated {
     }
 
     else {
+
+      console.log('merging with end of queue!')
 
       mergeWithQueue(newTransformation, this.animationQueue.queue);
 

@@ -99,8 +99,8 @@ animatedTests = [
    */
   function testMergeWithQueue(animated) {
     animated.moveX(300, 1000*1);
-    animated.moveY(100, 1000*1);
     animated.rotate(360, 1000*2, {waitForFinish: false});
+    animated.moveY(100, 1000*1, {waitForFinish: false});
   },
 
   /**
