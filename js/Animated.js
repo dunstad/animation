@@ -421,51 +421,35 @@ class Animated {
         };
 
         let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
+        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
-        let firstTransformation, secondTransformation;
-
-        if (shortTransformation.merge === 'start' || shortTransformation.merge === 0) {
-
-          firstTransformation = new Transformation({
-            milliseconds: shortTransformation.milliseconds,
-            easingMap: mergedEasingMap,
-            animate: true,
-            callback: shortTransformation.callback,
-          });
-          secondTransformation = new Transformation({
-            milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-            easingMap: longTransformation.easingMap,
-            animate: true,
-            callback: longTransformation.callback,
-          });
-
+        if (shortTransformation.merge === 'start') {shortTransformation.merge = 0;}
+        if (shortTransformation.merge === 'end') {
+          shortTransformation.merge = 1 - durationRatio;
         }
 
-        else if (shortTransformation.merge === 'end') {
-
-          firstTransformation = new Transformation({
-            milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
-            easingMap: longTransformation.easingMap,
-            animate: true,
-            callback: longTransformation.callback,
-          });
-          secondTransformation = new Transformation({
-            milliseconds: shortTransformation.milliseconds,
-            easingMap: mergedEasingMap,
-            animate: true,
-            callback: shortTransformation.callback,
-          });
-
+        if ((shortTransformation.merge < 0) || (shortTransformation.merge > 1)) {
+          throw new Error('The merge property of transformations should be between 0 and 1.');
         }
 
-        // in this case, merge should be a number greater than 0 and less than 1
-        // 0 is handled above, and 1 is handled in sendToQueue
-        else {
-          
-
-
-        }
-
+        let firstTransformation = new Transformation({
+          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+          easingMap: longTransformation.easingMap,
+          animate: true,
+          callback: longTransformation.callback,
+        });
+        let secondTransformation = new Transformation({
+          milliseconds: shortTransformation.milliseconds,
+          easingMap: mergedEasingMap,
+          animate: true,
+          callback: shortTransformation.callback,
+        });
+        let thirdTransformation = new Transformation({
+          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+          easingMap: longTransformation.easingMap,
+          animate: true,
+          callback: longTransformation.callback,
+        });
 
         let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
