@@ -433,7 +433,7 @@ class Animated {
         }
 
         let firstTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+          milliseconds: longTransformation.milliseconds * shortTransformation.merge,
           easingMap: longTransformation.easingMap,
           animate: true,
           callback: longTransformation.callback,
@@ -445,13 +445,11 @@ class Animated {
           callback: shortTransformation.callback,
         });
         let thirdTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+          milliseconds: longTransformation.milliseconds * (1 - (shortTransformation.merge + durationRatio)),
           easingMap: longTransformation.easingMap,
           animate: true,
           callback: longTransformation.callback,
         });
-
-        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
         /**
          * Find what the property value will be when the merged animation starts,
