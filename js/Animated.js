@@ -436,7 +436,6 @@ class Animated {
           milliseconds: longTransformation.milliseconds * shortTransformation.merge,
           easingMap: longTransformation.easingMap,
           animate: true,
-          callback: longTransformation.callback,
         });
         let secondTransformation = new Transformation({
           milliseconds: shortTransformation.milliseconds,
