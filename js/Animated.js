@@ -452,25 +452,11 @@ class Animated {
         });
 
         /**
-         * Find what the property value will be when the merged animation starts,
-         * then split the animation between that value and the final one.
-         * @param {String} propertyName 
+         * Order matters here because of easing functions.
+         * If an animation using easein gets split in two,
+         * it looks different depending on where the split happens.
+         * @param {String[]} propertyNames 
          */
-        let splitNumberValue = (propertyName) => {
-          let valueAfterQueue = this.animationQueue.finalState()[propertyName];
-          if (valueAfterQueue === undefined) {
-            valueAfterQueue = this[propertyName];
-          }
-          return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
-        };
-
-        // order matters here because of easing functions
-        // if an animation using easein gets split in two,
-        // it looks different depending on where the split happens.
-
-
-        // this should help get rid of the need to specify every property:
-
         function orderProperties(propertyNames) {
           let order = ['rotation', 'scalar', 'x', 'y'];
           
@@ -492,15 +478,25 @@ class Animated {
         for (let propertyName of propertyNames) {
           
           if (longTransformation.propertyValueMap[propertyName] != undefined) {
-            
-            firstTransformation.propertyValueMap[propertyName] = splitNumberValue(propertyName);
-            secondTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
+
+            let valueAfterQueue = this.animationQueue.finalState()[propertyName];
+            if (valueAfterQueue === undefined) {
+              valueAfterQueue = this[propertyName];
+            }
+
+            let longProp = longTransformation.propertyValueMap[propertyName];
+            let firstThird = ((longProp - valueAfterQueue) * shortTransformation.merge) + valueAfterQueue;
+            let secondThird = ((longProp - valueAfterQueue) * (1 - (shortTransformation.merge + durationRatio))) + valueAfterQueue;
+
+            firstTransformation.propertyValueMap[propertyName] = firstThird;
+            secondTransformation.propertyValueMap[propertyName] = secondThird;
+            thirdTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
             
           }
           
           else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
             
-            firstTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
+            secondTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
             
           }
           
