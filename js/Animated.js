@@ -484,8 +484,12 @@ class Animated {
             }
 
             let longProp = longTransformation.propertyValueMap[propertyName];
-            let firstThird = ((longProp - valueAfterQueue) * shortTransformation.merge) + valueAfterQueue;
-            let secondThird = ((longProp - valueAfterQueue) * (1 - (shortTransformation.merge + durationRatio))) + valueAfterQueue;
+            let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * shortTransformation.merge);
+            let secondThird =  valueAfterQueue + firstThird + ((longProp - valueAfterQueue) * durationRatio);
+
+            console.log(propertyName)
+            console.log(firstThird)
+            console.log(secondThird)
 
             firstTransformation.propertyValueMap[propertyName] = firstThird;
             secondTransformation.propertyValueMap[propertyName] = secondThird;

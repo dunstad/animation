@@ -61,7 +61,7 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testMergeAnimation(animated) {
-    animated.rotate(90, 2000).scale(2, 1000, {after: 500, merge: 'start'});
+    animated.rotate(90, 2000).scale(2, 1000, {merge: .25});
   },
 
   /**
