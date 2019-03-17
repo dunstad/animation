@@ -68,21 +68,21 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testSeparateXAndY(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, merge: 'start'});
+    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5});
   },
   
   /**
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 1000*4).moveY(100, 1000, {after: 2000, merge: 'start', easingMap: {y: mina.easeinout}});
+    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5, easingMap: {y: mina.easeinout}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 1000*2).moveY(100, 500, {easingMap: {y: mina.easeinout}, merge: 'start', after: 1000})
+    animated.moveX(300, 2000).moveY(100, 500, {easingMap: {y: mina.easeinout}, merge: .5})
   },
   
   /**
@@ -98,9 +98,12 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testMergeWithQueue(animated) {
-    animated.moveX(300, 1000*1);
-    animated.rotate(360, 1000*2, {merge: 'start'});
-    animated.moveY(100, 1000*1, {merge: 'start'});
+    animated.moveX(300, 1000);
+    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
+    animated.rotate(360, 2000, {merge: 'start'});
+    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
+    animated.moveY(100, 1000, {merge: 'start'});
+    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
   },
 
   /**
@@ -109,8 +112,7 @@ animatedTests = [
   function testMergePreservesCallbacks(animated) {
     animated.toggleSpin(360, 1000);
     animated.moveX(100, 1000, {merge: 'start'});
-    animated.wait(500);
-    animated.wait(500, {merge: 'start', callback: ()=>{animated.toggleSpin();}});
+    animated.wait(500, {merge: .5, callback: ()=>{animated.toggleSpin();}});
   },
 
   /**
@@ -164,7 +166,7 @@ let skyTests = [
   }
 ];
 
-for (let test of animatedTests + skyTests) {
+for (let test of animatedTests.concat(skyTests)) {
   window[test.name] = test;
 }
 

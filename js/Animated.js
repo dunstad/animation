@@ -402,10 +402,6 @@ class Animated {
    */
   merge(transformation, otherTransformation) {
 
-    console.log('merging!');
-    console.log(transformation);
-    console.log(otherTransformation);
-
     let result;
 
     if (transformation.milliseconds && otherTransformation.milliseconds) {
@@ -487,10 +483,6 @@ class Animated {
             let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * shortTransformation.merge);
             let secondThird =  valueAfterQueue + firstThird + ((longProp - valueAfterQueue) * durationRatio);
 
-            console.log(propertyName)
-            console.log(firstThird)
-            console.log(secondThird)
-
             firstTransformation.propertyValueMap[propertyName] = firstThird;
             secondTransformation.propertyValueMap[propertyName] = secondThird;
             thirdTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
@@ -510,7 +502,7 @@ class Animated {
         if (thirdTransformation.milliseconds <= 0) {
           let secondCallback = secondTransformation.callback;
           secondTransformation.callback = ()=>{
-            secondCallback.callback && secondCallback.callback();
+            secondCallback && secondCallback();
             thirdTransformation.callback && thirdTransformation.callback();
           };
         }
@@ -530,9 +522,6 @@ class Animated {
       result = [otherTransformation, transformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
 
     }
-
-    console.log('merge result!');
-    console.log(result);
 
     return result;
 
@@ -569,8 +558,6 @@ class Animated {
     // Otherwise, we just merge with the end of the queue.
     if (Object.keys(this.anims).length && !this.animationQueue.length) {
 
-      console.log('merging with animation in progress!')
-      
       this.animationQueue.add(newTransformation);
   
       let currentAnimation = this.currentAnimationToTransformation();
@@ -581,8 +568,6 @@ class Animated {
     }
 
     else {
-
-      console.log('merging with end of queue!')
 
       mergeWithQueue(newTransformation, this.animationQueue);
 
