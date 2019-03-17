@@ -419,8 +419,6 @@ class Animated {
           throw new Error('The merge property of transformations should be between 0 and 1.');
         }
 
-        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
-
         let firstTransformation = new Transformation({
           milliseconds: longTransformation.milliseconds * mergeTransformation.merge,
           easingMap: longTransformation.easingMap,
@@ -433,7 +431,7 @@ class Animated {
           callback: shortTransformation.callback,
         });
         let thirdTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds * (1 - (mergeTransformation.merge + durationRatio)),
+          milliseconds: longTransformation.milliseconds - (firstTransformation.milliseconds + secondTransformation.milliseconds),
           easingMap: longTransformation.easingMap,
           animate: true,
           callback: longTransformation.callback,
@@ -472,6 +470,8 @@ class Animated {
               valueAfterQueue = this[propertyName];
             }
 
+            // todo fix this
+            let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
             let longProp = longTransformation.propertyValueMap[propertyName];
             let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * mergeTransformation.merge);
             let secondThird =  valueAfterQueue + firstThird + ((longProp - valueAfterQueue) * durationRatio);
