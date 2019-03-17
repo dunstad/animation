@@ -501,15 +501,13 @@ class Animated {
           
         }
         
-        result = [firstTransformation];
-        if (secondTransformation.milliseconds > 0) {
-          result.push(secondTransformation);
-        }
-        else {
-          let firstCallback = firstTransformation.callback;
-          firstTransformation.callback = ()=>{
-            firstCallback && firstCallback();
-            secondTransformation.callback && secondTransformation.callback();
+        result = [firstTransformation, secondTransformation, thirdTransformation].filter(t=>t.milliseconds>0);
+
+        if (thirdTransformation.milliseconds <= 0) {
+          let secondCallback = secondTransformation.callback;
+          secondTransformation.callback = ()=>{
+            secondCallback.callback && secondCallback.callback();
+            thirdTransformation.callback && thirdTransformation.callback();
           };
         }
 
