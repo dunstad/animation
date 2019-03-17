@@ -396,6 +396,8 @@ class Animated {
 
   /**
    * Used to allow different animations to run at the same time by combining them.
+   * Order here determines at what point in the baseTransformation
+   * the mergeTransformation will start.
    * @param {Transformation} baseTransformation 
    * @param {Transformation} mergeTransformation 
    * @return {Transformation[]}
