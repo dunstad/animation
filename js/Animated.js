@@ -153,20 +153,6 @@ class Animated {
    */
   addTransformation(transformationObject) {
     let result = Object.assign({}, transformationObject);
-    if (result.after) {
-      let callbackTransform = Object.assign({}, transformationObject);
-      callbackTransform.merge = 'start';
-      let after = callbackTransform.after;
-      delete callbackTransform.after;
-      result = {
-        propertyValueMap: {},
-        milliseconds: after,
-        merge: transformationObject.merge,
-        callback: ()=>{
-          this.addTransformation(callbackTransform);
-        },
-      };
-    }
     return this.sendToQueue(new Transformation(result));
   }
 
