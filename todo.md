@@ -31,24 +31,6 @@
 
 
 #### animation
-```
-possible merge
-|--------------------------||--------------------------|
-                                    |---------|
-
-current behavior
-|--------------------------||--------------------------|
-                            |---------|
-
-alternative 2
-|--------------------------||--------------------------|
-                                             |---------|
-```
-* add merging alignment options
-  * ~~align to start, like alternative 1 above~~ current behavior
-  * align to end, like alternative 2 above
-  * accept a status number from 0 to 1, and merge the second animation into the first when its progress reaches that point
-
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)

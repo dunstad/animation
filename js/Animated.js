@@ -396,19 +396,19 @@ class Animated {
 
   /**
    * Used to allow different animations to run at the same time by combining them.
-   * @param {Transformation} transformation 
-   * @param {Transformation} otherTransformation 
+   * @param {Transformation} baseTransformation 
+   * @param {Transformation} mergeTransformation 
    * @return {Transformation[]}
    */
-  merge(transformation, otherTransformation) {
+  merge(baseTransformation, mergeTransformation) {
 
     let result;
 
-    if (transformation.milliseconds && otherTransformation.milliseconds) {
+    if (baseTransformation.milliseconds && mergeTransformation.milliseconds) {
 
-      if (transformation.canMergeWith(otherTransformation)) {
+      if (baseTransformation.canMergeWith(mergeTransformation)) {
 
-        let [shortTransformation, longTransformation] = [transformation, otherTransformation].sort((a, b)=>{
+        let [shortTransformation, longTransformation] = [baseTransformation, mergeTransformation].sort((a, b)=>{
           return a.milliseconds - b.milliseconds;
         });
 
@@ -417,19 +417,24 @@ class Animated {
         };
 
         let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
-        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
 
-        if (shortTransformation.merge === 'start') {shortTransformation.merge = 0;}
-        if (shortTransformation.merge === 'end') {
-          shortTransformation.merge = 1 - durationRatio;
+        let mergeRatio = mergeTransformation.milliseconds / baseTransformation.milliseconds;
+        if (mergeTransformation.merge === 'start') {mergeTransformation.merge = 0;}
+        if (mergeTransformation.merge === 'end') {
+          // don't let animations try merging back beyond the current base
+          // otherwise this could happen when merging long animations into
+          // short ones
+          mergeTransformation.merge = Math.max(1 - mergeRatio, 0);
         }
 
-        if ((shortTransformation.merge < 0) || (shortTransformation.merge > 1)) {
+        if ((mergeTransformation.merge < 0) || (mergeTransformation.merge > 1)) {
           throw new Error('The merge property of transformations should be between 0 and 1.');
         }
 
+        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+
         let firstTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds * shortTransformation.merge,
+          milliseconds: longTransformation.milliseconds * mergeTransformation.merge,
           easingMap: longTransformation.easingMap,
           animate: true,
         });
@@ -440,7 +445,7 @@ class Animated {
           callback: shortTransformation.callback,
         });
         let thirdTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds * (1 - (shortTransformation.merge + durationRatio)),
+          milliseconds: longTransformation.milliseconds * (1 - (mergeTransformation.merge + durationRatio)),
           easingMap: longTransformation.easingMap,
           animate: true,
           callback: longTransformation.callback,
@@ -472,7 +477,7 @@ class Animated {
 
         for (let propertyName of propertyNames) {
           
-          if (longTransformation.propertyValueMap[propertyName] != undefined) {
+          if (longTransformation.propertyValueMap[propertyName] !== undefined) {
 
             let valueAfterQueue = this.animationQueue.finalState()[propertyName];
             if (valueAfterQueue === undefined) {
@@ -480,16 +485,16 @@ class Animated {
             }
 
             let longProp = longTransformation.propertyValueMap[propertyName];
-            let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * shortTransformation.merge);
+            let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * mergeTransformation.merge);
             let secondThird =  valueAfterQueue + firstThird + ((longProp - valueAfterQueue) * durationRatio);
 
             firstTransformation.propertyValueMap[propertyName] = firstThird;
             secondTransformation.propertyValueMap[propertyName] = secondThird;
-            thirdTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
+            thirdTransformation.propertyValueMap[propertyName] = longProp;
             
           }
           
-          else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
+          else if (shortTransformation.propertyValueMap[propertyName] !== undefined) {
             
             secondTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
             
@@ -510,7 +515,7 @@ class Animated {
       }
     
       else {
-        console.error(transformation, otherTransformation);
+        console.error(baseTransformation, mergeTransformation);
         throw new Error('incompatible transformations');
       }
 
@@ -519,7 +524,7 @@ class Animated {
     else {
 
       // instantaneous transformations should happen first
-      result = [otherTransformation, transformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
+      result = [mergeTransformation, baseTransformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
 
     }
 
@@ -545,7 +550,7 @@ class Animated {
       else {
 
         let lastQueued = queue.last();
-        let mergeResult = this.merge(transformation, lastQueued);
+        let mergeResult = this.merge(lastQueued, transformation);
 
         queue.add(...mergeResult);
 
@@ -558,10 +563,10 @@ class Animated {
     // Otherwise, we just merge with the end of the queue.
     if (Object.keys(this.anims).length && !this.animationQueue.length) {
 
-      this.animationQueue.add(newTransformation);
+      this.animationQueue.add(currentAnimation);
   
       let currentAnimation = this.currentAnimationToTransformation();
-      mergeWithQueue(currentAnimation, this.animationQueue);
+      mergeWithQueue(newTransformation, this.animationQueue);
   
       this.process();
 

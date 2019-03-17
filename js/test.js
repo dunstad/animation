@@ -99,11 +99,8 @@ animatedTests = [
    */
   function testMergeWithQueue(animated) {
     animated.moveX(300, 1000);
-    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
     animated.rotate(360, 2000, {merge: 'start'});
-    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
     animated.moveY(100, 1000, {merge: 'start'});
-    console.log(animated.animationQueue.queue.map(t=>t.propertyValueMap))
   },
 
   /**
