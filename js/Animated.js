@@ -136,7 +136,9 @@ class Animated {
    * @return {Animated}
    */
   sendToQueue(transformation) {
-  if (transformation.waitForFinish) {
+  // merge being 1 is the same as adding onto the end of the queue normally
+  // there's really no reason it should be used, but might as well allow it
+  if (transformation.merge === undefined || transformation.merge === 1) {
       this.animationQueue.add(transformation);
     }
     else {
@@ -151,21 +153,6 @@ class Animated {
    */
   addTransformation(transformationObject) {
     let result = Object.assign({}, transformationObject);
-    if (result.after) {
-      let callbackTransform = Object.assign({}, transformationObject);
-      callbackTransform.waitForFinish = false;
-      let after = callbackTransform.after;
-      delete callbackTransform.after;
-      result = {
-        propertyValueMap: {},
-        milliseconds: after,
-        waitForFinish: transformationObject.waitForFinish,
-        callback: ()=>{
-          this.addTransformation(callbackTransform);
-        },
-      };
-    }
-    result.waitForFinish == undefined && (result.waitForFinish = true);
     return this.sendToQueue(new Transformation(result));
   }
 
@@ -258,7 +245,7 @@ class Animated {
     if (this.sentinels.spin) {
       transformation = {
         propertyValueMap: {},
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.sentinels.spin = false;
         },
@@ -269,7 +256,7 @@ class Animated {
       transformation = {
         propertyValueMap: {rotation: this.rotation + degrees},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           if (this.sentinels.spin) {
             transformation.propertyValueMap.rotation = this.rotation + degrees;
@@ -290,7 +277,7 @@ class Animated {
     if (this.sentinels.pulse) {
       transformation = {
         propertyValueMap: {},
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.sentinels.pulse = false;
         },
@@ -301,7 +288,7 @@ class Animated {
       let scaleUp = {
         propertyValueMap: {scalar: scalar},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           this.addTransformation(scaleDown);
         },
@@ -310,7 +297,7 @@ class Animated {
       let scaleDown = {
         propertyValueMap: {scalar: this.scalar},
         milliseconds: arguments[1],
-        waitForFinish: false,
+        merge: 'start',
         callback: ()=>{
           if (this.sentinels.pulse) {
             this.addTransformation(scaleUp);
@@ -395,18 +382,21 @@ class Animated {
 
   /**
    * Used to allow different animations to run at the same time by combining them.
-   * @param {Transformation} otherTransformation 
+   * Order here determines at what point in the baseTransformation
+   * the mergeTransformation will start.
+   * @param {Transformation} baseTransformation 
+   * @param {Transformation} mergeTransformation 
    * @return {Transformation[]}
    */
-  merge(transformation, otherTransformation) {
+  merge(baseTransformation, mergeTransformation) {
 
     let result;
 
-    if (transformation.milliseconds && otherTransformation.milliseconds) {
+    if (baseTransformation.milliseconds && mergeTransformation.milliseconds) {
 
-      if (transformation.canMergeWith(otherTransformation)) {
+      if (baseTransformation.canMergeWith(mergeTransformation)) {
 
-        let [shortTransformation, longTransformation] = [transformation, otherTransformation].sort((a, b)=>{
+        let [shortTransformation, longTransformation] = [baseTransformation, mergeTransformation].sort((a, b)=>{
           return a.milliseconds - b.milliseconds;
         });
 
@@ -416,34 +406,43 @@ class Animated {
 
         let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
 
+        let mergeRatio = mergeTransformation.milliseconds / baseTransformation.milliseconds;
+        if (mergeTransformation.merge === 'start') {mergeTransformation.merge = 0;}
+        if (mergeTransformation.merge === 'end') {
+          // don't let animations try merging back beyond the current base
+          // otherwise this could happen when merging long animations into
+          // short ones
+          mergeTransformation.merge = Math.max(1 - mergeRatio, 0);
+        }
+
+        if ((mergeTransformation.merge < 0) || (mergeTransformation.merge > 1)) {
+          throw new Error('The merge property of transformations should be between 0 and 1.');
+        }
+
         let firstTransformation = new Transformation({
+          milliseconds: longTransformation.milliseconds * mergeTransformation.merge,
+          easingMap: longTransformation.easingMap,
+          animate: true,
+        });
+        let secondTransformation = new Transformation({
           milliseconds: shortTransformation.milliseconds,
           easingMap: mergedEasingMap,
           animate: true,
-          waitForFinish: true,
           callback: shortTransformation.callback,
         });
-        let secondTransformation = new Transformation({
-          milliseconds: longTransformation.milliseconds - shortTransformation.milliseconds,
+        let thirdTransformation = new Transformation({
+          milliseconds: longTransformation.milliseconds - (firstTransformation.milliseconds + secondTransformation.milliseconds),
           easingMap: longTransformation.easingMap,
           animate: true,
-          waitForFinish: true,
           callback: longTransformation.callback,
         });
 
-        let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
-
-        let splitNumberValue = (propertyName) => {
-          return ((longTransformation.propertyValueMap[propertyName] - this[propertyName]) * durationRatio) + this[propertyName];
-        };
-
-        // order matters here because of easing functions
-        // if an animation using easein gets split in two,
-        // it looks different depending on where the split happens.
-
-
-        // this should help get rid of the need to specify every property:
-
+        /**
+         * Order matters here because of easing functions.
+         * If an animation using easein gets split in two,
+         * it looks different depending on where the split happens.
+         * @param {String[]} propertyNames 
+         */
         function orderProperties(propertyNames) {
           let order = ['rotation', 'scalar', 'x', 'y'];
           
@@ -464,37 +463,58 @@ class Animated {
 
         for (let propertyName of propertyNames) {
           
-          if (longTransformation.propertyValueMap[propertyName] != undefined) {
-            
-            firstTransformation.propertyValueMap[propertyName] = splitNumberValue(propertyName);
-            secondTransformation.propertyValueMap[propertyName] = longTransformation.propertyValueMap[propertyName];
+          if (longTransformation.propertyValueMap[propertyName] !== undefined) {
+
+            console.log('this.animationQueue.finalState()[propertyName]', this.animationQueue.finalState()[propertyName]);
+
+            let valueAfterQueue = this.animationQueue.finalState()[propertyName];
+            if (valueAfterQueue === undefined) {
+              valueAfterQueue = this[propertyName];
+            }
+
+            // todo fix this
+            let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
+            let longProp = longTransformation.propertyValueMap[propertyName];
+            let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * mergeTransformation.merge);
+            let secondThird = firstThird + ((longProp - valueAfterQueue) * mergeRatio);
+
+            console.log('mergeTransformation.merge', mergeTransformation.merge);
+            console.log('firstThird', firstThird);
+            console.log('longProp', longProp);
+            console.log('valueAfterQueue', valueAfterQueue);
+            console.log('durationRatio', durationRatio);
+            console.log('mergeRatio', mergeRatio);
+            console.log('this[propertyName]', this[propertyName]);
+            console.log('')
+
+            firstTransformation.propertyValueMap[propertyName] = firstThird;
+            secondTransformation.propertyValueMap[propertyName] = secondThird;
+            thirdTransformation.propertyValueMap[propertyName] = longProp;
             
           }
           
-          else if (shortTransformation.propertyValueMap[propertyName] != undefined) {
+          else if (shortTransformation.propertyValueMap[propertyName] !== undefined) {
             
-            firstTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
+            secondTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
             
           }
           
         }
         
-        result = [firstTransformation];
-        if (secondTransformation.milliseconds > 0) {
-          result.push(secondTransformation);
-        }
-        else {
-          let firstCallback = firstTransformation.callback;
-          firstTransformation.callback = ()=>{
-            firstCallback && firstCallback();
-            secondTransformation.callback && secondTransformation.callback();
+        result = [firstTransformation, secondTransformation, thirdTransformation].filter(t=>t.milliseconds>0);
+
+        if (thirdTransformation.milliseconds <= 0) {
+          let secondCallback = secondTransformation.callback;
+          secondTransformation.callback = ()=>{
+            secondCallback && secondCallback();
+            thirdTransformation.callback && thirdTransformation.callback();
           };
         }
 
       }
     
       else {
-        console.error(transformation, otherTransformation);
+        console.error(baseTransformation, mergeTransformation);
         throw new Error('incompatible transformations');
       }
 
@@ -503,7 +523,7 @@ class Animated {
     else {
 
       // instantaneous transformations should happen first
-      result = [otherTransformation, transformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
+      result = [mergeTransformation, baseTransformation].sort((a,b)=>{return a.milliseconds ? 1 : -1});
 
     }
 
@@ -518,52 +538,34 @@ class Animated {
   mergeAnimation(newTransformation) {
 
     /**
-     * Recursively merges an animation with all overlapping animations in a queue.
+     * Merges an animation onto the end of a queue.
      * @param {Transformation} transformation 
      * @param {AnimationQueue} queue 
      */
-    let mergeWithQueue = (transformation, remainingTime, queue)=>{
+    let mergeWithQueue = (transformation, queue)=>{
 
-      if (!queue.length) {queue.push(transformation);}
+      if (!queue.length) {queue.add(transformation);}
 
       else {
 
-        let firstQueued = queue.shift();
-        let mergeResult = this.merge(transformation, firstQueued);
+        let lastQueued = queue.last();
+        let mergeResult = this.merge(lastQueued, transformation);
 
-        remainingTime -= firstQueued.milliseconds;
-        
-        // queue merging should stop when original transformation is in
-        if (mergeResult[1]) {
-
-          if (remainingTime > 0) {
-            
-            mergeWithQueue(mergeResult[1], remainingTime, queue);
-
-          }
-
-          else {
-
-            queue.unshift(mergeResult[1]);
-
-          }
-          
-          
-        }
-        
-        queue.unshift(mergeResult[0]);
+        queue.add(...mergeResult);
 
       }
 
     }
 
-    if (Object.keys(this.anims).length) {
-      
-      this.animationQueue.queue.unshift(newTransformation);
+    // Now that we're merging onto the back of the queue, whether an
+    // animation is in progress only matters if the queue is empty.
+    // Otherwise, we just merge with the end of the queue.
+    if (Object.keys(this.anims).length && !this.animationQueue.length) {
+
+      this.animationQueue.add(currentAnimation);
   
       let currentAnimation = this.currentAnimationToTransformation();
-      let remainingTime = currentAnimation.milliseconds;
-      mergeWithQueue(currentAnimation, remainingTime, this.animationQueue.queue);
+      mergeWithQueue(newTransformation, this.animationQueue);
   
       this.process();
 
@@ -571,8 +573,7 @@ class Animated {
 
     else {
 
-      let remainingTime = newTransformation.milliseconds;
-      mergeWithQueue(newTransformation, remainingTime, this.animationQueue.queue);
+      mergeWithQueue(newTransformation, this.animationQueue);
 
     }
 
