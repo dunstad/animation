@@ -9,9 +9,6 @@
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
-  * eye
-    * bug with translation strings for looking and merging
-      * just make it an Animated instead?
   * robot arm
     * not super general maybe as far as use in lots of scenes goes
     * will probably be super fun to make though
