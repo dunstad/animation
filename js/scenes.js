@@ -180,7 +180,7 @@ var scenes = {
     
     eye.wait(250);
     eye.openTop(.5, 500);
-    // eye.openBottom(.5, 500, {merge: 'start'});
+    eye.openBottom(.5, 500, {merge: 'start'});
     eye.look(0, 50, 250, {merge: .5});
     eye.look(0, -50, 1000);
     eye.look(90, 50, 500);
@@ -189,7 +189,7 @@ var scenes = {
     eye.look(360, 50, 200);
     eye.look(360, 0, 100);
     eye.openTop(1, 100, {merge: 'start'});
-    // eye.openBottom(1, 100, {merge: 'start'});
+    eye.openBottom(1, 100, {merge: 'start'});
 
     scene.addActor(eye);
 

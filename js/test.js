@@ -93,6 +93,15 @@ animatedTests = [
     animated.moveY(100, 1000*4, {merge: 'start'});
     animated.rotate(360, 1000*4, {merge: 'start'});
   },
+
+  /**
+   * @param {Animated} animated
+   */
+  function testEqualTimeSmallNumberMerge(animated) {
+    animated.moveX(100, 2000);
+    animated.scale(2, 1000, {merge: 'start'});
+    animated.scale(.5, 1000, {merge: 'start'});
+  },
   
   /**
    * @param {Animated} animated

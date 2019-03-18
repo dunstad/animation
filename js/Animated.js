@@ -476,7 +476,6 @@ class Animated {
             let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
             let longProp = longTransformation.propertyValueMap[propertyName];
             let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * mergeTransformation.merge);
-            // let secondThird =  valueAfterQueue + firstThird + ((longProp - valueAfterQueue) * durationRatio);
             let secondThird = firstThird + ((longProp - valueAfterQueue) * mergeRatio);
 
             console.log('mergeTransformation.merge', mergeTransformation.merge);
