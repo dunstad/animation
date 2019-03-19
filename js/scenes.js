@@ -195,4 +195,12 @@ var scenes = {
 
   },
 
+  'hexgrid': (scene)=>{
+
+    let hexgrid = new HexGrid(svgContainer, 5, 5);
+
+    scene.addActor(hexgrid);
+
+  },
+
 };
