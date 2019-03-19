@@ -406,13 +406,13 @@ class Animated {
 
         let mergedEasingMap = mergeEasingMaps(shortTransformation.easingMap, longTransformation.easingMap);
 
-        let mergeRatio = mergeTransformation.milliseconds / baseTransformation.milliseconds;
+        // don't let animations try merging back beyond the current base,
+        // otherwise this could happen when merging long animations into short ones
+        let mergeRatio = Math.min(1, mergeTransformation.milliseconds / baseTransformation.milliseconds);
+        
         if (mergeTransformation.merge === 'start') {mergeTransformation.merge = 0;}
         if (mergeTransformation.merge === 'end') {
-          // don't let animations try merging back beyond the current base
-          // otherwise this could happen when merging long animations into
-          // short ones
-          mergeTransformation.merge = Math.max(1 - mergeRatio, 0);
+          mergeTransformation.merge = 1 - mergeRatio;
         }
 
         if ((mergeTransformation.merge < 0) || (mergeTransformation.merge > 1)) {
@@ -462,6 +462,8 @@ class Animated {
         );
 
         for (let propertyName of propertyNames) {
+
+          console.log('property name ', propertyName);
           
           if (longTransformation.propertyValueMap[propertyName] !== undefined) {
 
@@ -472,10 +474,10 @@ class Animated {
               valueAfterQueue = this[propertyName];
             }
 
-            // todo fix this
+            let durationRatio = shortTransformation.milliseconds / longTransformation.milliseconds;
             let longProp = longTransformation.propertyValueMap[propertyName];
             let firstThird = valueAfterQueue + ((longProp - valueAfterQueue) * mergeTransformation.merge);
-            let secondThird = firstThird + ((longProp - valueAfterQueue) * mergeRatio);
+            let secondThird = firstThird + ((longProp - valueAfterQueue) * durationRatio);
 
             console.log('mergeTransformation.merge', mergeTransformation.merge);
             console.log('firstThird', firstThird);
@@ -492,8 +494,14 @@ class Animated {
           }
           
           else if (shortTransformation.propertyValueMap[propertyName] !== undefined) {
+
+            console.log('this.animationQueue.finalState()[propertyName]', this.animationQueue.finalState()[propertyName]);
             
             secondTransformation.propertyValueMap[propertyName] = shortTransformation.propertyValueMap[propertyName];
+            
+            console.log('longProp', longTransformation.propertyValueMap[propertyName]);
+            console.log('this[propertyName]', this[propertyName]);
+            console.log('')
             
           }
           
