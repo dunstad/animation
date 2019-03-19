@@ -11,17 +11,27 @@ class HexGrid extends Animated {
     // get the corners of a hex (they're the same for all hexes created with the same Hex factory)
     const corners = Hex().corners();
 
-    // const hexSymbol = draw.symbol()
-      // // map the corners' positions to a string and create a polygon
-      // .polygon(corners.map(({ x, y }) => `${x},${y}`))
-      // .fill('none')
-      // .stroke({ width: 1, color: '#999' })
-
-    // render 10,000 hexes
-    Grid.rectangle({width: width, height: height}).forEach(hex => {
+    // render some hexes
+    this.grid = Grid.rectangle({width: width, height: height});
+    this.grid.forEach(hex => {
+      
       const { x, y } = hex.toPoint();
-      // draw some hexagons
-      // draw.use(hexSymbol).translate(x, y)
+      let hexagonCoords = corners.reduce((accumulator, current)=>{
+        accumulator.push(current.x, current.y);
+        return accumulator;
+      }, []);
+      
+      let hexagon = svgContainer.polygon(hexagonCoords);
+      hexagon.attr({
+        fill: 'white',
+        stroke: 'black',
+        strokeWidth: 2,
+      }).transform(`t${x},${y}`);
+      
+      this.element.append(hexagon);
+      
+      hex.hexagon = hexagon;
+      
     });
 
   }

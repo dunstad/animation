@@ -199,6 +199,8 @@ var scenes = {
 
     let hexgrid = new HexGrid(svgContainer, 5, 5);
 
+    hexgrid.move(200, 100).process();
+
     scene.addActor(hexgrid);
 
   },
