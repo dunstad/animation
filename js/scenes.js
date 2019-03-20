@@ -201,7 +201,9 @@ var scenes = {
 
     hexgrid.move(200, 100).process();
 
-    scene.addActor(hexgrid);
+    let hexmover = new HexMover(svgContainer, hexgrid.axialGet(2, 1));
+
+    scene.addActors([hexgrid, hexmover]);
 
   },
 
