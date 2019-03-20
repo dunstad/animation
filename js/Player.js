@@ -36,6 +36,19 @@ class Player {
    */
   loadScene(scene) {
     this.scene = scene;
+    for (let actor of scene.actors) {
+      let actorClassName = actor.constructor.name.toLowerCase();
+      if (!window[actorClassName]) {
+        window[actorClassName] = actor;
+      }
+      else {
+        let num = 2;
+        while (window[actorClassName + num]) {
+          num++;
+        }
+        window[actorClassName + num] = actor;
+      }
+    }
   }
   
   async play() {
