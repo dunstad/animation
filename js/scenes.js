@@ -203,6 +203,17 @@ var scenes = {
 
     let hexmover = new HexMover(svgContainer, hexgrid.axialGet(2, 1));
 
+    let duration = 250;
+    let easing = mina.easeout;
+    let easingMap = {easingMap: {x: easing, y: easing}};
+    let wait = 50;
+    hexmover.moveUp(duration, easingMap).wait(wait);
+    hexmover.moveUpLeft(duration, easingMap).wait(wait);
+    hexmover.moveDownLeft(duration, easingMap).wait(wait);
+    hexmover.moveDown(duration, easingMap).wait(wait);
+    hexmover.moveDownRight(duration, easingMap).wait(wait);
+    hexmover.moveUpRight(duration, easingMap).wait(wait);
+
     scene.addActors([hexgrid, hexmover]);
 
   },
