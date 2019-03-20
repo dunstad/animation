@@ -6,7 +6,10 @@ class HexGrid extends Animated {
     
     super(gridGroup);
 
-    const Hex = Honeycomb.extendHex({size: 20});
+    const Hex = Honeycomb.extendHex({
+      size: 20,
+      orientation: 'flat',
+    });
     const Grid = Honeycomb.defineGrid(Hex);
     // get the corners of a hex (they're the same for all hexes created with the same Hex factory)
     const corners = Hex().corners();
