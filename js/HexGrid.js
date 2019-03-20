@@ -13,15 +13,6 @@ class HexGrid extends Animated {
     const Grid = Honeycomb.defineGrid(this.Hex);
     // get the corners of a hex (they're the same for all hexes created with the same Hex factory)
     
-    /* this is how axial coordinates work in honeycomb:
-     *        -r
-     *  0,0  /
-     * -q --/--- +q
-     *     /
-     *    +r
-     */
-    // this.Hex().toCartesian({q: 4, r: -2})
-
     const corners = this.Hex().corners();
 
     // render some hexes
@@ -44,9 +35,28 @@ class HexGrid extends Animated {
       this.element.append(hexagon);
       
       hex.hexagon = hexagon;
-      
+
     });
 
+  }
+
+  /**
+   * Gets a hex using axial coordinates, which are much
+   * easier to work with for hex grids than cartesian ones.
+   * Not sure why this isn't implemented in honeycomb, but oh well.
+   * 
+   * This is how axial coordinates work in honeycomb:
+   *        -r
+   *  0,0  /
+   * -q --/--- +q
+   *     /
+   *    +r
+   * 
+   * @param {Number} q 
+   * @param {Number} r 
+   */
+  axialGet(q, r) {
+    return this.grid.get(this.Hex().toCartesian({q: q, r: r}));
   }
 
 }
