@@ -31,7 +31,9 @@ class HexMover extends Animated {
     }
 
     for (let [move, offsets] of Object.entries(moves)) {
-      this[move] = this.makeMoveDirection(offsets.q, offsets.r);
+      this[move] = this.makeAnimationHelper(
+        this.makeMoveDirection(offsets.q, offsets.r)
+      );
     }
 
   }
@@ -49,15 +51,14 @@ class HexMover extends Animated {
       let result;
       if (newHex) {
         const { x, y } = newHex.toPoint();
-        this.x = x;
-        this.y = y;
         this.hex = newHex;
-        result = newHex;
+        result = {propertyValueMap: {x: x, y: y}};
       }
       else {
-        result = false;
+        result = {propertyValueMap: {}};
       }
       return result;
+
     };
   }
 
