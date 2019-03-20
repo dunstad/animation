@@ -6,13 +6,23 @@ class HexGrid extends Animated {
     
     super(gridGroup);
 
-    const Hex = Honeycomb.extendHex({
+    this.Hex = Honeycomb.extendHex({
       size: 20,
       orientation: 'flat',
     });
-    const Grid = Honeycomb.defineGrid(Hex);
+    const Grid = Honeycomb.defineGrid(this.Hex);
     // get the corners of a hex (they're the same for all hexes created with the same Hex factory)
-    const corners = Hex().corners();
+    
+    /* this is how axial coordinates work in honeycomb:
+     *        -r
+     *  0,0  /
+     * -q --/--- +q
+     *     /
+     *    +r
+     */
+    // this.Hex().toCartesian({q: 4, r: -2})
+
+    const corners = this.Hex().corners();
 
     // render some hexes
     this.grid = Grid.rectangle({width: width, height: height});
