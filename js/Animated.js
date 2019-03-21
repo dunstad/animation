@@ -586,7 +586,7 @@ class Animated {
    * Used to stop all running animations.
    */
   stop() {
-    Object.values(this.anims).map(anim=>anim.stop());
+    Object.values(this.anims).forEach(anim=>anim.stop());
   }
 
 }
