@@ -201,20 +201,30 @@ var scenes = {
 
     hexgrid.move(200, 100).process();
 
-    let hexmover = new ControlledHexMover(svgContainer, hexgrid.axialGet(2, 1));
+    let controlledHexMover = new ControlledHexMover(svgContainer, hexgrid.axialGet(2, 1));
+    
+    let hexMover = new HexMover(svgContainer, hexgrid.axialGet(2, 0), 'blue');
 
-    let duration = 250;
-    let easing = mina.easeout;
-    let easingMap = {easingMap: {x: easing, y: easing}};
-    let wait = 50;
-    // hexmover.moveUp(duration, easingMap).wait(wait);
-    // hexmover.moveUpLeft(duration, easingMap).wait(wait);
-    // hexmover.moveDownLeft(duration, easingMap).wait(wait);
-    // hexmover.moveDown(duration, easingMap).wait(wait);
-    // hexmover.moveDownRight(duration, easingMap).wait(wait);
-    // hexmover.moveUpRight(duration, easingMap).wait(wait);
+    function circleMove(hexMover) {
 
-    scene.addActors([hexgrid, hexmover]);
+      let duration = 250;
+      let easing = mina.easeout;
+      let easingMap = {easingMap: {x: easing, y: easing}};
+      let wait = 50;
+  
+      hexMover.moveDownLeft(duration, easingMap).wait(wait);
+      hexMover.moveDown(duration, easingMap).wait(wait);
+      hexMover.moveDownRight(duration, easingMap).wait(wait);
+      hexMover.moveUpRight(duration, easingMap).wait(wait);
+      hexMover.moveUp(duration, easingMap).wait(wait);
+      hexMover.moveUpLeft(duration, easingMap).wait(wait, {callback: ()=>{circleMove(hexMover);}});
+
+    }
+
+    circleMove(hexMover);
+
+
+    scene.addActors([hexgrid, hexMover, controlledHexMover]);
 
   },
 
