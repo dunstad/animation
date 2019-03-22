@@ -42,8 +42,6 @@ class HexGrid extends Animated {
   }
 
   /**
-   * Not currently used anymore...
-   * 
    * Gets a hex using axial coordinates, which are much
    * easier to work with for hex grids than cartesian ones.
    * Not sure why this isn't implemented in honeycomb, but oh well.
