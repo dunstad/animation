@@ -23,7 +23,6 @@
 * Improvements
 
   * HexMover
-    * animation for failing to move
     * don't move into cells with other hexmovers
   * hexgrid
     * configurable shapes

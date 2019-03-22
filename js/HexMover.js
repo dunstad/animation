@@ -31,32 +31,63 @@ class HexMover extends Animated {
     }
 
     for (let [move, offsets] of Object.entries(moves)) {
-      this[move] = this.makeAnimationHelper(
-        this.makeMoveDirection(offsets.q, offsets.r)
-      );
+      this[move] = (milliseconds, config)=>{
+
+        let currentAxial = this.hex.cube();
+        let newAxial = {
+          q: currentAxial.q + offsets.q,
+          r: currentAxial.r + offsets.r,
+        };
+        
+        let Hex = this.hex.hexgrid.Hex;
+        let targetHex = Hex(Hex().toCartesian({q: newAxial.q, r: newAxial.r}));
+        if (!this.hex.hexgrid.grid.includes(targetHex)) {
+
+          // getting coordinates of spots outside the grid to fake-move to
+          const { x, y } = targetHex.toPoint();
+  
+          let easingMap = {x: HexMover.failEasing, y: HexMover.failEasing};
+          
+          // need to clone config here because the same object is used
+          // every time a key is pressed
+          config = Object.assign({}, config);
+          config.easingMap = Object.assign({}, easingMap);
+
+        }
+
+        // i feel like modifying the animationhelper on the fly like this is
+        // a bit messy, but it works for now i guess
+        return (this.makeAnimationHelper(
+          this.makeMoveDirection(targetHex)
+        )).bind(this)(milliseconds, config);
+
+      };
     }
 
   }
 
-  makeMoveDirection(qDelta, rDelta) {
+  static failEasing (n) {
+    let result;
+    if (n < .5) {
+      result = n / 4;
+    }
+    else {
+      result = .25 - (n / 4);
+    }
+    return result;
+  };
+
+  makeMoveDirection(targetHex) {
     return ()=>{
       
-      let currentAxial = this.hex.cube();
-      let newAxial = {
-        q: currentAxial.q + qDelta,
-        r: currentAxial.r + rDelta,
-      };
-      
-      let newHex = this.hex.hexgrid.axialGet(newAxial.q, newAxial.r);
-      let result;
+      let newHex = this.hex.hexgrid.grid.get(targetHex);
       if (newHex) {
-        const { x, y } = newHex.toPoint();
         this.hex = newHex;
-        result = {propertyValueMap: {x: x, y: y}};
       }
-      else {
-        result = {propertyValueMap: {}};
-      }
+
+      const { x, y } = targetHex.toPoint();
+      let result = {propertyValueMap: {x: x, y: y}};
+
       return result;
 
     };
