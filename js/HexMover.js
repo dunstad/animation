@@ -39,8 +39,7 @@ class HexMover extends Animated {
           r: currentAxial.r + offsets.r,
         };
         
-        let Hex = this.hex.hexgrid.Hex;
-        let targetHex = Hex(Hex().toCartesian({q: newAxial.q, r: newAxial.r}));
+        let targetHex = hex.hexgrid.axialHex(newAxial.q, newAxial.r);
         if (!this.hex.hexgrid.grid.includes(targetHex)) {
 
           // getting coordinates of spots outside the grid to fake-move to
