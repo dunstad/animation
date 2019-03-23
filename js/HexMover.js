@@ -20,6 +20,7 @@ class HexMover extends Animated {
     hex.hexgrid.element.append(this.element);
 
     this.hex = hex;
+    this.hex.occupied = true;
 
     let moves = {
       moveUpLeft: {q: -1, r: 0},
@@ -40,7 +41,9 @@ class HexMover extends Animated {
         };
         
         let targetHex = hex.hexgrid.axialHex(newAxial.q, newAxial.r);
-        if (!this.hex.hexgrid.grid.includes(targetHex)) {
+        let hexInGrid = this.hex.hexgrid.grid.includes(targetHex);
+        let hexOccupied = hexInGrid && this.hex.hexgrid.grid.get(targetHex).occupied;
+        if (!hexInGrid || hexOccupied) {
 
           // getting coordinates of spots outside the grid to fake-move to
           const { x, y } = targetHex.toPoint();
@@ -52,6 +55,12 @@ class HexMover extends Animated {
           config = Object.assign({}, config);
           config.easingMap = Object.assign({}, easingMap);
 
+        }
+
+        else {
+          this.hex.occupied = false;
+          this.hex = this.hex.hexgrid.grid.get(targetHex);
+          this.hex.occupied = true;
         }
 
         // i feel like modifying the animationhelper on the fly like this is
@@ -79,14 +88,8 @@ class HexMover extends Animated {
   makeMoveDirection(targetHex) {
     return ()=>{
       
-      let newHex = this.hex.hexgrid.grid.get(targetHex);
-      if (newHex) {
-        this.hex = newHex;
-      }
-
       const { x, y } = targetHex.toPoint();
       let result = {propertyValueMap: {x: x, y: y}};
-
       return result;
 
     };
