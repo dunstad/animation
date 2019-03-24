@@ -58,9 +58,17 @@ class HexMover extends Animated {
         }
 
         else {
-          this.hex.occupied = false;
-          this.hex = this.hex.hexgrid.grid.get(targetHex);
-          this.hex.occupied = true;
+
+          // need to run this as a callfront for when queueing animations
+          let originalCallfront = config.callfront;
+          config.callfront = ()=>{
+            console.log('!')
+            originalCallfront && originalCallfront(); // todo fix this
+            this.hex.occupied = false;
+            this.hex = this.hex.hexgrid.grid.get(targetHex);
+            this.hex.occupied = true;
+          };
+
         }
 
         // i feel like modifying the animationhelper on the fly like this is
