@@ -42,6 +42,10 @@ class Animated {
     let transformation = this.animationQueue.next();
     if (transformation) {
       
+      if (transformation.callfront) {
+        transformation.callfront();
+      }
+
       if (transformation.milliseconds) {
         let propertyNames = Object.keys(transformation.propertyValueMap);
         let startValues = propertyNames.map(name=>this[name]);
@@ -420,11 +424,13 @@ class Animated {
         }
 
         let firstTransformation = new Transformation({
+          callfront: longTransformation.callfront,
           milliseconds: longTransformation.milliseconds * mergeTransformation.merge,
           easingMap: longTransformation.easingMap,
           animate: true,
         });
         let secondTransformation = new Transformation({
+          callfront: shortTransformation.callfront,
           milliseconds: shortTransformation.milliseconds,
           easingMap: mergedEasingMap,
           animate: true,
@@ -496,6 +502,14 @@ class Animated {
           secondTransformation.callback = ()=>{
             secondCallback && secondCallback();
             thirdTransformation.callback && thirdTransformation.callback();
+          };
+        }
+        
+        if (firstTransformation.milliseconds <= 0) {
+          let secondCallfront = secondTransformation.callfront;
+          secondTransformation.callfront = ()=>{
+            firstTransformation.callfront && firstTransformation.callfront();
+            secondCallfront && secondCallfront();
           };
         }
 
