@@ -22,13 +22,11 @@
   
 * Improvements
 
-  * HexMover
-    * fix weird hexmover behavior when queueing
   * hexgrid
     * configurable shapes
     * ability to create a grid from HexTiles
   * ControlledHexMover
-    * use Tone.js to produce notes on movement
+    * how to configure the notes?
   * eye
     * refactor into parent class with look methods, child class with eyelid
   * alphabet
