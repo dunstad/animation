@@ -107,14 +107,4 @@ class HexMover extends Animated {
     return result;
   };
 
-  makeMoveDirection(targetHex) {
-    return ()=>{
-      
-      const { x, y } = targetHex.toPoint();
-      let result = {propertyValueMap: {x: x, y: y}};
-      return result;
-
-    };
-  }
-
 }
