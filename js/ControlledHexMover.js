@@ -49,6 +49,7 @@ class ControlledHexMover extends HexMover {
           // Tone.js got loaded
           if (Tone.context.state !== 'running') {Tone.context.resume();}
           this.synth.triggerAttackRelease(data.note, '16n');
+          
         };
 
         this[data.move](duration, config);
