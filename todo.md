@@ -23,7 +23,7 @@
 * Improvements
 
   * HexMover
-    * fix cell occupied code broken when queueing animations
+    * fix weird hexmover behavior when queueing
   * hexgrid
     * configurable shapes
     * ability to create a grid from HexTiles

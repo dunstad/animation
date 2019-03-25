@@ -34,6 +34,10 @@ class HexMover extends Animated {
     for (let [move, offsets] of Object.entries(moves)) {
       this[move] = (milliseconds, config)=>{
 
+        // need to clone config here because the same object is used
+        // every time a key is pressed
+        config = Object.assign({}, config);
+
         let currentAxial = this.hex.cube();
         let newAxial = {
           q: currentAxial.q + offsets.q,
@@ -50,9 +54,8 @@ class HexMover extends Animated {
   
           let easingMap = {x: HexMover.failEasing, y: HexMover.failEasing};
           
-          // need to clone config here because the same object is used
+          // need to clone easingMap here because the same object is used
           // every time a key is pressed
-          config = Object.assign({}, config);
           config.easingMap = Object.assign({}, easingMap);
 
         }
@@ -63,7 +66,7 @@ class HexMover extends Animated {
           let originalCallfront = config.callfront;
           config.callfront = ()=>{
             console.log('!')
-            originalCallfront && originalCallfront(); // todo fix this
+            originalCallfront && originalCallfront();
             this.hex.occupied = false;
             this.hex = this.hex.hexgrid.grid.get(targetHex);
             this.hex.occupied = true;
