@@ -38,7 +38,7 @@ class HexMover extends Animated {
         // every time a key is pressed
         config = Object.assign({}, config);
 
-        let currentAxial = this.hex.cube();
+        let currentAxial = this.hex.cube(); // todo: this doesn't work when queueing
         let newAxial = {
           q: currentAxial.q + offsets.q,
           r: currentAxial.r + offsets.r,
@@ -47,6 +47,7 @@ class HexMover extends Animated {
         let targetHex = hex.hexgrid.axialHex(newAxial.q, newAxial.r);
         let hexInGrid = this.hex.hexgrid.grid.includes(targetHex);
         let hexOccupied = hexInGrid && this.hex.hexgrid.grid.get(targetHex).occupied;
+        console.log(!hexInGrid, hexOccupied)
         if (!hexInGrid || hexOccupied) {
 
           // getting coordinates of spots outside the grid to fake-move to
