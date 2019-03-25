@@ -25,8 +25,11 @@
   * hexgrid
     * configurable shapes
     * ability to create a grid from HexTiles
+  * hexmover 
+    * child class for musical mover, controlledhexmover can be a child
   * ControlledHexMover
-    * how to configure the notes?
+    * different sound on failed move
+    * add double movement
   * eye
     * refactor into parent class with look methods, child class with eyelid
   * alphabet
