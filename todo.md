@@ -29,6 +29,8 @@
     * ability to create a grid from HexTiles
   * ControlledHexMover
     * use Tone.js to produce notes on movement
+  * eye
+    * refactor into parent class with look methods, child class with eyelid
   * alphabet
     * fix letter morphing
   * flame
