@@ -43,7 +43,9 @@ class Animated {
     if (transformation) {
       
       if (transformation.callfront) {
-        transformation.callfront();
+        // callfronts used to modify the transformation before it happens
+        // useful when we don't know how to animate ahead of time due to state
+        transformation.callfront(transformation);
       }
 
       if (transformation.milliseconds) {

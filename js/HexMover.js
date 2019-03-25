@@ -38,48 +38,58 @@ class HexMover extends Animated {
         // every time a key is pressed
         config = Object.assign({}, config);
 
-        let currentAxial = this.hex.cube(); // todo: this doesn't work when queueing
-        let newAxial = {
-          q: currentAxial.q + offsets.q,
-          r: currentAxial.r + offsets.r,
-        };
-        
-        let targetHex = hex.hexgrid.axialHex(newAxial.q, newAxial.r);
-        let hexInGrid = this.hex.hexgrid.grid.includes(targetHex);
-        let hexOccupied = hexInGrid && this.hex.hexgrid.grid.get(targetHex).occupied;
-        console.log(!hexInGrid, hexOccupied)
-        if (!hexInGrid || hexOccupied) {
+        // need to run this as a callfront for when queueing animations
+        let originalCallfront = config.callfront;
+        config.callfront = (transformation)=>{
 
-          // getting coordinates of spots outside the grid to fake-move to
-          const { x, y } = targetHex.toPoint();
-  
-          let easingMap = {x: HexMover.failEasing, y: HexMover.failEasing};
+          originalCallfront && originalCallfront();
+
+          let currentAxial = this.hex.cube(); // todo: this doesn't work when queueing
+          let newAxial = {
+            q: currentAxial.q + offsets.q,
+            r: currentAxial.r + offsets.r,
+          };
           
-          // need to clone easingMap here because the same object is used
-          // every time a key is pressed
-          config.easingMap = Object.assign({}, easingMap);
+          let targetHex = hex.hexgrid.axialHex(newAxial.q, newAxial.r);
 
-        }
+          // reassign the propertyValueMap now that we know where the hexmover is
+          const { x, y } = targetHex.toPoint();
+          let newPropertyValueMap = {x: x, y: y};
+          transformation.propertyValueMap = Object.assign(transformation.propertyValueMap, newPropertyValueMap);
 
-        else {
+          // change the animation and grid state based on
+          // whether the move failed or not
+          let hexInGrid = this.hex.hexgrid.grid.includes(targetHex);
+          let hexOccupied = hexInGrid && this.hex.hexgrid.grid.get(targetHex).occupied;
+          if (!hexInGrid || hexOccupied) {
 
-          // need to run this as a callfront for when queueing animations
-          let originalCallfront = config.callfront;
-          config.callfront = ()=>{
-            console.log('!')
-            originalCallfront && originalCallfront();
+            // getting coordinates of spots outside the grid to fake-move to
+            const { x, y } = targetHex.toPoint();
+    
+            let easingMap = {x: HexMover.failEasing, y: HexMover.failEasing};
+            
+            // need to clone easingMap here because the same object is used
+            // every time a key is pressed
+            transformation.easingMap = Object.assign({}, transformation.easingMap);
+            // this way should avoid easings of other attributes getting overwritten
+            transformation.easingMap = Object.assign(transformation.easingMap, easingMap);
+
+          }
+
+          else {
+
             this.hex.occupied = false;
             this.hex = this.hex.hexgrid.grid.get(targetHex);
             this.hex.occupied = true;
-          };
-
-        }
-
-        // i feel like modifying the animationhelper on the fly like this is
-        // a bit messy, but it works for now i guess
-        return (this.makeAnimationHelper(
-          this.makeMoveDirection(targetHex)
-        )).bind(this)(milliseconds, config);
+              
+          }
+          
+        };
+        
+        // this propertyValueMap is filled in later by the callfront
+        // this is necessary because we don't know where the hexmover
+        // will be until the queue runs
+        return this.wait(milliseconds, config);
 
       };
     }
