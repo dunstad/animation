@@ -203,7 +203,7 @@ var scenes = {
 
     let controlledHexMover = new ControlledHexMover(svgContainer, hexgrid.axialGet(2, 1));
     
-    let hexMover = new HexMover(svgContainer, hexgrid.axialGet(2, 0), 'blue');
+    let musicMover = new MusicalHexMover(svgContainer, hexgrid.axialGet(2, 0), 'blue');
 
     function circleMove(hexMover) {
 
@@ -221,10 +221,10 @@ var scenes = {
 
     }
 
-    circleMove(hexMover);
+    circleMove(musicMover);
 
 
-    scene.addActors([hexgrid, hexMover, controlledHexMover]);
+    scene.addActors([hexgrid, musicMover, controlledHexMover]);
 
   },
 

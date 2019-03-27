@@ -25,9 +25,7 @@
   * hexgrid
     * configurable shapes
     * ability to create a grid from HexTiles
-  * hexmover 
-    * child class for musical mover, controlledhexmover can be a child
-  * ControlledHexMover
+  * HexMover
     * different sound on failed move
     * add double movement
   * eye
