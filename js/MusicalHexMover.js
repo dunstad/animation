@@ -23,21 +23,15 @@ class MusicalHexMover extends HexMover {
 
     for (let [moveName, note] of Object.entries(notes)) {
 
-      let originalMoveFunc = this[moveName];
-      this[moveName] = (milliseconds, config)=>{
-
-        config = Object.assign({}, config);
-        config.callfront = ()=>{
-
-          // in case the user didn't interact with the page before
-          // Tone.js got loaded
-          if (Tone.context.state !== 'running') {Tone.context.resume();}
-          this.synth.triggerAttackRelease(note, '16n');
-          
-        };
-
-        return originalMoveFunc(milliseconds, config);
-      };
+      this.on(moveName, (event)=>{
+        let moveSuccess = event.detail;
+        let noteLength = moveSuccess ? '16n' : '32n';
+        // todo: what should a move failure sound like?
+        // in case the user didn't interact with the page before
+        // Tone.js got loaded
+        if (Tone.context.state !== 'running') {Tone.context.resume();}
+        this.synth.triggerAttackRelease(note, noteLength);
+      });
 
     }
 

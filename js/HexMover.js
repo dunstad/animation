@@ -61,7 +61,8 @@ class HexMover extends Animated {
           // whether the move failed or not
           let hexInGrid = this.hex.hexgrid.grid.includes(targetHex);
           let hexOccupied = hexInGrid && this.hex.hexgrid.grid.get(targetHex).occupied;
-          if (!hexInGrid || hexOccupied) {
+          let moveFailed = !hexInGrid || hexOccupied;
+          if (moveFailed) {
 
             // getting coordinates of spots outside the grid to fake-move to
             const { x, y } = targetHex.toPoint();
@@ -83,6 +84,9 @@ class HexMover extends Animated {
             this.hex.occupied = true;
               
           }
+
+          let moveEvent = new CustomEvent(move, {detail: !moveFailed});
+          this.element.node.dispatchEvent(moveEvent);
           
         };
         
@@ -94,6 +98,22 @@ class HexMover extends Animated {
       };
     }
 
+  }
+
+  /**
+   * Used to allow various behaviours on move, including playing different notes
+   * on failed and successful moves.
+   * 
+   * Currently supported events are moveUpLeft, moveUp, moveUpRight,
+   * moveDownLeft, moveDown, and moveDownRight.
+   * 
+   * The callback has one event parameter with a detail property, which
+   * will be true if the move was successful, and false otherwise.
+   * @param {String} eventName 
+   * @param {Function} callback 
+   */
+  on(eventName, callback) {
+    this.element.node.addEventListener(eventName, callback);
   }
 
   static failEasing (n) {
