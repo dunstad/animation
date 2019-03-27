@@ -26,7 +26,6 @@
     * configurable shapes
     * ability to create a grid from HexTiles
   * HexMover
-    * different sound on failed move
     * add double movement
   * eye
     * refactor into parent class with look methods, child class with eyelid
