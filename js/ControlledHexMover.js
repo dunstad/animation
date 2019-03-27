@@ -10,32 +10,32 @@ class ControlledHexMover extends HexMover {
 
     this.synth = new Tone.Synth().toMaster();
 
-    let notes = ['Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
+    // let notes = ['Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
 
     let keys = {
       'q': {
         move: 'moveUpLeft',
-        note: notes[9],
+        note: 'D5',
       },
       'w': {
         move: 'moveUp',
-        note: notes[8],
+        note: 'E5',
       },
       'e': {
         move: 'moveUpRight',
-        note: notes[6],
+        note: 'G5',
       },
       'a': {
         move: 'moveDownLeft',
-        note: notes[1],
+        note: 'C5',
       },
       's': {
         move: 'moveDown',
-        note: notes[2],
+        note: 'B4',
       },
       'd': {
         move: 'moveDownRight',
-        note: notes[4],
+        note: 'A4',
       },
     };
 
