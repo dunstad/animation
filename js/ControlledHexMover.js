@@ -4,9 +4,9 @@ class ControlledHexMover extends MusicalHexMover {
 
     super(svgContainer, hex, color);
 
-    let duration = 250;
+    this.duration = 250;
     let easing = mina.easeout;
-    let config = {easingMap: {x: easing, y: easing}};
+    this.config = {easingMap: {x: easing, y: easing}};
 
     let keys = {
       q: 'moveUpLeft',
@@ -21,7 +21,7 @@ class ControlledHexMover extends MusicalHexMover {
       
       Mousetrap.bind(key, ()=>{
         
-        this[moveName](duration, config);
+        this[moveName](this.duration, this.config);
         if (!Object.keys(this.anims).length) {
           this.process();
         }
@@ -30,6 +30,52 @@ class ControlledHexMover extends MusicalHexMover {
 
     }
 
+    this.clickHandlerHexes = [];
+    this.assignClickHandlers();
+
+  }
+
+  assignClickHandlers() {
+
+    for (let data of this.clickHandlerHexes) {
+      data.node.removeEventListener('click', data.handler);
+    }
+    this.clickHandlerHexes = [];
+    
+    let moves = {
+      moveUpLeft: {q: -1, r: 0},
+      moveUp: {q: 0, r: -1},
+      moveUpRight: {q: 1, r: -1},
+      moveDownLeft: {q: -1, r: 1},
+      moveDown: {q: 0, r: 1},
+      moveDownRight: {q: 1, r: 0},
+    };
+
+    for (let [moveName, offsets] of Object.entries(moves)) {
+      // todo: this code is also in HexMover, should probably refactor it
+      let currentAxial = this.hex.cube();
+      let newAxial = {
+        q: currentAxial.q + offsets.q,
+        r: currentAxial.r + offsets.r,
+      };
+      let offsetHex = this.hex.hexgrid.axialGet(newAxial.q, newAxial.r);
+
+      let handler = ()=>{
+        // this is copied from above too...
+        this[moveName](this.duration, this.config);
+        if (!Object.keys(this.anims).length) {
+          this.process();
+        }
+        this.assignClickHandlers();
+      };
+      
+      offsetHex.hexagon.node.addEventListener('click', handler);
+
+      this.clickHandlerHexes.push({
+        node: offsetHex.hexagon.node,
+        handler: handler,
+      });
+    }
 
   }
 

@@ -29,7 +29,7 @@ class HexMover extends Animated {
       moveDownLeft: {q: -1, r: 1},
       moveDown: {q: 0, r: 1},
       moveDownRight: {q: 1, r: 0},
-    }
+    };
 
     for (let [move, offsets] of Object.entries(moves)) {
       this[move] = (milliseconds, config)=>{
@@ -44,7 +44,7 @@ class HexMover extends Animated {
 
           originalCallfront && originalCallfront();
 
-          let currentAxial = this.hex.cube(); // todo: this doesn't work when queueing
+          let currentAxial = this.hex.cube();
           let newAxial = {
             q: currentAxial.q + offsets.q,
             r: currentAxial.r + offsets.r,
