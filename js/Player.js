@@ -52,15 +52,29 @@ class Player {
   }
   
   async play() {
-    return await this.scene.play();
+    let result;
+    if (this.scene.paused) {
+      this.scene.resume();
+      // this should look the same as the value returned by play
+      result = await new Promise((resolve, reject)=>{resolve([]);});
+    }
+    else {
+      result = await this.scene.play();
+    }
+    return result;
   }
 
-  pause() {
-    this.scene.pause();
+  togglePause() {
+    if (!this.scene.paused) {
+      this.scene.pause();
+    }
+    else {
+      this.scene.resume();
+    }
   }
 
-  resume() {
-    this.scene.resume();
+  fullScreen() {
+    this.svgElement.node.requestFullscreen();
   }
 
   restart() {

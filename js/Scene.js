@@ -7,6 +7,7 @@ class Scene {
   constructor(player) {
     this.player = player;
     this.actors = [];
+    this.paused = false;
   }
 
   /**
@@ -72,12 +73,14 @@ class Scene {
   }
 
   pause() {
+    this.paused = true;
     for (let actor of this.actors) {
       actor.pause();
     }
   }
 
   resume() {
+    this.paused = false;
     for (let actor of this.actors) {
       actor.resume();
     }
