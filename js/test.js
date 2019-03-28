@@ -28,7 +28,15 @@ function onSceneSelect(e) {
 
 sceneSelect.addEventListener('change', onSceneSelect);
 
-let currentSceneName = localStorage.getItem('currentScene') || sceneSelect.value;
+let currentSceneName;
+// makes sharing specific scenes easier
+if (document.location.hash) {
+  currentSceneName = decodeURI(document.location.hash).substring(1);
+}
+else {
+  currentSceneName = localStorage.getItem('currentScene') || sceneSelect.value;
+}
+
 sceneSelect.value = currentSceneName;
 
 player.loadScene(makeScene(scenes[currentSceneName]));

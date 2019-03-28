@@ -73,8 +73,8 @@ class Player {
     }
   }
 
-  fullScreen() {
-    this.svgElement.node.requestFullscreen();
+  async fullScreen() {
+    return await this.svgElement.node.requestFullscreen();
   }
 
   restart() {
