@@ -119,6 +119,28 @@ animatedTests = [
     animated.rotate(360, 2000, {merge: 'start'});
     animated.moveY(100, 1000, {merge: 'start'});
   },
+  
+  /**
+   * @param {Animated} animated
+   */
+  function testCallfront(animated) {
+    animated.wait(1000, {callfront: (transformation)=>{
+      transformation.propertyValueMap.x = 200;
+    }});
+  },
+  
+  /**
+   * @param {Animated} animated
+   */
+  function testMergePreservesCallfronts(animated) {
+    animated.moveY(200, 2000);
+    animated.wait(1000, {
+      callfront: (transformation)=>{
+        transformation.propertyValueMap.x = 200;
+      },
+      merge: 'end',
+    });
+  },
 
   /**
    * @param {Animated} animated
