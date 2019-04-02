@@ -4,6 +4,10 @@
 
   * HexTile
     * piece of a hexgrid
+  * HexTempo?
+    * component to keep hexmovers in time with each other
+      * how to connect this to the movers it should act on?
+    * pulse in time with movements
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -26,6 +30,9 @@
     * configurable shapes
     * ability to create a grid from HexTiles
   * HexMover
+    * swap hex-touching movement for swiping
+    * internal queue to track movements, have them executed by another component
+      * this will keep all the hexmovers in time with each other
     * add double movement
   * eye
     * refactor into parent class with look methods, child class with eyelid
