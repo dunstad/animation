@@ -20,7 +20,7 @@ class HexMover extends Animated {
     hex.hexgrid.element.append(this.element);
 
     this.hex = hex;
-    this.hex.occupied = true;
+    this.hex.occupied = this;
 
     let moves = {
       moveUpLeft: {q: -1, r: 0},

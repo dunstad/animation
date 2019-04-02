@@ -69,4 +69,12 @@ class HexGrid extends Animated {
     return this.grid.get(this.axialHex(q, r));
   }
 
+  /**
+   * Used to get all the HexMovers currently on the grid.
+   * The planned HexTempo class will use this to control when they move.
+   */
+  get hexMovers() {
+    return this.grid.filter(hex=>hex.occupied);
+  }
+
 }
