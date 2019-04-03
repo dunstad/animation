@@ -4,10 +4,9 @@
 
   * HexTile
     * piece of a hexgrid
-  * HexTempo?
+  * Metronome
     * component to keep hexmovers in time with each other
       * how to connect this to the movers it should act on?
-    * pulse in time with movements
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color

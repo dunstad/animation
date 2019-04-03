@@ -223,8 +223,17 @@ var scenes = {
 
     circleMove(musicMover);
 
+    let metronome = new Metronome(svgContainer, 120);
+    metronome.x = 20;
+    metronome.y = 20;
+    
+    metronome.beatsPerMinute = 60;
+    for (let i = 0; i < 20; i++) {
+      let newBPM = metronome.beatsPerMinute + (10 * (i + 1));
+      metronome.beat(1.5, {callback: ()=>{metronome.beatsPerMinute = newBPM;}});
+    }
 
-    scene.addActors([hexgrid, musicMover, controlledHexMover]);
+    scene.addActors([hexgrid, musicMover, controlledHexMover, metronome]);
 
   },
 
