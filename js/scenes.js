@@ -233,7 +233,9 @@ var scenes = {
       metronome.beat(1.5, {callback: ()=>{metronome.beatsPerMinute = newBPM;}});
     }
 
-    scene.addActors([hexgrid, musicMover, controlledHexMover, metronome]);
+    let hexMoveQueue = new HexMoveQueue(svgContainer);
+
+    scene.addActors([hexgrid, musicMover, controlledHexMover, metronome, hexMoveQueue]);
 
   },
 
