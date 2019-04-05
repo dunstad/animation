@@ -61,7 +61,7 @@ class HexMoveQueue extends Animated {
 
     let firstIndicator = this.moveQueue[0];
     firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
-      firstIndicator.remove();
+      firstIndicator.element.remove();
     }}).scale(0, duration, {merge: 'start'}).process();
 
     return this.moveQueue.shift();
