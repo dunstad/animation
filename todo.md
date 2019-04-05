@@ -4,9 +4,6 @@
 
   * HexTile
     * piece of a hexgrid
-  * Metronome
-    * component to keep hexmovers in time with each other
-      * how to connect this to the movers it should act on?
   * tree
     * should have different shapes that can be generated
     * maybe have a numeric season property to determine leaf color
@@ -25,14 +22,16 @@
   
 * Improvements
 
-  * hexgrid
-    * configurable shapes
-    * ability to create a grid from HexTiles
+  * HexMoveQueue
+    * figure out a better design for the direction indicators
   * HexMover
     * swap hex-touching movement for swiping
     * internal queue to track movements, have them executed by another component
       * this will keep all the hexmovers in time with each other
     * add double movement
+  * hexgrid
+    * configurable shapes
+    * ability to create a grid from HexTiles
   * eye
     * refactor into parent class with look methods, child class with eyelid
   * alphabet
@@ -53,6 +52,7 @@
 
 
 #### animation
+* AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
 * skeletal animation (joints)

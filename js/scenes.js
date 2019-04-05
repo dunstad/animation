@@ -234,6 +234,7 @@ var scenes = {
     }
 
     let hexMoveQueue = new HexMoveQueue(svgContainer);
+    Object.assign(hexMoveQueue, {x: 20, y: 20});
 
     scene.addActors([hexgrid, musicMover, controlledHexMover, metronome, hexMoveQueue]);
 

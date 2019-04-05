@@ -30,18 +30,41 @@ class HexMoveQueue extends Animated {
       'downRight':300,
     }
 
-    // triangles are equilateral now... can't tell which way they're pointing
-    let triangle = new Animated(svgContainer.polygon(20, 0, 10, Math.sqrt(3) * 10, 0, 0));
-    triangle.rotation = directionToRotationMap[direction];
-    triangle.direction = direction;
+    let indicator = new Animated(svgContainer.group());
+    indicator.rotation = directionToRotationMap[direction];
+    indicator.direction = direction;
+    
+    let circle = svgContainer.circle(0, 0, 10);
+    indicator.element.append(circle);
 
-    this.triangleGroup.append(triangle.element);
+    let triangle = svgContainer.polygon(-10, 0, 0, 10, 10, 0).attr({fill: 'white'});
+    indicator.element.append(triangle);
 
-    this.moveQueue.push(triangle);
+    this.triangleGroup.append(indicator.element);
 
-    for (let triangle of this.moveQueue) {
-      triangle.moveX(triangle.x + 40, 500).process();
+    this.moveQueue.push(indicator);
+    
+    let duration = 500;
+    indicator.x = 40 * this.moveQueue.length;
+    indicator.scalar = 0;
+    indicator.scale(1, duration).process();
+
+  }
+
+  shift() {
+
+    let duration = 500;
+
+    for (let indicator of this.moveQueue.slice(1)) {
+      indicator.moveX(indicator.x - 40, duration).process();
     }
+
+    let firstIndicator = this.moveQueue[0];
+    firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
+      firstIndicator.remove();
+    }}).scale(0, duration, {merge: 'start'}).process();
+
+    return this.moveQueue.shift();
 
   }
 
