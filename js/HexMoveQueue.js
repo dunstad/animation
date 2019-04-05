@@ -30,7 +30,8 @@ class HexMoveQueue extends Animated {
       'downRight':300,
     }
 
-    let triangle = new Animated(svgContainer.polygon(20, 0, 10, 20, 0, 0));
+    // triangles are equilateral now... can't tell which way they're pointing
+    let triangle = new Animated(svgContainer.polygon(20, 0, 10, Math.sqrt(3) * 10, 0, 0));
     triangle.rotation = directionToRotationMap[direction];
     triangle.direction = direction;
 
