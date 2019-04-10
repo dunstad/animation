@@ -17,29 +17,31 @@ class ControlledHexMover extends MusicalHexMover {
       d: 'moveDownRight',
     };
 
+    /**
+     * Move in a direction with less code repetition.
+     * @param {String} moveName 
+     */
+    let performMove = (moveName)=>{
+      this[moveName](this.duration, this.config);
+      if (!Object.keys(this.anims).length) {
+        this.process();
+      }
+    };
+
     for (let [key, moveName] of Object.entries(keys)) {
-      
-      Mousetrap.bind(key, ()=>{
-        
-        this[moveName](this.duration, this.config);
-        if (!Object.keys(this.anims).length) {
-          this.process();
-        }
-
-      });
-
+      Mousetrap.bind(key, ()=>{performMove(moveName);});
     }
 
     let hammer = new Hammer(svgContainer.node);
     hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
     let swipeDirections = {
-      upLeft: [-180, -120],
-      up: [-120, -60],
-      upRight: [-60, 0],
-      downRight: [0, 60],
-      down: [60, 120],
-      downLeft: [120, 180],
+      moveUpLeft: [-180, -120],
+      moveUp: [-120, -60],
+      moveUpRight: [-60, 0],
+      moveDownRight: [0, 60],
+      moveDown: [60, 120],
+      moveDownLeft: [120, 180],
     };
 
     /**
@@ -53,16 +55,16 @@ class ControlledHexMover extends MusicalHexMover {
     }
 
     hammer.on('swipe', (event)=>{
-      for (let [directionName, range] of Object.entries(swipeDirections)) {
+      for (let [moveName, range] of Object.entries(swipeDirections)) {
         if (angleInRange(event.angle, range)) {
-          console.log(directionName);
+          performMove(moveName);
           break; // any swipe should only fall into exactly one of these ranges
         }
       }
     });
 
     this.clickHandlerHexes = [];
-    this.assignClickHandlers();
+    // this.assignClickHandlers();
 
   }
 
