@@ -30,6 +30,37 @@ class ControlledHexMover extends MusicalHexMover {
 
     }
 
+    let hammer = new Hammer(svgContainer.node);
+    hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+    let swipeDirections = {
+      upLeft: [-180, -120],
+      up: [-120, -60],
+      upRight: [-60, 0],
+      downRight: [0, 60],
+      down: [60, 120],
+      downLeft: [120, 180],
+    };
+
+    /**
+     * Used to tell what direction a swipe was.
+     * Range should be 2 numbers from -180 to 180, smallest first.
+     * @param {Number} angle 
+     * @param {Number[]} range 
+     */
+    function angleInRange(angle, range) {
+      return ((angle >= range[0]) && (angle < range[1]));
+    }
+
+    hammer.on('swipe', (event)=>{
+      for (let [directionName, range] of Object.entries(swipeDirections)) {
+        if (angleInRange(event.angle, range)) {
+          console.log(directionName);
+          break; // any swipe should only fall into exactly one of these ranges
+        }
+      }
+    });
+
     this.clickHandlerHexes = [];
     this.assignClickHandlers();
 
