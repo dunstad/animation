@@ -35,6 +35,10 @@ class ControlledHexMover extends MusicalHexMover {
 
   }
 
+  /**
+   * TODO: remove this, clicking hexes to move works poorly
+   * going to implement swipe to move instead
+   */
   assignClickHandlers() {
 
     for (let data of this.clickHandlerHexes) {
