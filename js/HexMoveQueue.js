@@ -22,12 +22,12 @@ class HexMoveQueue extends Animated {
   push(direction) {
 
     let directionToRotationMap = {
-      'down': 0,
-      'downLeft': 60,
-      'upLeft': 120,
-      'up': 180,
-      'upRight': 240,
-      'downRight':300,
+      'moveDown': 0,
+      'moveDownLeft': 60,
+      'moveUpLeft': 120,
+      'moveUp': 180,
+      'moveUpRight': 240,
+      'moveDownRight':300,
     }
 
     let indicator = new Animated(svgContainer.group());

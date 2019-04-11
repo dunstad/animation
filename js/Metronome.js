@@ -9,11 +9,12 @@ class Metronome extends Animated {
 
     super(svgContainer.circle(0, 0, 10));
 
-    this.beatsPerMinute = beatsPerMinute;
-
     for (let func of [this.beat]) {
       this[func.name] = this.makeAnimationHelper(func);
     }
+
+    this.transport = Tone.Transport;
+    this.transport.bpm.value = beatsPerMinute;
 
   }
 
@@ -41,15 +42,17 @@ class Metronome extends Animated {
   // }
 
   get bpm() {
-    return this.beatsPerMinute;
+    return this.transport.bpm.value;
   }
 
   set bpm(beatsPerMinute) {
-    this.beatsPerMinute = beatsPerMinute;
+    this.transport.bpm.value = beatsPerMinute;
   }
 
   onBeat(callback) {
-    this.element.node.addEventListener('beat', callback);
+    this.transport.scheduleRepeat((time)=>{
+      callback(time);
+    }, '4n');
   }
 
   static beatEasing (n) {

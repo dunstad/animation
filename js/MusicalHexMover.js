@@ -4,10 +4,6 @@ class MusicalHexMover extends HexMover {
 
     super(svgContainer, hex, color);
 
-    let duration = 250;
-    let easing = mina.easeout;
-    let config = {easingMap: {x: easing, y: easing}};
-
     this.errorSynth = new Tone.NoiseSynth('brown').toMaster();
     this.synth = new Tone.Synth().toMaster();
 
@@ -24,6 +20,7 @@ class MusicalHexMover extends HexMover {
 
     for (let [moveName, note] of Object.entries(notes)) {
 
+      // todo: fix this to work with Transport in the metronome
       this.on(moveName, (event)=>{
         let moveSuccess = event.detail;
         // in case the user didn't interact with the page before
