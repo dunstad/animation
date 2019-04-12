@@ -1,0 +1,14 @@
+{
+  "background_color": "white",
+  "description": "musical hexagons",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "img/basic/basic_joypad.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "name": "hexical",
+  "start_url": "/hexgrid.html"
+}

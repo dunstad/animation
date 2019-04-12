@@ -1,0 +1,66 @@
+<html>
+  
+  <!-- 
+
+    This entire file is a hacky way to split one scene into a separate app
+    I'll eventually need to find a more elegant way to accomplish this
+
+   -->
+
+  <head>
+    <link rel="stylesheet" type="text/css" href="./css/test.css">
+    <link rel="manifest" href="hexgrid.webmanifest">
+  </head>
+
+  <body>
+    
+    <svg id='container' width="100%" height="100%" viewbox="0 0 640 360"></svg>
+
+  </body>
+
+  <script src="./lib/snap.svg.js"></script>
+  <script src="./lib/vivus.min.js"></script>
+  <script src="./lib/flubber.min.js"></script>
+  
+  <script src="./lib/gif.js"></script>
+  <script src="./lib/gif.worker.js"></script>
+  
+  <script src="./lib/jszip.min.js"></script>
+  <script src="./lib/FileSaver.js"></script>
+  
+  <script src="./lib/honeycomb.min.js"></script>
+  <script src="./lib/Tone.js"></script>
+  <script src="./lib/mousetrap.min.js"></script>
+  <script src="./lib/hammer.min.js"></script>
+
+  <script src="./js/Transformation.js"></script>
+  <script src="./js/AnimationQueue.js"></script>
+  <script src="./js/Animated.js"></script>
+  <script src="./js/HexGrid.js"></script>
+  <script src="./js/HexMover.js"></script>
+  <script src="./js/MusicalHexMover.js"></script>
+  <script src="./js/ControlledHexMover.js"></script>
+  <script src="./js/Metronome.js"></script>
+  <script src="./js/HexMoveQueue.js"></script>
+
+  <script src="./js/Player.js"></script>
+  <script src="./js/Scene.js"></script>
+  <script src="./js/scenes.js"></script>
+  
+  <script type="text/javascript">
+
+    var container = document.getElementById('container');
+    var svgContainer = Snap("#" + container.id);
+    var player = new Player(svgContainer);
+
+    function makeScene(setupFunc) {
+      let scene = new Scene(player);
+      scene.prepareActors(setupFunc);
+      return scene;
+    }
+
+    player.loadScene(makeScene(scenes.hexgrid));
+
+  </script>
+
+</html>
