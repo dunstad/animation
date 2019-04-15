@@ -2,6 +2,7 @@
   "background_color": "white",
   "description": "musical hexagons",
   "display": "fullscreen",
+  "orientation": "landscape",
   "icons": [
     {
       "src": "img/basic/basic_joypad.svg",
