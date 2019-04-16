@@ -227,11 +227,16 @@ var scenes = {
     metronome.x = 20;
     metronome.y = 20;
     
-    metronome.beatsPerMinute = 60;
-    for (let i = 0; i < 20; i++) {
-      let newBPM = metronome.beatsPerMinute + (10 * (i + 1));
-      metronome.beat(1.5, {callback: ()=>{metronome.beatsPerMinute = newBPM;}});
-    }
+    // metronome.beatsPerMinute = 60;
+    // for (let i = 0; i < 20; i++) {
+    //   let newBPM = metronome.beatsPerMinute + (10 * (i + 1));
+    //   metronome.beat(1.5, {callback: ()=>{metronome.beatsPerMinute = newBPM;}});
+    // }
+    
+    metronome.beatsPerMinute = 120;
+    let metronomeConfig = {callback: undefined};
+    metronomeConfig.callback = ()=>{metronome.beat(1.5, metronomeConfig);};
+    metronome.beat(1.5, metronomeConfig);
 
     let hexMoveQueue = new HexMoveQueue(svgContainer);
     Object.assign(hexMoveQueue, {x: 20, y: 20});
