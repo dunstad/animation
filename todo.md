@@ -24,6 +24,10 @@
   
 * Improvements
 
+  * Metronome
+    * can't be started before user interaction
+      * add a play button to solve this?
+    * make it handle switching tabs better
   * HexMoveQueue
     * figure out a better design for the direction indicators
   * HexMover

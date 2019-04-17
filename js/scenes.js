@@ -238,7 +238,7 @@ var scenes = {
     // }
     
     metronome.onBeat((time)=>{
-      metronome.beat(1.5);
+      metronome.beat(1.5).process();
       // shift the queue
       let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat).direction;
       console.log('nextMove', nextMove);

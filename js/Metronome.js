@@ -29,12 +29,11 @@ class Metronome extends Animated {
    * @param {Number} scalar 
    */
   beat(scalar) {
-    let oneMinute = 1000 * 60;
     return {
       propertyValueMap: {scalar: scalar},
       easingMap: {scalar: Metronome.beatEasing},
       callfront: (transformation)=>{
-        transformation.milliseconds = oneMinute / this.bpm;
+        transformation.milliseconds = this.millisecondsPerBeat;
       },
     };
   }
