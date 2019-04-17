@@ -21,15 +21,16 @@ class ControlledHexMover extends MusicalHexMover {
      * Move in a direction with less code repetition.
      * @param {String} moveName 
      */
-    let performMove = (moveName)=>{
-      this[moveName](this.duration, this.config);
+    let performMove = (moveName, time)=>{
+      this[moveName](time, this.duration, this.config);
       if (!Object.keys(this.anims).length) {
         this.process();
       }
     };
 
     for (let [key, moveName] of Object.entries(keys)) {
-      Mousetrap.bind(key, ()=>{performMove(moveName);});
+      // todo: make this a callback that can be registered elsewhere?
+      Mousetrap.bind(key, ()=>{performMove(moveName);}); // , time)
     }
 
     let hammer = new Hammer(svgContainer.node);
@@ -57,7 +58,8 @@ class ControlledHexMover extends MusicalHexMover {
     hammer.on('swipe', (event)=>{
       for (let [moveName, range] of Object.entries(swipeDirections)) {
         if (angleInRange(event.angle, range)) {
-          performMove(moveName);
+          // todo: make this a callback that can be registered elsewhere?
+          performMove(moveName); // , time)
           break; // any swipe should only fall into exactly one of these ranges
         }
       }

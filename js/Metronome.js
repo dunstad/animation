@@ -15,6 +15,9 @@ class Metronome extends Animated {
 
     this.transport = Tone.Transport;
     this.transport.bpm.value = beatsPerMinute;
+    
+    // this makes it so the metronome will start as soon as the scene is played
+    this.wait(0, {callback: ()=>{this.transport.start();}})
 
   }
 
@@ -31,15 +34,10 @@ class Metronome extends Animated {
       propertyValueMap: {scalar: scalar},
       easingMap: {scalar: Metronome.beatEasing},
       callfront: (transformation)=>{
-        transformation.milliseconds = oneMinute / this.beatsPerMinute;
+        transformation.milliseconds = oneMinute / this.bpm;
       },
     };
   }
-
-  // start() {
-    // let milliseconds = this.beatsPerMinute 
-    // this.interval = setInterval(()=>{}, );
-  // }
 
   get bpm() {
     return this.transport.bpm.value;
@@ -49,6 +47,20 @@ class Metronome extends Animated {
     this.transport.bpm.value = beatsPerMinute;
   }
 
+  /**
+   * Used for convenience, because otherwise I'll be calculating it separately everywhere
+   */
+  get millisecondsPerBeat() {
+    let oneMinute = 1000 * 60;
+    return oneMinute / this.bpm;
+  }
+
+  /**
+   * Used to do things when the beat happens. The callback needs
+   * to accept a time parameter, used for example by triggerAttackRelease
+   * in Tone.js .
+   * @param {Function} callback 
+   */
   onBeat(callback) {
     this.transport.scheduleRepeat((time)=>{
       callback(time);

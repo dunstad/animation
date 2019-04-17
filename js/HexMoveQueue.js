@@ -19,7 +19,9 @@ class HexMoveQueue extends Animated {
    * Used to add a move to the queue and a triangle to show it. 
    * @param {String} direction 
    */
-  push(direction) {
+  push(direction, duration) {
+
+    duration = duration || 500;
 
     let directionToRotationMap = {
       'moveDown': 0,
@@ -44,27 +46,34 @@ class HexMoveQueue extends Animated {
 
     this.moveQueue.push(indicator);
     
-    let duration = 500;
     indicator.x = 40 * this.moveQueue.length;
     indicator.scalar = 0;
     indicator.scale(1, duration).process();
 
   }
 
-  shift() {
+  shift(duration) {
 
-    let duration = 500;
+    let result = false;
 
-    for (let indicator of this.moveQueue.slice(1)) {
-      indicator.moveX(indicator.x - 40, duration).process();
+    if (this.moveQueue.length) {
+
+      duration = duration || 500;
+  
+      for (let indicator of this.moveQueue.slice(1)) {
+        indicator.moveX(indicator.x - 40, duration).process();
+      }
+  
+      let firstIndicator = this.moveQueue[0];
+      firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
+        firstIndicator.element.remove();
+      }}).scale(0, duration, {merge: 'start'}).process();
+  
+      result = this.moveQueue.shift();
+
     }
 
-    let firstIndicator = this.moveQueue[0];
-    firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
-      firstIndicator.element.remove();
-    }}).scale(0, duration, {merge: 'start'}).process();
-
-    return this.moveQueue.shift();
+    return result;
 
   }
 

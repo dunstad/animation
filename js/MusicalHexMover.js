@@ -9,7 +9,7 @@ class MusicalHexMover extends HexMover {
 
     // let notes = ['Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
 
-    let notes = {
+    this.notes = {
       moveUpLeft: 'D5',
       moveUp: 'E5',
       moveUpRight: 'G5',
@@ -18,11 +18,11 @@ class MusicalHexMover extends HexMover {
       moveDownRight: 'A4',
     };
 
-    for (let [moveName, note] of Object.entries(notes)) {
+    for (let [moveName, note] of Object.entries(this.notes)) {
 
       // todo: fix this to work with Transport in the metronome
       this.on(moveName, (event)=>{
-        let moveSuccess = event.detail;
+        let moveSuccess = event.detail.moveSuccess;
         // in case the user didn't interact with the page before
         // Tone.js got loaded
         if (Tone.context.state !== 'running') {Tone.context.resume();}

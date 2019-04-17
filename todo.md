@@ -2,6 +2,8 @@
 
 * New
 
+  * Menu
+    * click on / touch the menu items to do things
   * HexTile
     * piece of a hexgrid
   * tree

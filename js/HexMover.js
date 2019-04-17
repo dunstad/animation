@@ -32,7 +32,7 @@ class HexMover extends Animated {
     };
 
     for (let [move, offsets] of Object.entries(moves)) {
-      this[move] = (milliseconds, config)=>{
+      this[move] = (time, milliseconds, config)=>{
 
         // need to clone config here because the same object is used
         // every time a key is pressed
@@ -85,7 +85,10 @@ class HexMover extends Animated {
               
           }
 
-          let moveEvent = new CustomEvent(move, {detail: !moveFailed});
+          let moveEvent = new CustomEvent(move, {detail: {
+            moveSuccess: !moveFailed,
+            time: time,
+          }});
           this.element.node.dispatchEvent(moveEvent);
           
         };

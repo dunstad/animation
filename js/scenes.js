@@ -221,7 +221,11 @@ var scenes = {
 
     }
 
+    // todo: make this use the metronome
     circleMove(musicMover);
+
+    let hexMoveQueue = new HexMoveQueue(svgContainer);
+    Object.assign(hexMoveQueue, {x: 20, y: 20});
 
     let metronome = new Metronome(svgContainer, 120);
     metronome.x = 20;
@@ -233,13 +237,19 @@ var scenes = {
     //   metronome.beat(1.5, {callback: ()=>{metronome.beatsPerMinute = newBPM;}});
     // }
     
-    metronome.beatsPerMinute = 120;
-    let metronomeConfig = {callback: undefined};
-    metronomeConfig.callback = ()=>{metronome.beat(1.5, metronomeConfig);};
-    metronome.beat(1.5, metronomeConfig);
-
-    let hexMoveQueue = new HexMoveQueue(svgContainer);
-    Object.assign(hexMoveQueue, {x: 20, y: 20});
+    metronome.onBeat((time)=>{
+      metronome.beat(1.5);
+      // shift the queue
+      let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat).direction;
+      console.log('nextMove', nextMove);
+      // turn the direction into a note
+      if (nextMove) {
+        let note = controlledHexMover.notes[nextMove];
+        console.log('note', note)
+        // play the note
+        // move the hexes
+      }
+    });
 
     scene.addActors([hexgrid, musicMover, controlledHexMover, metronome, hexMoveQueue]);
 
