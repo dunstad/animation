@@ -258,16 +258,16 @@ var scenes = {
       // shift the queue
       const lagFix = .8;
       let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat * lagFix).direction;
-      console.log('nextMove', nextMove);
       
-      // turn the direction into a note
       if (nextMove) {
+
+        // turn the direction into a note
         let note = controlledHexMover.notes[nextMove];
-        console.log('note', note)
-        
+
         // play the note
         
         // move the hexes
+        
 
       }
     });
