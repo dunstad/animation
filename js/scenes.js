@@ -203,6 +203,8 @@ var scenes = {
 
     let controlledHexMover = new ControlledHexMover(svgContainer, hexgrid.axialGet(2, 1));
     
+    controlledHexMover.on('controlUp', ()=>{console.log('up pressed!');})
+
     let musicMover = new MusicalHexMover(svgContainer, hexgrid.axialGet(2, 0), 'blue');
 
     function circleMove(hexMover) {

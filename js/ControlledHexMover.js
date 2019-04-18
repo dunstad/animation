@@ -9,12 +9,12 @@ class ControlledHexMover extends MusicalHexMover {
     this.config = {easingMap: {x: easing, y: easing}};
 
     let keys = {
-      q: 'moveUpLeft',
-      w: 'moveUp',
-      e: 'moveUpRight',
-      a: 'moveDownLeft',
-      s: 'moveDown',
-      d: 'moveDownRight',
+      q: 'controlUpLeft',
+      w: 'controlUp',
+      e: 'controlUpRight',
+      a: 'controlDownLeft',
+      s: 'controlDown',
+      d: 'controlDownRight',
     };
 
     /**
@@ -28,21 +28,24 @@ class ControlledHexMover extends MusicalHexMover {
       }
     };
 
-    for (let [key, moveName] of Object.entries(keys)) {
-      // todo: make this a callback that can be registered elsewhere?
-      Mousetrap.bind(key, ()=>{performMove(moveName);}); // , time)
+    for (let [key, eventName] of Object.entries(keys)) {
+      Mousetrap.bind(key, ()=>{
+        let controlEvent = new CustomEvent(eventName);
+        this.element.node.dispatchEvent(controlEvent);
+        // performMove(moveName); // , time)
+      });
     }
 
     let hammer = new Hammer(svgContainer.node);
     hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
     let swipeDirections = {
-      moveUpLeft: [-180, -120],
-      moveUp: [-120, -60],
-      moveUpRight: [-60, 0],
-      moveDownRight: [0, 60],
-      moveDown: [60, 120],
-      moveDownLeft: [120, 180],
+      controlUpLeft: [-180, -120],
+      controlUp: [-120, -60],
+      controlUpRight: [-60, 0],
+      controlDownRight: [0, 60],
+      controlDown: [60, 120],
+      controlDownLeft: [120, 180],
     };
 
     /**
@@ -56,10 +59,11 @@ class ControlledHexMover extends MusicalHexMover {
     }
 
     hammer.on('swipe', (event)=>{
-      for (let [moveName, range] of Object.entries(swipeDirections)) {
+      for (let [eventName, range] of Object.entries(swipeDirections)) {
         if (angleInRange(event.angle, range)) {
-          // todo: make this a callback that can be registered elsewhere?
-          performMove(moveName); // , time)
+          let controlEvent = new CustomEvent(eventName);
+          this.element.node.dispatchEvent(controlEvent);
+          // performMove(moveName); // , time)
           break; // any swipe should only fall into exactly one of these ranges
         }
       }
