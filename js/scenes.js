@@ -203,8 +203,6 @@ var scenes = {
 
     let controlledHexMover = new ControlledHexMover(svgContainer, hexgrid.axialGet(2, 1));
     
-    controlledHexMover.on('controlUp', ()=>{console.log('up pressed!');})
-
     let musicMover = new MusicalHexMover(svgContainer, hexgrid.axialGet(2, 0), 'blue');
 
     function circleMove(hexMover) {
@@ -229,6 +227,20 @@ var scenes = {
     let hexMoveQueue = new HexMoveQueue(svgContainer);
     Object.assign(hexMoveQueue, {x: 20, y: 20});
 
+    let controlToMove = {
+      controlUpLeft: 'moveUpLeft',
+      controlUp: 'moveUp',
+      controlUpRight: 'moveUpRight',
+      controlDownLeft: 'moveDownLeft',
+      controlDown: 'moveDown',
+      controlDownRight: 'moveDownRight',
+    };
+    for (let [controlName, moveName] of Object.entries(controlToMove)) {
+      controlledHexMover.on(controlName, ()=>{
+        hexMoveQueue.push(moveName, 100);
+      });
+    }
+
     let metronome = new Metronome(svgContainer, 120);
     metronome.x = 20;
     metronome.y = 20;
@@ -240,16 +252,23 @@ var scenes = {
     // }
     
     metronome.onBeat((time)=>{
+      metronome.scalar = 1; // this should fix it eventually getting stuck at 1.5
       metronome.beat(1.5).process();
+      
       // shift the queue
-      let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat).direction;
+      const lagFix = .8;
+      let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat * lagFix).direction;
       console.log('nextMove', nextMove);
+      
       // turn the direction into a note
       if (nextMove) {
         let note = controlledHexMover.notes[nextMove];
         console.log('note', note)
+        
         // play the note
+        
         // move the hexes
+
       }
     });
 
