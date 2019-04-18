@@ -27,7 +27,7 @@
   * Metronome
     * can't be started before user interaction
       * add a play button to solve this?
-    * make it handle switching tabs better
+    * pause the transport when the page loses focus
   * HexMoveQueue
     * figure out a better design for the direction indicators
   * HexMover
@@ -66,8 +66,9 @@
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### player
-* implement a fullscreen method for #sceneName loading
-* can't access playback controls while fullscreened
+* fix the mobile full page hexgrid.html title bar issue
+* create a service worker for PWA support
+* does the scene need to be paused when the tab loses focus?
 
 #### audio
 * test howler + web audio recorder for audio exporting
