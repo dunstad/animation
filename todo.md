@@ -60,7 +60,6 @@
 
 
 #### animation
-* possible to cache getStateString?
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)

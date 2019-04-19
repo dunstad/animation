@@ -131,7 +131,8 @@ class Animated {
       scalar[1] = transformation.propertyValueMap.scalar;
     }
 
-    return {transform: parsedTransform ? parsedTransform.toString() : ''};
+    this.currentStateString = {transform: parsedTransform ? parsedTransform.toString() : ''};
+    return this.currentStateString;
   }
 
   /**
@@ -316,29 +317,35 @@ class Animated {
   }
 
   get rotation() {
-    return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="r")[1];
+    let currentStateString = this.currentStateString || this.getStateString();
+    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="r")[1];
   }
 
   set rotation(degree) {
     if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.element.attr(this.getStateString(new Transformation({propertyValueMap: {rotation: degree}})));
+    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {rotation: degree}}));
+    this.element.attr(this.currentStateString);
   }
   
   get scalar() {
-    return Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="s")[1];
+    let currentStateString = this.currentStateString || this.getStateString();
+    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="s")[1];
   }
 
   set scalar(scalar) {
-    this.element.attr(this.getStateString(new Transformation({propertyValueMap: {scalar: scalar}})));
+    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {scalar: scalar}}));
+    this.element.attr(this.currentStateString);
   }
   
   get location() {
-    let locationInfo = Snap.parseTransformString(this.getStateString().transform).find(e=>e[0]=="t");
+    let currentStateString = this.currentStateString || this.getStateString();
+    let locationInfo = Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="t");
     return {x: locationInfo[1], y: locationInfo[2]};
   }
 
   set location(coordinates) {
-    this.element.attr(this.getStateString(new Transformation({propertyValueMap: coordinates})));
+    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: coordinates}));
+    this.element.attr(this.currentStateString);
   }
 
   get x() {
