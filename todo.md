@@ -29,7 +29,6 @@
       * add a play button to solve this?
     * pause the transport when the page loses focus
   * HexMoveQueue
-    * create the arrow elements only once and clone them on keypress
     * stick all the arrows on one rect and animate their movements together
     * figure out a better design for the direction indicators
   * HexMover
