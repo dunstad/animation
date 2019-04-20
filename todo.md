@@ -67,7 +67,8 @@
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### player
-* fix the mobile full page hexgrid.html title bar issue
+* figure out why svg isn't stretching to fill width
+  * maybe related to viewbox? seems to preserve aspect ratio
 * create a service worker for PWA support
 * does the scene need to be paused when the tab loses focus?
 
