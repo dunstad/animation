@@ -27,7 +27,8 @@
   * Metronome
     * can't be started before user interaction
       * add a play button to solve this?
-    * pause the transport when the page loses focus
+    * pause the transport when the pause button is pressed
+    * pause the transport when the page loses focus, and resume when refocused
   * HexMoveQueue
     * figure out a better design for the direction indicators
   * HexMover
@@ -58,6 +59,7 @@
 
 
 #### animation
+* other animations are slow after switching away from the stress test, why?
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)

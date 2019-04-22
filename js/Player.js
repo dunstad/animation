@@ -35,6 +35,12 @@ class Player {
    * @param {Scene} scene 
    */
   loadScene(scene) {
+    // get rid of stuff from the old scene
+    if (this.scene) {
+      for (let actor of this.scene.actors) {
+        actor.element.remove();
+      }
+    }
     this.scene = scene;
     for (let actor of scene.actors) {
       let actorClassName = actor.constructor.name.toLowerCase();
