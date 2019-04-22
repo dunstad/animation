@@ -100,6 +100,24 @@ var scenes = {
 
   },
 
+  'stress test': (scene)=>{
+
+    for (let x of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(n=>n*50)) {
+      for (let y of [1, 2, 3, 4, 5, 6].map(n=>n*50)) {
+
+        let clock = new Clock(svgContainer, 10);
+        clock.move(x, y).process();
+    
+        clock.toTime(1, 1000 * 60);
+    
+        scene.addActor(clock);
+
+      }
+    }
+
+
+  },
+
   'flame': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
