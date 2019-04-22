@@ -273,19 +273,14 @@ var scenes = {
       metronome.scalar = 1; // this should fix it eventually getting stuck at 1.5
       metronome.beat(1.5).process();
       
-      // shift the queue
       const lagFix = .8;
       let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat * lagFix).direction;
       
       if (nextMove) {
 
-        // turn the direction into a note
-        let note = controlledHexMover.notes[nextMove];
-        
-        // play the note
-        
-        // move the hexes
-        
+        let easing = mina.easeout;
+        let easingMap = {easingMap: {x: easing, y: easing}};
+        controlledHexMover[nextMove](time, 250, easingMap);
 
       }
     });
@@ -294,6 +289,8 @@ var scenes = {
     playButton.element.attr({fill: 'lime'});
     playButton.element.node.addEventListener('click', ()=>{
       playButton.element.remove();
+      // this can be replaced by having the play button emit a play event
+      // the player can listen for play and pause to give the scene control over playback
       window.player.play(); // todo: remove this GLOBAL
     });
 

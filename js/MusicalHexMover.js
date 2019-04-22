@@ -20,17 +20,16 @@ class MusicalHexMover extends HexMover {
 
     for (let [moveName, note] of Object.entries(this.notes)) {
 
-      // todo: fix this to work with Transport in the metronome
       this.on(moveName, (event)=>{
         let moveSuccess = event.detail.moveSuccess;
         // in case the user didn't interact with the page before
         // Tone.js got loaded
         if (Tone.context.state !== 'running') {Tone.context.resume();}
         if (moveSuccess) {
-          this.synth.triggerAttackRelease(note, '16n');
+          this.synth.triggerAttackRelease(note, '16n', event.detail.time);
         }
         else {
-          this.errorSynth.triggerAttackRelease('32n');
+          this.errorSynth.triggerAttackRelease('32n', event.detail.time);
         }
       });
 

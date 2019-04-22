@@ -25,8 +25,6 @@
 * Improvements
 
   * Metronome
-    * can't be started before user interaction
-      * add a play button to solve this?
     * pause the transport when the pause button is pressed
     * pause the transport when the page loses focus, and resume when refocused
   * HexMoveQueue
