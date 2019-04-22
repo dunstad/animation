@@ -281,13 +281,20 @@ var scenes = {
 
         // turn the direction into a note
         let note = controlledHexMover.notes[nextMove];
-
+        
         // play the note
         
         // move the hexes
         
 
       }
+    });
+
+    let playButton = new Animated(svgContainer.circle(300, 200, 20));
+    playButton.element.attr({fill: 'lime'});
+    playButton.element.node.addEventListener('click', ()=>{
+      playButton.element.remove();
+      window.player.play(); // todo: remove this GLOBAL
     });
 
     scene.addActors([hexgrid, musicMover, controlledHexMover, metronome, hexMoveQueue]);
