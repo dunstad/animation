@@ -32,7 +32,6 @@
     * stick all the arrows on one rect and animate their movements together
     * figure out a better design for the direction indicators
   * HexMover
-    * swap hex-touching movement for swiping
     * internal queue to track movements, have them executed by another component
       * this will keep all the hexmovers in time with each other
     * add double movement
@@ -44,7 +43,8 @@
   * alphabet
     * fix letter morphing
   * flame
-    * random timing for morph lengths to seem more natural?
+    * i think the flame moving a random distance every interval makes it look stop-and-go
+      * maybe a constant distance would look nicer
   * clouds
     * i'm sure there's a prettier way to draw them
   * clock
