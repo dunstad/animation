@@ -8,8 +8,8 @@ class HexMoveQueue extends Animated {
 
     super(svgContainer.group());
 
-    this.triangleGroup = svgContainer.group();
-    this.element.append(this.triangleGroup);
+    this.triangleGroup = new Animated(svgContainer.group());
+    this.element.append(this.triangleGroup.element);
 
     this.moveQueue = [];
 
@@ -43,11 +43,12 @@ class HexMoveQueue extends Animated {
     indicator.rotation = directionToRotationMap[direction];
     indicator.direction = direction;
     
-    this.triangleGroup.append(indicator.element);
+    this.triangleGroup.element.append(indicator.element);
 
     this.moveQueue.push(indicator);
     
-    indicator.x = 40 * this.moveQueue.length;
+    let quotient = Math.floor(this.triangleGroup.x / 40);
+    indicator.x = -(quotient * 40) + (40 * this.moveQueue.length);
     indicator.scalar = 0;
     indicator.scale(1, duration).process();
 
@@ -61,14 +62,21 @@ class HexMoveQueue extends Animated {
 
       duration = duration || 500;
   
-      for (let indicator of this.moveQueue.slice(1)) {
-        indicator.moveX(indicator.x - 40, duration).process();
-      }
+      // for (let indicator of this.moveQueue.slice(1)) {
+      //   indicator.moveX(indicator.x - 40, duration).process();
+      // }
+  
+      // let firstIndicator = this.moveQueue[0];
+      // firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
+      //   firstIndicator.element.remove();
+      // }}).scale(0, duration, {merge: 'start'}).process();
+      
+      this.triangleGroup.moveX(this.triangleGroup.x - 40, duration).process();
   
       let firstIndicator = this.moveQueue[0];
-      firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
+      firstIndicator.scale(0, duration, {callback: ()=>{
         firstIndicator.element.remove();
-      }}).scale(0, duration, {merge: 'start'}).process();
+      }}).process();
   
       result = this.moveQueue.shift();
 

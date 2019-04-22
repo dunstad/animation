@@ -29,7 +29,6 @@
       * add a play button to solve this?
     * pause the transport when the page loses focus
   * HexMoveQueue
-    * stick all the arrows on one rect and animate their movements together
     * figure out a better design for the direction indicators
   * HexMover
     * internal queue to track movements, have them executed by another component
