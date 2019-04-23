@@ -17,22 +17,10 @@ class ControlledHexMover extends MusicalHexMover {
       d: 'controlDownRight',
     };
 
-    /**
-     * Move in a direction with less code repetition.
-     * @param {String} moveName 
-     */
-    let performMove = (moveName, time)=>{
-      this[moveName](time, this.duration, this.config);
-      if (!Object.keys(this.anims).length) {
-        this.process();
-      }
-    };
-
     for (let [key, eventName] of Object.entries(keys)) {
       Mousetrap.bind(key, ()=>{
         let controlEvent = new CustomEvent(eventName);
         this.element.node.dispatchEvent(controlEvent);
-        // performMove(moveName); // , time)
       });
     }
 
@@ -63,7 +51,6 @@ class ControlledHexMover extends MusicalHexMover {
         if (angleInRange(event.angle, range)) {
           let controlEvent = new CustomEvent(eventName);
           this.element.node.dispatchEvent(controlEvent);
-          // performMove(moveName); // , time)
           break; // any swipe should only fall into exactly one of these ranges
         }
       }

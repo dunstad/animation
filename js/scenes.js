@@ -281,6 +281,9 @@ var scenes = {
         let easing = mina.easeout;
         let easingMap = {easingMap: {x: easing, y: easing}};
         controlledHexMover[nextMove](time, 250, easingMap);
+        if (!Object.keys(controlledHexMover.anims).length) {
+          controlledHexMover.process();
+        }
 
       }
     });
