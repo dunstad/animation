@@ -119,7 +119,7 @@ class Alphabet extends Animated {
     let currentPath = letterPathMap[fontName][letter];
 
     // super(svgContainer.group());
-    // this.element.append(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
+    // this.element.add(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
     super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor}));
 
     this.letterPathMap = letterPathMap;
@@ -146,7 +146,7 @@ class Alphabet extends Animated {
 
     // this.element.children().forEach(e=>e.remove());
     // for (let pathString of flubber.separate(this.currentPath, flubber.splitPathString(this.nextPath))) {
-    //   this.element.append(svgContainer.path(pathString).attr({fill: this.fillColor, stroke: this.strokeColor}));
+    //   this.element.add(svgContainer.path(pathString).attr({fill: this.fillColor, stroke: this.strokeColor}));
     // }
 
     // this.interpolators = flubber.combine(flubber.splitPathString(this.currentPath), this.nextPath, {maxSegmentLength: 1})

@@ -10,7 +10,7 @@ class Clock extends Animated {
       stroke: 'saddlebrown',
       strokeWidth: radius * .1,
     });
-    this.element.append(face);
+    this.element.add(face);
 
     let bigMarks = [0, 90, 180, 270];
     for (let angle = 0; angle < 360; angle += 30) {
@@ -20,7 +20,7 @@ class Clock extends Animated {
       let mark = svgContainer.rect(-width / 2, -height / 2, width, height);
       mark.attr({fill: 'black'});
       mark.transform(`r${angle},0,0 t0,${-radius * .8}`);
-      this.element.append(mark);
+      this.element.add(mark);
       
     }
     
@@ -30,24 +30,24 @@ class Clock extends Animated {
     let secondHand = svgContainer.rect(0, 0, width, radius * .9);
     secondHand.attr({fill: 'red'});
     secondHand.transform(`r180,0,0, t${-width / 2},0`);
-    this.element.append(secondHand);
+    this.element.add(secondHand);
     this.secondHand = secondHand;
     
     let minuteHand = svgContainer.rect(0, 0, width, radius * .9);
     minuteHand.attr({fill: 'black'});
     minuteHand.transform(`r180,0,0, t${-width / 2},0`);
-    this.element.append(minuteHand);
+    this.element.add(minuteHand);
     this.minuteHand = minuteHand;
 
     let hourHand = svgContainer.rect(0, 0, width, radius * .5);
     hourHand.attr({fill: 'black'});
     hourHand.transform(`r180,0,0, t${-width / 2},0`);
-    this.element.append(hourHand);
+    this.element.add(hourHand);
     this.hourHand = hourHand;
 
     let centerCircle = svgContainer.circle(0, 0, radius * .05);
     centerCircle.attr({fill: 'black'});
-    this.element.append(centerCircle);
+    this.element.add(centerCircle);
     
     this.timeValue = 0;
     this.toTime = this.makeAnimationHelper(this.toTime);

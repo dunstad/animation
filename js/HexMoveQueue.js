@@ -9,7 +9,7 @@ class HexMoveQueue extends Animated {
     super(svgContainer.group());
 
     this.triangleGroup = new Animated(svgContainer.group());
-    this.element.append(this.triangleGroup.element);
+    this.element.add(this.triangleGroup.element);
 
     this.moveQueue = [];
 
@@ -43,7 +43,7 @@ class HexMoveQueue extends Animated {
     indicator.rotation = directionToRotationMap[direction];
     indicator.direction = direction;
     
-    this.triangleGroup.element.append(indicator.element);
+    this.triangleGroup.element.add(indicator.element);
 
     this.moveQueue.push(indicator);
     

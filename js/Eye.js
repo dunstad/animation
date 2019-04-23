@@ -15,7 +15,7 @@ class Eye extends Animated {
     super(svgContainer.group());
 
     let eyeGroup = svgContainer.group();
-    this.element.append(eyeGroup);
+    this.element.add(eyeGroup);
 
     let white = svgContainer.circle(0, 0, whiteRadius || 50);
     white.attr({
@@ -41,7 +41,7 @@ class Eye extends Animated {
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
     let maskGroup = svgContainer.group();
-    this.element.append(maskGroup);
+    this.element.add(maskGroup);
 
     let topControlPointY = -maxRadius / 2;
     let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
