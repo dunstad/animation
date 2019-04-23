@@ -1,5 +1,5 @@
 var container = document.getElementById('container');
-var svgContainer = Snap("#" + container.id);
+var svgContainer = SVG(`#${container.id}`);
 var player = new Player(svgContainer);
 
 function makeScene(setupFunc) {

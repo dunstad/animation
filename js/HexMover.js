@@ -17,7 +17,7 @@ class HexMover extends Animated {
 
     super(hexagon);
 
-    hex.hexgrid.element.append(this.element);
+    hex.hexgrid.element.add(this.element);
 
     this.hex = hex;
     this.hex.occupied = this;
