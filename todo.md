@@ -58,7 +58,6 @@
 
 #### animation
 * performance
-  * can the update function in Animated be made faster?
   * other animations are slow after switching away from the stress test, why?
   * i can probably still do better at caching the results of getTransformString
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
