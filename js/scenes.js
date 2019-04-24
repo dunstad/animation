@@ -288,7 +288,7 @@ var scenes = {
       }
     });
 
-    let playButton = new Animated(svgContainer.circle(300, 200, 20));
+    let playButton = new Animated(svgContainer.circle(40).x(280).y(180));
     playButton.element.attr({fill: 'lime'});
     playButton.element.node.addEventListener('click', ()=>{
       playButton.element.remove();

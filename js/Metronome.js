@@ -7,7 +7,7 @@ class Metronome extends Animated {
    */
   constructor(svgContainer, beatsPerMinute) {
 
-    super(svgContainer.circle(0, 0, 10));
+    super(svgContainer.circle(20).x(-10).y(-10));
 
     for (let func of [this.beat]) {
       this[func.name] = this.makeAnimationHelper(func);
