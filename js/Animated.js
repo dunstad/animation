@@ -92,50 +92,6 @@ class Animated {
   }
 
   /**
-   * Represents the current transformation state of this as a transformation string.
-   * The transform parameter allows the resulting string to be a transformation
-   * from the current state.
-   * @param {Transformation} transformation
-   */
-  getStateString(transformation) {
-    transformation = transformation || new Transformation();
-    
-    let parsedTransform = Snap.parseTransformString(this.element.transform().string || 't0,0r0s1');
-
-    if (transformation.propertyValueMap.x != undefined || transformation.propertyValueMap.y != undefined) {
-      let location = parsedTransform.find(e=>e[0]=='t');
-      if (!location) {
-        location = ['t', 0, 0];
-        parsedTransform.push(location);
-      }
-      
-      location[1] = transformation.propertyValueMap.x != undefined ? transformation.propertyValueMap.x : location[1];
-      location[2] = transformation.propertyValueMap.y != undefined ? transformation.propertyValueMap.y : location[2];
-    }
-    
-    if (transformation.propertyValueMap.rotation !== undefined) {
-      let rotation = parsedTransform.find(e=>e[0]=='r');
-      if (!rotation) {
-        rotation = ['r', 0];
-        parsedTransform.push(rotation);
-      }
-      rotation[1] = transformation.propertyValueMap.rotation;
-    }
-    
-    if (transformation.propertyValueMap.scalar !== undefined) {
-      let scalar = parsedTransform.find(e=>e[0]=='s');
-      if (!scalar) {
-        scalar = ['s', 1];
-        parsedTransform.push(scalar);
-      }
-      scalar[1] = transformation.propertyValueMap.scalar;
-    }
-
-    this.currentStateString = {transform: parsedTransform ? parsedTransform.toString() : ''};
-    return this.currentStateString;
-  }
-
-  /**
    * Sends a transformation to a queue to be processed in order.
    * Important so that transformations which will not be animated
    * still wait on animated transformations to finish.
@@ -317,51 +273,44 @@ class Animated {
   }
 
   get rotation() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="r")[1];
+    return this.element.transform().rotate;
   }
 
   set rotation(degree) {
     if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {rotation: degree}}));
-    this.element.attr(this.currentStateString);
+    this.element.rotate(degree);
   }
   
   get scalar() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="s")[1];
+    return this.element.transform().scaleX;
   }
 
   set scalar(scalar) {
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {scalar: scalar}}));
-    this.element.attr(this.currentStateString);
+    this.element.scale(scalar, scalar);
   }
   
   get location() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    let locationInfo = Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="t");
-    return {x: locationInfo[1], y: locationInfo[2]};
+    return {x: this.element.x(), y: this.element.y()};
   }
 
   set location(coordinates) {
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: coordinates}));
-    this.element.attr(this.currentStateString);
+    this.element.x(coordinates.x).y(coordinates.y);
   }
 
   get x() {
-    return this.location.x;
+    return this.element.x();
   }
   
   set x(coordinate) {
-    this.location = {x: coordinate};
+    this.element.x(coordinate);
   }
 
   get y() {
-    return this.location.y;
+    return this.element.y();
   }
 
   set y(coordinate) {
-    this.location = {y: coordinate};
+    this.element.y(coordinate);
   }
 
   get vivus() {
