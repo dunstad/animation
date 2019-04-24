@@ -79,7 +79,9 @@ class Eye extends Animated {
 
   set lookAngle(angle) {
     this.angle = angle % 360;
-    this.eyeGroup.transform(`r${this.angle}`);
+    this.eyeGroup.transform({
+      rotate: this.angle,
+    });
   }
 
   get lookMagnitude() {
@@ -88,7 +90,9 @@ class Eye extends Animated {
 
   set lookMagnitude(magnitude) {
     this.magnitude = magnitude;
-    this.irisGroup.transform(`t${(this.radius / 100.0) * this.magnitude},0`);
+    this.irisGroup.transform({
+      translateX: (this.radius / 100.0) * this.magnitude,
+    });
   }
 
   /**
