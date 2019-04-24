@@ -2,7 +2,7 @@ class Sky extends Animated {
   
   constructor(svgContainer, width, height, time) {
     
-    super(svgContainer.rect(10, 10, width || 100, height || 100));
+    super(svgContainer.rect(width || 100, height || 100).x(10).y(10));
 
     this.timeValue = time != undefined ? time : 0;
     

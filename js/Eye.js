@@ -90,9 +90,7 @@ class Eye extends Animated {
 
   set lookMagnitude(magnitude) {
     this.magnitude = magnitude;
-    this.irisGroup.transform({
-      translateX: (this.radius / 100.0) * this.magnitude,
-    });
+    this.irisGroup.x((this.radius / 100.0) * this.magnitude);
   }
 
   /**

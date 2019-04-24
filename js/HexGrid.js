@@ -31,10 +31,7 @@ class HexGrid extends Animated {
         fill: 'white',
         stroke: 'black',
         strokeWidth: 2,
-      }).transform({
-        translateX: x,
-        translateY: y,
-      });
+      }).x(x).y(y);
       
       this.element.add(hexagon);
       

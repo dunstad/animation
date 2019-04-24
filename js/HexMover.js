@@ -13,10 +13,7 @@ class HexMover extends Animated {
       fill: color || 'pink',
       stroke: 'black',
       strokeWidth: 2,
-    }).transform({
-      translateX: x,
-      translateY: y,
-    });
+    }).x(x).y(y);
 
     super(hexagon);
 

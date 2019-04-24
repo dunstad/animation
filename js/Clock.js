@@ -17,7 +17,7 @@ class Clock extends Animated {
 
       let width = radius * .05;
       let height = bigMarks.includes(angle) ? width * 4 : width * 2;
-      let mark = svgContainer.rect(-width / 2, -height / 2, width, height);
+      let mark = svgContainer.rect(width, height).x(-width / 2).y(-height / 2);
       mark.attr({fill: 'black'});
       mark.transform({
         rotate: angle,
@@ -30,7 +30,7 @@ class Clock extends Animated {
     let width = radius * .05;
     this.width = width;
 
-    let secondHand = svgContainer.rect(0, 0, width, radius * .9);
+    let secondHand = svgContainer.rect(width, radius * .9).x(0).y(0);
     secondHand.attr({fill: 'red'});
     secondHand.transform({
       rotate: 180,
@@ -39,7 +39,7 @@ class Clock extends Animated {
     this.element.add(secondHand);
     this.secondHand = secondHand;
     
-    let minuteHand = svgContainer.rect(0, 0, width, radius * .9);
+    let minuteHand = svgContainer.rect(width, radius * .9).x(0).y(0);
     minuteHand.attr({fill: 'black'});
     minuteHand.transform({
       rotate: 180,
