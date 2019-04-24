@@ -14,7 +14,7 @@ class HexMoveQueue extends Animated {
     this.moveQueue = [];
 
     this.indicator = svgContainer.group();
-    let circle = svgContainer.circle(0, 0, 10);
+    let circle = svgContainer.circle(20).x(-10).y(-10);
     this.indicator.append(circle);
     let triangle = svgContainer.polygon(-10, 0, 0, 10, 10, 0).attr({fill: 'white'});
     this.indicator.append(triangle);

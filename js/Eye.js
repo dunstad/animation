@@ -17,7 +17,8 @@ class Eye extends Animated {
     let eyeGroup = svgContainer.group();
     this.element.add(eyeGroup);
 
-    let white = svgContainer.circle(0, 0, whiteRadius || 50);
+    whiteRadius = whiteRadius || 50;
+    let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
     white.attr({
       fill: whiteColor || 'white',
     });
@@ -26,13 +27,15 @@ class Eye extends Animated {
     let irisGroup = svgContainer.group();
     eyeGroup.append(irisGroup);
     
-    let iris = svgContainer.circle(0, 0, irisRadius || 20);
+    irisRadius = irisRadius || 20;
+    let iris = svgContainer.circle(irisRadius * 2).x(-irisRadius).y(-irisRadius);
     iris.attr({
       fill: irisColor || 'saddlebrown',
     });
     irisGroup.append(iris);
     
-    let pupil = svgContainer.circle(0, 0, pupilRadius || 10);
+    pupilRadius = pupilRadius || 10;
+    let pupil = svgContainer.circle(pupilRadius * 2).x(-pupilRadius).y(-pupilRadius);
     pupil.attr({
       fill: pupilColor || 'black',
     });
@@ -79,9 +82,7 @@ class Eye extends Animated {
 
   set lookAngle(angle) {
     this.angle = angle % 360;
-    this.eyeGroup.transform({
-      rotate: this.angle,
-    });
+    this.eyeGroup.rotate(this.angle);
   }
 
   get lookMagnitude() {
