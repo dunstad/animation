@@ -23,7 +23,10 @@ class Moon extends Animated {
       let crater = svgContainer.circle(0, 0, craterRadius);
       crater.attr({fill: craterColor});
       this.element.add(crater);
-      crater.transform(`t${craterCoordInsideMoon(craterRadius)},${craterCoordInsideMoon(craterRadius)}`);
+      crater.transform({
+        translateX: craterCoordInsideMoon(craterRadius),
+        translateY: craterCoordInsideMoon(craterRadius),
+      });
     }
     
     let darkMoon = svgContainer.circle(0, 0, radius);
@@ -34,7 +37,9 @@ class Moon extends Animated {
 
     this.phaseRatio = 0;
     this.darkMoon = darkMoon;
-    this.darkMoon.transform(`t${radius * 2},0`);
+    this.darkMoon.transform({
+      translateX: radius * 2,
+    });
 
     this.radius = radius;
 
@@ -48,7 +53,9 @@ class Moon extends Animated {
 
   set phase(ratio) {
     ratio = ratio % 1;
-    this.darkMoon.transform(`t${-1 * (this.radius * 4 * ratio - this.radius * 2)},0`);
+    this.darkMoon.transform({
+      translateX: -1 * (this.radius * 4 * ratio - this.radius * 2),
+    });
     this.phaseRatio = ratio;
   }
 

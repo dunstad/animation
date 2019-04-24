@@ -19,7 +19,10 @@ class Clock extends Animated {
       let height = bigMarks.includes(angle) ? width * 4 : width * 2;
       let mark = svgContainer.rect(-width / 2, -height / 2, width, height);
       mark.attr({fill: 'black'});
-      mark.transform(`r${angle},0,0 t0,${-radius * .8}`);
+      mark.transform({
+        rotate: angle,
+        translateY: -radius * .8,
+      });
       this.element.add(mark);
       
     }
@@ -29,19 +32,28 @@ class Clock extends Animated {
 
     let secondHand = svgContainer.rect(0, 0, width, radius * .9);
     secondHand.attr({fill: 'red'});
-    secondHand.transform(`r180,0,0, t${-width / 2},0`);
+    secondHand.transform({
+      rotate: 180,
+      translateX: -width / 2,
+    });
     this.element.add(secondHand);
     this.secondHand = secondHand;
     
     let minuteHand = svgContainer.rect(0, 0, width, radius * .9);
     minuteHand.attr({fill: 'black'});
-    minuteHand.transform(`r180,0,0, t${-width / 2},0`);
+    minuteHand.transform({
+      rotate: 180,
+      translateX: -width / 2,
+    });
     this.element.add(minuteHand);
     this.minuteHand = minuteHand;
 
     let hourHand = svgContainer.rect(0, 0, width, radius * .5);
     hourHand.attr({fill: 'black'});
-    hourHand.transform(`r180,0,0, t${-width / 2},0`);
+    hourHand.transform({
+      rotate: 180,
+      translateX: -width / 2,
+    });
     this.element.add(hourHand);
     this.hourHand = hourHand;
 
@@ -63,9 +75,18 @@ class Clock extends Animated {
     let centerX = -this.width / 2;
     let timeDecimal = timeValue % 1;
     let minuteXRotation = 180 + (timeDecimal) * 360;
-    this.secondHand.transform(`r${minuteXRotation * 60},0,0 t${centerX},0`);
-    this.minuteHand.transform(`r${minuteXRotation},0,0 t${centerX},0`);
-    this.hourHand.transform(`r${180 + (timeValue / 12) * 360},0,0 t${centerX},0`);
+    this.secondHand.transform({
+      rotate: minuteXRotation * 60,
+      translateX: centerX,
+    });
+    this.minuteHand.transform({
+      rotate: minuteXRotation,
+      translateX: centerX,
+    });
+    this.hourHand.transform({
+      rotate: 180 + (timeValue / 12) * 360,
+      translateX: centerX,
+    });
     this.timeValue = timeValue;
   }
 
