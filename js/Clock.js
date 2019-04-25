@@ -4,6 +4,7 @@ class Clock extends Animated {
   
     super(svgContainer.group());
 
+    this.radius = radius;
     let diameter = radius * 2;
 
     let face = svgContainer.circle(diameter).x(-radius).y(-radius);
@@ -29,21 +30,23 @@ class Clock extends Animated {
     let width = radius * .05;
     this.width = width;
 
-    let secondHand = svgContainer.rect(width, radius * .9).x(0).y(0);
+    let secondHandHeight = radius * .9;
+    let secondHand = svgContainer.rect(width, secondHandHeight).x(-width/2).y(-secondHandHeight);
     secondHand.attr({fill: 'red'});
-    secondHand.rotate(180).x(-width / 2);
+    secondHand.x(-width / 2);
     this.element.add(secondHand);
     this.secondHand = secondHand;
     
-    let minuteHand = svgContainer.rect(width, radius * .9).x(0).y(0);
+    let minuteHand = svgContainer.rect(width, secondHandHeight).x(-width/2).y(-secondHandHeight);
     minuteHand.attr({fill: 'black'});
-    minuteHand.rotate(180).x(-width / 2);
+    minuteHand.x(-width / 2);
     this.element.add(minuteHand);
     this.minuteHand = minuteHand;
 
-    let hourHand = svgContainer.rect(0, 0, width, radius * .5);
+    let hourHandHeight = radius * .5;
+    let hourHand = svgContainer.rect(width, hourHandHeight).x(-width/2).y(-hourHandHeight);
     hourHand.attr({fill: 'black'});
-    hourHand.rotate(180).x(-width / 2);
+    hourHand.x(-width / 2);
     this.element.add(hourHand);
     this.hourHand = hourHand;
 
@@ -62,12 +65,13 @@ class Clock extends Animated {
 
   set time(timeValue) {
     timeValue = timeValue % 12;
-    let centerX = -this.width / 2;
+    let centerX = this.element.cx();
+    let centerY = this.element.cy();
     let timeDecimal = timeValue % 1;
     let minuteXRotation = 180 + (timeDecimal) * 360;
-    this.secondHand.rotate(minuteXRotation * 60).x(centerX);
-    this.minuteHand.rotate(minuteXRotation).x(centerX);
-    this.hourHand.rotate(180 + (timeValue / 12) * 360).x(centerX);
+    this.secondHand.rotate(minuteXRotation * 60, centerX, centerY);
+    this.minuteHand.rotate(minuteXRotation, centerX, centerY);
+    this.hourHand.rotate(180 + (timeValue / 12) * 360, centerX, centerY);
     this.timeValue = timeValue;
   }
 
