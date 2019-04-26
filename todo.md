@@ -58,10 +58,10 @@
 
 #### animation
 * performance
-  * make a branch to test svg.js, it looks a lot faster on jsperf
+  * finish svg.js refactor
   * some way to reuse calculations when showing multiples of the same component?
   * other animations are slow after switching away from the stress test, why?
-  * i can probably still do better at caching the results of getTransformString
+    * this will be easier to test from the snap.svg branch
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
