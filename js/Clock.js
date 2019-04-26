@@ -11,7 +11,7 @@ class Clock extends Animated {
     face.attr({
       fill: 'white',
       stroke: 'saddlebrown',
-      strokeWidth: radius * .1,
+      'stroke-width': radius * .1,
     });
     this.element.add(face);
 
