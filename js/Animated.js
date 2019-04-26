@@ -278,7 +278,7 @@ class Animated {
 
   set rotation(degree) {
     if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.element.rotate(degree);
+    this.element.transform({rotate: degree});
   }
   
   get scalar() {
