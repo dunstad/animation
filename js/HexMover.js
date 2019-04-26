@@ -12,7 +12,7 @@ class HexMover extends Animated {
     hexagon.attr({
       fill: color || 'pink',
       stroke: 'black',
-      strokeWidth: 2,
+      'stroke-width': 2,
     }).x(x).y(y);
 
     super(hexagon);
