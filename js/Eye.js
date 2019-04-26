@@ -82,7 +82,7 @@ class Eye extends Animated {
 
   set lookAngle(angle) {
     this.angle = angle % 360;
-    this.eyeGroup.rotate(this.angle);
+    this.eyeGroup.transform({rotate: this.angle});
   }
 
   get lookMagnitude() {
