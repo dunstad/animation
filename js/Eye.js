@@ -22,24 +22,24 @@ class Eye extends Animated {
     white.attr({
       fill: whiteColor || 'white',
     });
-    eyeGroup.append(white);
+    eyeGroup.add(white);
 
     let irisGroup = svgContainer.group();
-    eyeGroup.append(irisGroup);
+    eyeGroup.add(irisGroup);
     
     irisRadius = irisRadius || 20;
     let iris = svgContainer.circle(irisRadius * 2).x(-irisRadius).y(-irisRadius);
     iris.attr({
       fill: irisColor || 'saddlebrown',
     });
-    irisGroup.append(iris);
+    irisGroup.add(iris);
     
     pupilRadius = pupilRadius || 10;
     let pupil = svgContainer.circle(pupilRadius * 2).x(-pupilRadius).y(-pupilRadius);
     pupil.attr({
       fill: pupilColor || 'black',
     });
-    irisGroup.append(pupil);
+    irisGroup.add(pupil);
 
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
@@ -49,12 +49,12 @@ class Eye extends Animated {
     let topControlPointY = -maxRadius / 2;
     let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
     topEyelid.attr({fill: 'white'});
-    maskGroup.append(topEyelid);
+    maskGroup.add(topEyelid);
     
     let bottomControlPointY = maxRadius / 2;
     let bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${bottomControlPointY}, ${maxRadius / 2} ${bottomControlPointY}, ${maxRadius} 0`);
     bottomEyelid.attr({fill: 'white'});
-    maskGroup.append(bottomEyelid);
+    maskGroup.add(bottomEyelid);
 
     this.element.attr({mask: maskGroup});
 
