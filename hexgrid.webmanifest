@@ -6,7 +6,7 @@
   "icons": [
     {
       "src": "img/raster/basic_joypad.png",
-      "sizes": "any",
+      "sizes": "64x64",
       "type": "image/png"
     }
   ],
