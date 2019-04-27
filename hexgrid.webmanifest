@@ -5,7 +5,7 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "animation/img/raster/basic_joypad.png",
+      "src": "img/raster/basic_joypad.png",
       "sizes": "any",
       "type": "image/png"
     }
