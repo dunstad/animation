@@ -38,6 +38,7 @@ class Player {
     // get rid of stuff from the old scene
     if (this.scene) {
       for (let actor of this.scene.actors) {
+        actor.stop();
         actor.element.remove();
       }
     }
