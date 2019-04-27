@@ -5,9 +5,9 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "animation/img/basic/basic_joypad.svg",
+      "src": "animation/img/raster/basic_joypad.png",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/png"
     }
   ],
   "name": "hexical",
