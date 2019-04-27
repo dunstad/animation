@@ -1,5 +1,6 @@
 {
   "background_color": "white",
+  "theme_color": "white",
   "description": "musical hexagons",
   "display": "fullscreen",
   "orientation": "landscape",
@@ -16,5 +17,6 @@
     }
   ],
   "name": "hexical",
+  "short_name": "hexical",
   "start_url": "/animation/hexgrid.html"
 }
