@@ -5,7 +5,7 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "img/basic/basic_joypad.svg",
+      "src": "animation/img/basic/basic_joypad.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }

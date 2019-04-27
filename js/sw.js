@@ -1,6 +1,6 @@
-self.addEventListener('install', function(e) {
+self.addEventListener('install', (e)=>{
   e.waitUntil(
-    caches.open('file-store').then(function(cache) {
+    caches.open('file-store').then((cache)=>{
       return cache.addAll([
         '/animation/hexgrid.html',
         '/animation/css/hexgrid.css',
@@ -33,11 +33,11 @@ self.addEventListener('install', function(e) {
   );
  });
  
- self.addEventListener('fetch', function(e) {
+ self.addEventListener('fetch', (e)=>{
    console.log(e.request.url);
    e.respondWith(
-     caches.match(e.request).then(function(response) {
+     caches.match(e.request).then((response)=>{
        return response || fetch(e.request);
-     })
+     }).catch(console.error)
    );
  });
