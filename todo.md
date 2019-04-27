@@ -72,8 +72,6 @@
 #### player
 * figure out why svg isn't stretching to fill width
   * maybe related to viewbox? seems to preserve aspect ratio
-* PWA icon works for firefox but not chrome (need 192 and maybe 512 px versions)
-  * test if svg is usable
 * does the scene need to be paused when the tab loses focus?
 
 #### audio
