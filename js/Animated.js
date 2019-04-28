@@ -294,7 +294,10 @@ class Animated {
   }
 
   set location(coordinates) {
-    this.element.x(coordinates.x).y(coordinates.y);
+    this.element.transform({
+      translateX: coordinates.x,
+      translateY: coordinates.y,
+    });
   }
 
   get x() {
@@ -302,7 +305,7 @@ class Animated {
   }
   
   set x(coordinate) {
-    this.element.x(coordinate);
+    this.element.transform({translateX: coordinate});
   }
 
   get y() {
@@ -310,7 +313,7 @@ class Animated {
   }
 
   set y(coordinate) {
-    this.element.y(coordinate);
+    this.element.transform({translateY: coordinate});
   }
 
   get vivus() {

@@ -45,7 +45,7 @@ class Eye extends Animated {
 
     let maskGroup = svgContainer.group();
     this.element.add(maskGroup);
-
+    
     let topControlPointY = -maxRadius / 2;
     let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
     topEyelid.attr({fill: 'white'});
@@ -56,7 +56,7 @@ class Eye extends Animated {
     bottomEyelid.attr({fill: 'white'});
     maskGroup.add(bottomEyelid);
 
-    this.element.attr({mask: maskGroup});
+    this.element.maskWith(maskGroup);
 
     this.radius = maxRadius;
 
@@ -91,7 +91,7 @@ class Eye extends Animated {
 
   set lookMagnitude(magnitude) {
     this.magnitude = magnitude;
-    this.irisGroup.x((this.radius / 100.0) * this.magnitude);
+    this.irisGroup.transform({translateX: (this.radius / 100.0) * this.magnitude});
   }
 
   /**
