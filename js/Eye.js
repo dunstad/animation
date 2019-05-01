@@ -57,7 +57,7 @@ class Eye extends Animated {
     maskGroup.add(bottomEyelid);
 
     window.maskGroup = maskGroup;
-    // this.element.maskWith(maskGroup);
+    this.element.maskWith(maskGroup);
 
     this.radius = maxRadius;
 
@@ -112,8 +112,8 @@ class Eye extends Animated {
    */
   newPath(ratio, isTop) {
     let modifier = isTop ? -1 : 1;
-    let controlPoint = modifier * this.radius * ratio;
-    let pathString = `M ${-this.radius} 0 C ${-this.radius / 2} ${controlPoint}, ${this.radius / 2} ${controlPoint}, ${this.radius} 0`;
+    let controlPoint = (modifier * this.radius * ratio) + this.element.cy();
+    let pathString = `M ${-this.radius + this.element.cx()} ${this.element.cy()} C ${-(this.radius / 2) + this.element.cx()} ${controlPoint}, ${(this.radius / 2) + this.element.cx()} ${controlPoint}, ${this.radius + this.element.cx()} ${this.element.cy()}`;
     return pathString;
   }
 
