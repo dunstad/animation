@@ -24,7 +24,6 @@ var scenes = {
   'animate sky': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 0);
-    sky.move(-10, -10).process();
     sky.toHour(24, 10 * 1000);
     scene.addActor(sky);
 
@@ -33,7 +32,6 @@ var scenes = {
   'moon phases': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let moon = new Moon(svgContainer, 50);
     moon.move(100, 100).process();
@@ -46,7 +44,6 @@ var scenes = {
   'star morphing': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let star = new Star(svgContainer, 2, 40, '#ffffc0');
     star.move(320, 100).process();
@@ -69,7 +66,6 @@ var scenes = {
   'cloud morphing': (scene)=>{
     
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
     
     let cloud = new Cloud(svgContainer, 3, 100, 'white');
     cloud.move(200, 200).process();
@@ -121,7 +117,6 @@ var scenes = {
   'flame': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let flame1 = new Flame(svgContainer, 'red');
     flame1.move(100, 100).process();

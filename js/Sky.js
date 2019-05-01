@@ -2,7 +2,7 @@ class Sky extends Animated {
   
   constructor(svgContainer, width, height, time) {
     
-    super(svgContainer.rect(width || 100, height || 100).x(10).y(10));
+    super(svgContainer.rect(width || 100, height || 100));
 
     this.timeValue = time != undefined ? time : 0;
     
@@ -18,7 +18,8 @@ class Sky extends Animated {
     this.skyColors[19] = this.skyColors[5];
     this.skyColors[20] = chroma('#3D5FF9');
 
-    this.gradient = svgContainer.gradient('l(0,0,0,1)');
+    this.gradient = svgContainer.gradient('linear');
+    this.gradient.from(0, 0).to(0, 1);
     this.element.attr({fill: this.gradient});
     this.setColorFromTime(time);
 
@@ -84,7 +85,11 @@ class Sky extends Animated {
     let bottomColor = chroma.mix(this.skyColors[bottomHour], this.skyColors[topHour], bottomRatio).hex();
     let topColor = chroma.mix(this.skyColors[topHour], nextColor, bottomRatio).hex();
 
-    this.gradient.setStops(`${topColor}-${bottomColor}`);
+    // this.gradient.setStops(`${topColor}-${bottomColor}`);
+    this.gradient.update((gradient)=>{
+      gradient.stop(0, topColor);
+      gradient.stop(1, bottomColor);
+    });
   }
 
   toHour(hour) {
