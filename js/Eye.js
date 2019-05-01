@@ -56,7 +56,8 @@ class Eye extends Animated {
     bottomEyelid.attr({fill: 'white'});
     maskGroup.add(bottomEyelid);
 
-    this.element.maskWith(maskGroup);
+    window.maskGroup = maskGroup;
+    // this.element.maskWith(maskGroup);
 
     this.radius = maxRadius;
 
@@ -91,13 +92,14 @@ class Eye extends Animated {
 
   set lookMagnitude(magnitude) {
     this.magnitude = magnitude;
+    // translateX works relative to parent, .x() seems to be absolute
     this.irisGroup.transform({translateX: (this.radius / 100.0) * this.magnitude});
   }
 
   /**
    * Animate looking in a direction.
-   * @param {Number} angle 
-   * @param {Number} magnitude 
+   * @param {Number} angle 0-360
+   * @param {Number} magnitude 0-100
    */
   look(angle, magnitude) {
     return {propertyValueMap: {lookAngle: angle, lookMagnitude: magnitude}};
@@ -121,7 +123,8 @@ class Eye extends Animated {
 
   set topEyelidOpen(ratio) {
     this.topOpen = ratio;
-    this.topEyelid.attr({d: this.newPath(ratio, true)});
+    // this.topEyelid.attr({d: this.newPath(ratio, true)});
+    this.topEyelid.plot(this.newPath(ratio, true));
   }
 
   /**
@@ -138,7 +141,8 @@ class Eye extends Animated {
 
   set bottomEyelidOpen(ratio) {
     this.bottomOpen = ratio;
-    this.bottomEyelid.attr({d: this.newPath(ratio, false)});
+    // this.bottomEyelid.attr({d: this.newPath(ratio, false)});
+    this.bottomEyelid.plot(this.newPath(ratio, false));
   }
 
   /**
