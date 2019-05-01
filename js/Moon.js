@@ -30,7 +30,8 @@ class Moon extends Animated {
     darkMoon.attr({fill: 'black', opacity: .7});
     this.element.add(darkMoon);
 
-    this.element.attr({mask: moonClip});
+    // this.element.attr({mask: moonClip});
+    // this.element.maskWith(moonClip);
 
     this.phaseRatio = 0;
     this.darkMoon = darkMoon;
