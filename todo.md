@@ -59,6 +59,7 @@
 #### animation
 * performance
   * finish svg.js refactor
+    * figure out how to make masks move with elements in svg.js
   * some way to reuse calculations when showing multiples of the same component?
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
