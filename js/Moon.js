@@ -2,7 +2,8 @@ class Moon extends Animated {
 
   constructor(svgContainer, radius) {
   
-    super(svgContainer.group());
+    super(svgContainer.nested());
+    this.element.attr({overflow: 'visible'});
 
     let moonClip = svgContainer.circle(radius * 2).x(-radius).y(-radius);
     moonClip.attr({fill: 'white'});
@@ -26,16 +27,14 @@ class Moon extends Animated {
       crater.x(craterCoordInsideMoon(craterRadius)).y(craterCoordInsideMoon(craterRadius));
     }
     
-    let darkMoon = svgContainer.circle(radius * 2).x(-radius).y(-radius);
+    let darkMoon = svgContainer.circle(radius * 2).x(radius).y(-radius);
     darkMoon.attr({fill: 'black', opacity: .7});
     this.element.add(darkMoon);
 
-    // this.element.attr({mask: moonClip});
-    // this.element.maskWith(moonClip);
+    this.element.clipWith(moonClip);
 
     this.phaseRatio = 0;
     this.darkMoon = darkMoon;
-    this.darkMoon.x(radius * 2);
 
     this.radius = radius;
 
@@ -49,7 +48,7 @@ class Moon extends Animated {
 
   set phase(ratio) {
     ratio = ratio % 1;
-    this.darkMoon.x(-1 * (this.radius * 4 * ratio - this.radius * 2));
+    this.darkMoon.x(-1 * (this.radius * 4 * ratio - this.radius));
     this.phaseRatio = ratio;
   }
 
