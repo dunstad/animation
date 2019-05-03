@@ -26,7 +26,7 @@ class HexGrid extends Animated {
         return accumulator;
       }, []);
       
-      let hexagon = svgContainer.polygon(hexagonCoords);
+      let hexagon = svgContainer.polygon(hexagonCoords); // todo this might have to be a string
       hexagon.attr({
         fill: 'white',
         stroke: 'black',
