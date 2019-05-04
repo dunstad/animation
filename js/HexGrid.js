@@ -2,7 +2,8 @@ class HexGrid extends Animated {
   
   constructor(svgContainer, width, height) {
 
-    let gridGroup = svgContainer.group();
+    let gridGroup = svgContainer.nested();
+    gridGroup.attr({overflow: 'visible'});
     
     super(gridGroup);
 
@@ -26,7 +27,7 @@ class HexGrid extends Animated {
         return accumulator;
       }, []);
       
-      let hexagon = svgContainer.polygon(hexagonCoords); // todo this might have to be a string
+      let hexagon = svgContainer.polygon(hexagonCoords);
       hexagon.attr({
         fill: 'white',
         stroke: 'black',

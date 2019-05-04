@@ -286,7 +286,7 @@ class Animated {
   }
 
   set scalar(scalar) {
-    this.element.scale(scalar, scalar);
+    this.element.transform({scale: scalar});
   }
   
   get location() {

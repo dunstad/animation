@@ -6,19 +6,20 @@ class HexMoveQueue extends Animated {
    */
   constructor(svgContainer) {
 
-    super(svgContainer.group());
-
+    super(svgContainer.nested());
+    this.element.attr({overflow: 'visible'});
+    
     this.triangleGroup = new Animated(svgContainer.group());
     this.element.add(this.triangleGroup.element);
-
+    
     this.moveQueue = [];
-
-    this.indicator = svgContainer.group();
+    
+    this.indicator = svgContainer.defs().nested();
+    this.indicator.attr({overflow: 'visible'});
     let circle = svgContainer.circle(20).x(-10).y(-10);
     this.indicator.add(circle);
-    let triangle = svgContainer.polygon(-10, 0, 0, 10, 10, 0).attr({fill: 'white'});
+    let triangle = svgContainer.polygon([-10, 0, 0, 10, 10, 0]).attr({fill: 'white'});
     this.indicator.add(triangle);
-    this.indicator.toDefs();
 
   }
 
@@ -39,7 +40,7 @@ class HexMoveQueue extends Animated {
       'moveDownRight':300,
     }
 
-    let indicator = new Animated(this.indicator.use());
+    let indicator = new Animated(svgContainer.use(this.indicator));
     indicator.rotation = directionToRotationMap[direction];
     indicator.direction = direction;
     

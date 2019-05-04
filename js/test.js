@@ -12,7 +12,6 @@ for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
 
 function onSceneSelect(e) {
   localStorage.setItem('currentScene', e.target.value);
-  console.log('?')
   player.loadScene(scenes[e.target.value]);
 }
 
