@@ -168,7 +168,7 @@ class Alphabet extends Animated {
   }
 
   set status(ratio) {
-    this.path.node.setAttribute('d', this.interpolator(ratio));
+    this.path.plot(this.interpolator(ratio));
     this.ratio = ratio;
   }
 

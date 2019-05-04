@@ -12,7 +12,10 @@ class Flame extends Animated {
 
     let currentPath = Flame.makePath();
 
-    super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor}));
+    super(svgContainer.nested());
+    this.element.attr({overflow: 'visible'});
+    this.path = svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor});
+    this.element.add(this.path);
 
     this.currentPath = currentPath;
     this.nextPath = Flame.makePath();
@@ -64,7 +67,7 @@ class Flame extends Animated {
   }
 
   set status(ratio) {
-    this.element.node.setAttribute('d', this.interpolator(ratio));
+    this.path.plot(this.interpolator(ratio));
     this.ratio = ratio;
   }
 

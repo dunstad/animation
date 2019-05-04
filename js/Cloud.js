@@ -69,7 +69,7 @@ class Cloud extends Animated {
       this.forms[Math.floor(numBumps) + 1] = Cloud.makePath(Math.floor(numBumps) + 1, this.length);
     }
     let newPathString = flubber.interpolate(this.forms[Math.floor(numBumps)], this.forms[Math.floor(numBumps) + 1], {maxSegmentLength: 5})(remainder);
-    this.path.node.setAttribute('d', newPathString);
+    this.path.plot(newPathString);
     this.numBumps = numBumps;
   }
 

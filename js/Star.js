@@ -7,7 +7,10 @@ class Star extends Animated {
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
     
-    super(svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor}));
+    super(svgContainer.nested());
+    this.element.attr({overflow: 'visible'});
+    this.path = svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor});
+    this.element.add(this.path);
     
     this.numPoints = numPoints;
     
@@ -52,7 +55,7 @@ class Star extends Animated {
   set points(numPoints) {
     let remainder = numPoints % 1;
     let newPathString = flubber.interpolate(Star.makePath(Math.floor(numPoints), this.radius), Star.makePath(Math.floor(numPoints) + 1, this.radius))(remainder);
-    this.element.node.setAttribute('d', newPathString);
+    this.path.plot(newPathString);
     this.numPoints = numPoints;
   }
 
