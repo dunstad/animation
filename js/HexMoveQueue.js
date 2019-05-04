@@ -75,7 +75,7 @@ class HexMoveQueue extends Animated {
       this.triangleGroup.moveX(this.triangleGroup.x - 40, duration).process();
   
       let firstIndicator = this.moveQueue[0];
-      firstIndicator.scale(0, duration, {callback: ()=>{
+      firstIndicator.scale(1e-6, duration, {callback: ()=>{
         firstIndicator.element.remove();
       }}).process();
   
