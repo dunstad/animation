@@ -42,6 +42,7 @@ class HexMoveQueue extends Animated {
     }
 
     let indicator = new Animated(svgContainer.use(this.indicator));
+    // let indicator = new Animated(this.indicator.clone());
     indicator.rotation = directionToRotationMap[direction];
     indicator.direction = direction;
     
