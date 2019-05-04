@@ -7,7 +7,6 @@ class Moon extends Animated {
 
     let moonClip = svgContainer.circle(radius * 2).x(-radius).y(-radius);
     moonClip.attr({fill: 'white'});
-    this.element.add(moonClip);
 
     let moonColor = '#ffffc0';
     let brightMoon = svgContainer.circle(radius * 2).x(-radius).y(-radius);

@@ -12,7 +12,8 @@ class Eye extends Animated {
    */
   constructor(svgContainer, whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor) {
   
-    super(svgContainer.group());
+    super(svgContainer.nested());
+    this.element.attr({overflow: 'visible'});
 
     let eyeGroup = svgContainer.group();
     this.element.add(eyeGroup);
@@ -43,21 +44,20 @@ class Eye extends Animated {
 
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
-    let maskGroup = svgContainer.group();
-    this.element.add(maskGroup);
+    let clipGroup = svgContainer.clip();
+    clipGroup.attr({overflow: 'visible'});
     
     let topControlPointY = -maxRadius / 2;
     let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
     topEyelid.attr({fill: 'white'});
-    maskGroup.add(topEyelid);
+    clipGroup.add(topEyelid);
     
     let bottomControlPointY = maxRadius / 2;
     let bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${bottomControlPointY}, ${maxRadius / 2} ${bottomControlPointY}, ${maxRadius} 0`);
     bottomEyelid.attr({fill: 'white'});
-    maskGroup.add(bottomEyelid);
+    clipGroup.add(bottomEyelid);
 
-    window.maskGroup = maskGroup;
-    this.element.maskWith(maskGroup);
+    this.element.clipWith(clipGroup);
 
     this.radius = maxRadius;
 
@@ -112,8 +112,8 @@ class Eye extends Animated {
    */
   newPath(ratio, isTop) {
     let modifier = isTop ? -1 : 1;
-    let controlPoint = (modifier * this.radius * ratio) + this.element.cy();
-    let pathString = `M ${-this.radius + this.element.cx()} ${this.element.cy()} C ${-(this.radius / 2) + this.element.cx()} ${controlPoint}, ${(this.radius / 2) + this.element.cx()} ${controlPoint}, ${this.radius + this.element.cx()} ${this.element.cy()}`;
+    let controlPoint = modifier * this.radius * ratio;
+    let pathString = `M ${-this.radius} 0 C ${-this.radius / 2} ${controlPoint}, ${this.radius / 2} ${controlPoint}, ${this.radius} 0`;
     return pathString;
   }
 
