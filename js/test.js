@@ -2,16 +2,6 @@ var container = document.getElementById('container');
 var svgContainer = SVG(`#${container.id}`);
 var player = new Player(svgContainer);
 
-function makeScene(setupFunc) {
-
-  let scene = new Scene(player);
-
-  scene.prepareActors(setupFunc);
-  
-  return scene;
-
-}
-
 let sceneSelect = document.getElementById('sceneSelect');
 for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
   let sceneOption = document.createElement('option');
@@ -22,8 +12,8 @@ for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
 
 function onSceneSelect(e) {
   localStorage.setItem('currentScene', e.target.value);
-  player.svgElement.clear();
-  player.loadScene(makeScene(scenes[e.target.value]));
+  console.log('?')
+  player.loadScene(scenes[e.target.value]);
 }
 
 sceneSelect.addEventListener('change', onSceneSelect);
@@ -39,7 +29,7 @@ else {
 
 sceneSelect.value = currentSceneName;
 
-player.loadScene(makeScene(scenes[currentSceneName]));
+player.loadScene(scenes[currentSceneName]);
 
 /**
  * @param {Animated} animated 
