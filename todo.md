@@ -59,8 +59,7 @@
 #### animation
 * performance
   * finish svg.js refactor
-    * nested svg can't rotate (group inside svg can though)
-      * add some kind of wrapper class or function to make setting that up easy
+    * fix rotate and scale overriding each other
     * animation engine
     * make sure tests work
   * some way to reuse calculations when showing multiples of the same component?
