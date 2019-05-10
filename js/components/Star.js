@@ -7,8 +7,7 @@ class Star extends Animated {
       fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.25)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
     
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
     this.path = svgContainer.path(Star.makePath(numPoints, radius)).attr({fill: fillColor, stroke: borderColor});
     this.element.add(this.path);
     

@@ -12,8 +12,7 @@ class Eye extends Animated {
    */
   constructor(svgContainer, whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor) {
   
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
 
     let eyeGroup = svgContainer.group();
     this.element.add(eyeGroup);

@@ -2,7 +2,7 @@ class External extends Animated {
   
   constructor(svgContainer, svgImagePath) {
 
-    super(svgContainer.nested());
+    super(svgContainer.magicContainer());
     this.svgImagePath = svgImagePath;
     this.loadingPromise = this.load();
     

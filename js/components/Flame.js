@@ -12,8 +12,7 @@ class Flame extends Animated {
 
     let currentPath = Flame.makePath();
 
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
     this.path = svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor});
     this.element.add(this.path);
 

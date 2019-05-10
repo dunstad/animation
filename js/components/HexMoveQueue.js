@@ -6,17 +6,14 @@ class HexMoveQueue extends Animated {
    */
   constructor(svgContainer) {
 
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
     
-    this.triangleGroup = new Animated(svgContainer.nested());
-    this.triangleGroup.element.attr({overflow: 'visible'});
+    this.triangleGroup = new Animated(svgContainer.magicContainer());
     this.element.add(this.triangleGroup.element);
     
     this.moveQueue = [];
     
-    this.indicator = svgContainer.defs().nested();
-    this.indicator.attr({overflow: 'visible'});
+    this.indicator = svgContainer.defs().magicContainer();
     let circle = svgContainer.circle(20);
     this.indicator.add(circle);
     let triangle = svgContainer.polygon([0, 10, 20, 10, 10, 0]).attr({fill: 'white'});

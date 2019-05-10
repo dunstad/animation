@@ -2,8 +2,7 @@ class Moon extends Animated {
 
   constructor(svgContainer, radius) {
   
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
 
     let moonClip = svgContainer.circle(radius * 2).x(-radius).y(-radius);
     moonClip.attr({fill: 'white'});

@@ -7,8 +7,7 @@ class Cloud extends Animated {
       fillColor = svgContainer.gradient(`l(0,0,0,1)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
     
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
     this.path = svgContainer.path(Cloud.makePath(numBumps, length)).attr({fill: fillColor, stroke: borderColor});
     this.element.add(this.path);
 

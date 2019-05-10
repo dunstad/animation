@@ -118,8 +118,7 @@ class Alphabet extends Animated {
     
     let currentPath = letterPathMap[fontName][letter];
 
-    super(svgContainer.nested());
-    this.element.attr({overflow: 'visible'});
+    super(svgContainer.magicContainer());
     this.path = svgContainer.path(currentPath).attr({fill: fillColor, stroke: strokeColor});
     this.element.add(this.path);
 

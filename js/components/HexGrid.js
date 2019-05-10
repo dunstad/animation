@@ -2,8 +2,7 @@ class HexGrid extends Animated {
   
   constructor(svgContainer, width, height) {
 
-    let gridGroup = svgContainer.nested();
-    gridGroup.attr({overflow: 'visible'});
+    let gridGroup = svgContainer.magicContainer();
     
     super(gridGroup);
 
