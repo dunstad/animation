@@ -8,15 +8,6 @@ class External extends Animated {
     
   }
 
-  get rotation() {
-    return this.element.first().transform().rotate;
-  }
-
-  set rotation(degree) {
-    if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.element.first().transform({rotate: degree});
-  }
-
   load() {
 
     return new Promise((resolve, reject)=>{

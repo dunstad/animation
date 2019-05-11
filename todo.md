@@ -59,7 +59,7 @@
 #### animation
 * performance
   * finish svg.js refactor
-    * fix rotate and scale overriding each other
+    * moon and eye are weird about rotation
     * animation engine
     * make sure tests work
   * some way to reuse calculations when showing multiples of the same component?

@@ -278,7 +278,11 @@ class Animated {
 
   set rotation(degree) {
     if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.element.transform({rotate: degree});
+    let transformObject = {
+      scale: this.element.transform().scaleX,
+      rotate: degree,
+    };
+    this.element.transform(transformObject);
   }
   
   get scalar() {
@@ -286,7 +290,12 @@ class Animated {
   }
 
   set scalar(scalar) {
-    this.element.transform({scale: scalar});
+    // element.transform() contains scaleX/Y, and a-f, which overwrite them
+    let transformObject = {
+      scale: scalar,
+      rotate: this.element.transform().rotate,
+    };
+    this.element.transform(transformObject);
   }
   
   get location() {
