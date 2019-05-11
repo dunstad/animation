@@ -58,7 +58,7 @@
 
 #### animation
 * finish svg.js refactor
-  * moon and eye are weird about rotation
+  * moon is weird about transformations
   * animation engine
   * make sure tests work
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
