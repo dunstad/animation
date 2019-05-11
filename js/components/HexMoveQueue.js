@@ -13,7 +13,7 @@ class HexMoveQueue extends Animated {
     
     this.moveQueue = [];
     
-    this.indicator = svgContainer.defs().magicContainer();
+    this.indicator = svgContainer.defs().group();
     let circle = svgContainer.circle(20);
     this.indicator.add(circle);
     let triangle = svgContainer.polygon([0, 10, 20, 10, 10, 0]).attr({fill: 'white'});
@@ -30,17 +30,19 @@ class HexMoveQueue extends Animated {
     duration = duration || 500;
 
     let directionToRotationMap = {
-      'moveDown': 0,
-      'moveDownLeft': 60,
-      'moveUpLeft': 120,
-      'moveUp': 180,
-      'moveUpRight': 240,
-      'moveDownRight':300,
+      'moveUp': 0,
+      'moveUpRight': 60,
+      'moveDownRight': 120,
+      'moveDown': 180,
+      'moveDownLeft': 240,
+      'moveUpLeft':300,
     }
 
     let indicator = new Animated(svgContainer.use(this.indicator));
-    // let indicator = new Animated(this.indicator.clone());
+    console.log(directionToRotationMap[direction])
+    console.log(indicator.rotation)
     indicator.rotation = directionToRotationMap[direction];
+    console.log(indicator.rotation)
     indicator.direction = direction;
     
     this.triangleGroup.element.add(indicator.element);
@@ -49,7 +51,7 @@ class HexMoveQueue extends Animated {
     
     let quotient = Math.floor(this.triangleGroup.x / 40);
     indicator.x = -(quotient * 40) + (40 * this.moveQueue.length);
-    indicator.scalar = 0;
+    indicator.scalar = 1e-6;
     indicator.scale(1, duration).process();
 
   }
