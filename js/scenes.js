@@ -283,8 +283,11 @@ var scenes = {
       }
     });
 
-    let playButton = new Animated(svgContainer.circle(40).x(280).y(180));
-    playButton.element.attr({fill: 'lime'});
+    let playButton = new Animated(hexMoveQueue.indicator.clone().cx(300).cy(160));
+    svgContainer.add(playButton.element);
+    playButton.rotation = 90;
+    playButton.scalar = 10;
+    playButton.element.first().attr({fill: 'lime'});
     playButton.element.node.addEventListener('click', ()=>{
       playButton.element.remove();
       // this can be replaced by having the play button emit a play event
