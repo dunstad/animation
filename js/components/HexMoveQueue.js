@@ -39,10 +39,7 @@ class HexMoveQueue extends Animated {
     }
 
     let indicator = new Animated(svgContainer.use(this.indicator));
-    console.log(directionToRotationMap[direction])
-    console.log(indicator.rotation)
     indicator.rotation = directionToRotationMap[direction];
-    console.log(indicator.rotation)
     indicator.direction = direction;
     
     this.triangleGroup.element.add(indicator.element);

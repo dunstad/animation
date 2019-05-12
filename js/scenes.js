@@ -266,7 +266,7 @@ var scenes = {
     
     metronome.onBeat((time)=>{
       metronome.scalar = 1; // this should fix it eventually getting stuck at 1.5
-      metronome.beat(1.5).process();
+      metronome.beat(1.5);
       
       const lagFix = .8;
       let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat * lagFix).direction;
@@ -282,6 +282,7 @@ var scenes = {
 
       }
     });
+    metronome.beat(1.5);
 
     let playButton = new Animated(hexMoveQueue.indicator.clone().cx(300).cy(160));
     svgContainer.add(playButton.element);
