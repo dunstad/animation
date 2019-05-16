@@ -53,6 +53,47 @@ class Animated {
         let startValues = propertyNames.map(name=>this[name]);
         let endValues = propertyNames.map(name=>transformation.propertyValueMap[name]);
         let nextAnimationId = this.newAnimationId();
+
+        let timeline = this.element.timeline();
+        let runner = new SVG.Runner(transformation.milliseconds);
+        runner.ease('-'); // we'll do the easing inside the during callback
+        runner.element(this.element);
+
+        runner.during((pos)=>{
+
+          for (let i = 0; i < startValues.length; i++) {
+            let propertyName = propertyNames[i];
+            let startValue = startValues[i];
+            let endValue = endValues[i];
+            let easedPos = pos;
+            if (transformation.easingMap[propertyName]) {
+              easedPos = transformation.easingMap[propertyName](pos);
+            }
+            this[propertyName] = startValue + ((endValue - startValue) * easedPos);
+          }
+
+        });
+
+        runner.after(()=>{
+
+          delete this.anims[nextAnimationId];
+          if (transformation.callback) {
+            transformation.callback();
+          }
+
+          // processing after callbacks so it doesn't stop recursing before
+          // repeating animations stick their next transform in the queue
+          this.process(resolve);
+
+        });
+
+        timeline.schedule(runner);
+        timeline.play();
+
+        let animation = {};
+
+        /**
+
         let animation = Snap.animate(startValues, endValues, (values)=>{
             Object.assign(this, propertyNames.reduce((obj, k, i)=>({...obj, [k]: values[i] }), {}));
           },
@@ -67,18 +108,21 @@ class Animated {
             this.process(resolve);
           }
         );
+
+        */
+
         this.anims[nextAnimationId] = animation;
         animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
         animation.easing = propertyNames.map(name=>transformation.easingMap[name] || mina.linear);
 
-        animation.update = function() {
-          var a = this, res = [];
-          for (var j = 0, jj = a.start.length; j < jj; j++) {
-            res[j] = +a.start[j] + (a.end[j] - a.start[j]) * a.easing[j](a.s);
-          }
-          a.set(res);
-        };
+        // animation.update = function() {
+        //   var a = this, res = [];
+        //   for (var j = 0, jj = a.start.length; j < jj; j++) {
+        //     res[j] = +a.start[j] + (a.end[j] - a.start[j]) * a.easing[j](a.s);
+        //   }
+        //   a.set(res);
+        // };
       }
       else {
         Object.assign(this, transformation.propertyValueMap);
