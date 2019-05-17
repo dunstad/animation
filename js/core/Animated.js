@@ -57,7 +57,6 @@ class Animated {
         let timeline = this.element.timeline();
         let runner = new SVG.Runner(transformation.milliseconds);
         runner.ease('-'); // we'll do the easing inside the during callback
-        runner.element(this.element);
 
         runner.during((pos)=>{
 
@@ -90,39 +89,12 @@ class Animated {
         timeline.schedule(runner);
         timeline.play();
 
-        let animation = {};
-
-        /**
-
-        let animation = Snap.animate(startValues, endValues, (values)=>{
-            Object.assign(this, propertyNames.reduce((obj, k, i)=>({...obj, [k]: values[i] }), {}));
-          },
-          transformation.milliseconds,
-          ()=>{
-            delete this.anims[nextAnimationId];
-            if (transformation.callback) {
-              transformation.callback();
-            }
-            // processing after callbacks so it doesn't stop recursing before
-            // repeating animations stick their next transform in the queue
-            this.process(resolve);
-          }
-        );
-
-        */
+        let animation = {timeline: timeline, runner: runner};
 
         this.anims[nextAnimationId] = animation;
         animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
-        animation.easing = propertyNames.map(name=>transformation.easingMap[name] || mina.linear);
-
-        // animation.update = function() {
-        //   var a = this, res = [];
-        //   for (var j = 0, jj = a.start.length; j < jj; j++) {
-        //     res[j] = +a.start[j] + (a.end[j] - a.start[j]) * a.easing[j](a.s);
-        //   }
-        //   a.set(res);
-        // };
+        
       }
       else {
         Object.assign(this, transformation.propertyValueMap);
@@ -393,12 +365,12 @@ class Animated {
   currentAnimationToTransformation() {
 
     let [id, currentAnimation] = Object.entries(this.anims).sort((a,b)=>{return b[1].b-a[1].b})[0];
-    currentAnimation.stop();
+    currentAnimation.timeline.stop();
     delete this.anims[id];
     
     let currentTransformation = new Transformation({
       propertyValueMap: currentAnimation.propertyNames.reduce((obj, k, i)=>({...obj, [k]: currentAnimation.end[i]}), {}),
-      milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
+      milliseconds: (1 - currentAnimation.runner.progress()) * currentAnimation.runner.duration(),
       animate: true,
       callback: currentAnimation.originalCallback,
     });
@@ -602,28 +574,28 @@ class Animated {
 
     }
 
-
   }
 
   /**
    * Used to pause all running animations.
    */
   pause() {
-    Object.values(this.anims).map(anim=>anim.pause());
+    this.element.timeline().pause();
   }
 
   /**
    * Used to resume all paused animations.
+   * Not sure how necessary this is anymore since timeline pause is a toggle
    */
   resume() {
-    Object.values(this.anims).map(anim=>anim.resume());
+    this.element.timeline()._continue();
   }
 
   /**
    * Used to stop all running animations.
    */
   stop() {
-    Object.values(this.anims).forEach(anim=>anim.stop());
+    this.element.timeline().stop();
   }
 
 }
