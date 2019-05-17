@@ -10,7 +10,6 @@
       "chroma-js",
       "howler",
       "rythm",
-      "snapsvg",
       "vivus",
       // these don't seem to exist
       // "flubber",

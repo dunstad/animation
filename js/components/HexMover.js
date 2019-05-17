@@ -12,12 +12,12 @@ class HexMover extends Animated {
     hexagon.attr({
       fill: color || 'pink',
       stroke: 'black',
-      strokeWidth: 2,
-    }).transform(`t${x},${y}`);
+      'stroke-width': 2,
+    }).x(x).y(y);
 
     super(hexagon);
 
-    hex.hexgrid.element.append(this.element);
+    hex.hexgrid.element.add(this.element);
 
     this.hex = hex;
     this.hex.occupied = this;

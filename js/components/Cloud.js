@@ -7,7 +7,9 @@ class Cloud extends Animated {
       fillColor = svgContainer.gradient(`l(0,0,0,1)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
     }
     
-    super(svgContainer.path(Cloud.makePath(numBumps, length)).attr({fill: fillColor, stroke: borderColor}));
+    super(svgContainer.magicContainer());
+    this.path = svgContainer.path(Cloud.makePath(numBumps, length)).attr({fill: fillColor, stroke: borderColor});
+    this.element.add(this.path);
 
     this.numBumps = numBumps;
 
@@ -16,7 +18,7 @@ class Cloud extends Animated {
 
     this.forms = [];
 
-    this.forms[numBumps] = this.element.node.getAttribute('d');
+    this.forms[numBumps] = this.path.node.getAttribute('d');
     
   }
 
@@ -66,7 +68,7 @@ class Cloud extends Animated {
       this.forms[Math.floor(numBumps) + 1] = Cloud.makePath(Math.floor(numBumps) + 1, this.length);
     }
     let newPathString = flubber.interpolate(this.forms[Math.floor(numBumps)], this.forms[Math.floor(numBumps) + 1], {maxSegmentLength: 5})(remainder);
-    this.element.node.setAttribute('d', newPathString);
+    this.path.plot(newPathString);
     this.numBumps = numBumps;
   }
 

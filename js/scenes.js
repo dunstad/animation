@@ -24,7 +24,6 @@ var scenes = {
   'animate sky': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 0);
-    sky.move(-10, -10).process();
     sky.toHour(24, 10 * 1000);
     scene.addActor(sky);
 
@@ -33,7 +32,6 @@ var scenes = {
   'moon phases': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let moon = new Moon(svgContainer, 50);
     moon.move(100, 100).process();
@@ -46,7 +44,6 @@ var scenes = {
   'star morphing': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let star = new Star(svgContainer, 2, 40, '#ffffc0');
     star.move(320, 100).process();
@@ -69,7 +66,6 @@ var scenes = {
   'cloud morphing': (scene)=>{
     
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
     
     let cloud = new Cloud(svgContainer, 3, 100, 'white');
     cloud.move(200, 200).process();
@@ -121,7 +117,6 @@ var scenes = {
   'flame': (scene)=>{
 
     let sky = new Sky(svgContainer, 640, 360, 21);
-    sky.move(-10, -10).process();
 
     let flame1 = new Flame(svgContainer, 'red');
     flame1.move(100, 100).process();
@@ -157,18 +152,18 @@ var scenes = {
     robotoA.move(100, 100).process();
 
     robotoA.newPath('Roboto', 'B');
-    robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}, callback: ()=>{robotoA.newPath('Roboto', 'E');}});
+    robotoA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}, callback: ()=>{robotoA.newPath('Roboto', 'E');}});
     
-    robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}});
+    robotoA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}});
     
     let stencilA = new Alphabet(svgContainer, 'Allerta Stencil', 'A', 'white', 'black');
 
     stencilA.move(100, 200).process();
 
     stencilA.newPath('Allerta Stencil', 'B');
-    stencilA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}, callback: ()=>{stencilA.newPath('Allerta Stencil', 'E');}});
+    stencilA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}, callback: ()=>{stencilA.newPath('Allerta Stencil', 'E');}});
     
-    stencilA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}});
+    stencilA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}});
 
     scene.addActors([robotoA, stencilA]);
 
@@ -191,7 +186,7 @@ var scenes = {
 
   'eye': (scene)=>{
 
-    svgContainer.rect(0, 0, 1000, 500).attr({fillColor: 'gray'});
+    svgContainer.rect(1000, 500).x(0).y(0).attr({fillColor: 'gray'});
 
     let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).openTop(1).openBottom(1).process();
@@ -226,7 +221,7 @@ var scenes = {
     function circleMove(hexMover) {
 
       let duration = 250;
-      let easing = mina.easeout;
+      let easing = SVG.easing['>'];
       let easingMap = {easingMap: {x: easing, y: easing}};
       let wait = 50;
   
@@ -271,14 +266,14 @@ var scenes = {
     
     metronome.onBeat((time)=>{
       metronome.scalar = 1; // this should fix it eventually getting stuck at 1.5
-      metronome.beat(1.5).process();
+      metronome.beat(1.5);
       
       const lagFix = .8;
       let nextMove = hexMoveQueue.shift(metronome.millisecondsPerBeat * lagFix).direction;
       
       if (nextMove) {
 
-        let easing = mina.easeout;
+        let easing = SVG.easing['>'];
         let easingMap = {easingMap: {x: easing, y: easing}};
         controlledHexMover[nextMove](time, 250, easingMap);
         if (!Object.keys(controlledHexMover.anims).length) {
@@ -287,9 +282,13 @@ var scenes = {
 
       }
     });
+    metronome.beat(1.5);
 
-    let playButton = new Animated(svgContainer.circle(300, 200, 20));
-    playButton.element.attr({fill: 'lime'});
+    let playButton = new Animated(hexMoveQueue.indicator.clone().cx(300).cy(160));
+    svgContainer.add(playButton.element);
+    playButton.rotation = 90;
+    playButton.scalar = 10;
+    playButton.element.first().attr({fill: 'lime'});
     playButton.element.node.addEventListener('click', ()=>{
       playButton.element.remove();
       // this can be replaced by having the play button emit a play event

@@ -4,13 +4,17 @@ class Flame extends Animated {
 
     // lets us pass two colors as an array to fill with a radial gradient
     if (Array.isArray(fillColor)) {
-      // fillColor = svgContainer.gradient(`r(0.5, 0.5, 0.55)${chroma(fillColor[0]).hex()}-${chroma(fillColor[1]).hex()}`);
-      fillColor = svgContainer.gradient(`l(0,0,0,1)${chroma(fillColor[1]).hex()}:75-${chroma(fillColor[0]).hex()}`);
+      fillColor = svgContainer.gradient('linear', (gradient)=>{
+        gradient.stop(.75, chroma(fillColor[1]).hex());
+        gradient.stop(1, chroma(fillColor[0]).hex());
+      }).from(0, 0).to(0, 1);
     }
 
     let currentPath = Flame.makePath();
 
-    super(svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor}));
+    super(svgContainer.magicContainer());
+    this.path = svgContainer.path(currentPath).attr({fill: fillColor, stroke: borderColor});
+    this.element.add(this.path);
 
     this.currentPath = currentPath;
     this.nextPath = Flame.makePath();
@@ -62,7 +66,7 @@ class Flame extends Animated {
   }
 
   set status(ratio) {
-    this.element.node.setAttribute('d', this.interpolator(ratio));
+    this.path.plot(this.interpolator(ratio));
     this.ratio = ratio;
   }
 

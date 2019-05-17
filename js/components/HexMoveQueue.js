@@ -6,19 +6,18 @@ class HexMoveQueue extends Animated {
    */
   constructor(svgContainer) {
 
-    super(svgContainer.group());
-
-    this.triangleGroup = new Animated(svgContainer.group());
-    this.element.append(this.triangleGroup.element);
-
+    super(svgContainer.magicContainer());
+    
+    this.triangleGroup = new Animated(svgContainer.magicContainer());
+    this.element.add(this.triangleGroup.element);
+    
     this.moveQueue = [];
-
-    this.indicator = svgContainer.group();
-    let circle = svgContainer.circle(0, 0, 10);
-    this.indicator.append(circle);
-    let triangle = svgContainer.polygon(-10, 0, 0, 10, 10, 0).attr({fill: 'white'});
-    this.indicator.append(triangle);
-    this.indicator.toDefs();
+    
+    this.indicator = svgContainer.defs().group();
+    let circle = svgContainer.circle(20);
+    this.indicator.add(circle);
+    let triangle = svgContainer.polygon([0, 10, 20, 10, 10, 0]).attr({fill: 'white'});
+    this.indicator.add(triangle);
 
   }
 
@@ -31,25 +30,25 @@ class HexMoveQueue extends Animated {
     duration = duration || 500;
 
     let directionToRotationMap = {
-      'moveDown': 0,
-      'moveDownLeft': 60,
-      'moveUpLeft': 120,
-      'moveUp': 180,
-      'moveUpRight': 240,
-      'moveDownRight':300,
+      'moveUp': 0,
+      'moveUpRight': 60,
+      'moveDownRight': 120,
+      'moveDown': 180,
+      'moveDownLeft': 240,
+      'moveUpLeft':300,
     }
 
-    let indicator = new Animated(this.indicator.use());
+    let indicator = new Animated(svgContainer.use(this.indicator));
     indicator.rotation = directionToRotationMap[direction];
     indicator.direction = direction;
     
-    this.triangleGroup.element.append(indicator.element);
+    this.triangleGroup.element.add(indicator.element);
 
     this.moveQueue.push(indicator);
     
     let quotient = Math.floor(this.triangleGroup.x / 40);
     indicator.x = -(quotient * 40) + (40 * this.moveQueue.length);
-    indicator.scalar = 0;
+    indicator.scalar = 1e-6;
     indicator.scale(1, duration).process();
 
   }
@@ -74,7 +73,7 @@ class HexMoveQueue extends Animated {
       this.triangleGroup.moveX(this.triangleGroup.x - 40, duration).process();
   
       let firstIndicator = this.moveQueue[0];
-      firstIndicator.scale(0, duration, {callback: ()=>{
+      firstIndicator.scale(1e-6, duration, {callback: ()=>{
         firstIndicator.element.remove();
       }}).process();
   

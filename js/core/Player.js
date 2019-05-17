@@ -7,8 +7,6 @@ class Player {
     this.frameCount = 0;
     this.frames = [];
 
-    // make this do nothing
-    Snap.prefixURL = a=>a;
   }
   
   svgToFrame() {
@@ -32,16 +30,21 @@ class Player {
   
   /**
    * Used to ready a scene to be played.
-   * @param {Scene} scene 
+   * @param {Function} setupFunc 
    */
-  loadScene(scene) {
+  loadScene(setupFunc) {
+
     // get rid of stuff from the old scene
     if (this.scene) {
       for (let actor of this.scene.actors) {
         actor.stop();
-        actor.element.remove();
       }
     }
+    this.svgElement.clear();
+
+    let scene = new Scene(this);
+    scene.prepareActors(setupFunc);
+
     this.scene = scene;
     for (let actor of scene.actors) {
       let actorClassName = actor.constructor.name.toLowerCase();
@@ -56,6 +59,7 @@ class Player {
         window[actorClassName + num] = actor;
       }
     }
+
   }
   
   async play() {

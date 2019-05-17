@@ -2,16 +2,15 @@ class Moon extends Animated {
 
   constructor(svgContainer, radius) {
   
-    super(svgContainer.group());
+    super(svgContainer.magicContainer());
 
-    let moonClip = svgContainer.circle(0, 0, radius);
+    let moonClip = svgContainer.circle(radius * 2).x(-radius).y(-radius);
     moonClip.attr({fill: 'white'});
-    this.element.append(moonClip);
 
     let moonColor = '#ffffc0';
-    let brightMoon = svgContainer.circle(0, 0, radius);
+    let brightMoon = svgContainer.circle(radius * 2).x(-radius).y(-radius);
     brightMoon.attr({fill: moonColor});
-    this.element.append(brightMoon);
+    this.element.add(brightMoon);
 
     let craterColor = chroma(moonColor).darken().hex();
     let numCraters = Math.floor(Math.random() * Math.floor(5)) + 10;
@@ -20,21 +19,20 @@ class Moon extends Animated {
     }
     for (let i = 0; i < numCraters; i++) {
       let craterRadius = Math.random() * radius * .1 + radius * .1;
-      let crater = svgContainer.circle(0, 0, craterRadius);
+      let crater = svgContainer.circle(craterRadius * 2).x(-craterRadius).y(-craterRadius);
       crater.attr({fill: craterColor});
-      this.element.append(crater);
-      crater.transform(`t${craterCoordInsideMoon(craterRadius)},${craterCoordInsideMoon(craterRadius)}`);
+      this.element.add(crater);
+      crater.x(craterCoordInsideMoon(craterRadius)).y(craterCoordInsideMoon(craterRadius));
     }
     
-    let darkMoon = svgContainer.circle(0, 0, radius);
+    let darkMoon = svgContainer.circle(radius * 2).x(radius).y(-radius);
     darkMoon.attr({fill: 'black', opacity: .7});
-    this.element.append(darkMoon);
+    this.element.add(darkMoon);
 
-    this.element.attr({mask: moonClip});
+    this.element.clipWith(moonClip);
 
     this.phaseRatio = 0;
     this.darkMoon = darkMoon;
-    this.darkMoon.transform(`t${radius * 2},0`);
 
     this.radius = radius;
 
@@ -48,7 +46,7 @@ class Moon extends Animated {
 
   set phase(ratio) {
     ratio = ratio % 1;
-    this.darkMoon.transform(`t${-1 * (this.radius * 4 * ratio - this.radius * 2)},0`);
+    this.darkMoon.x(-1 * (this.radius * 4 * ratio - this.radius));
     this.phaseRatio = ratio;
   }
 

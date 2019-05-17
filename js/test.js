@@ -1,16 +1,6 @@
 var container = document.getElementById('container');
-var svgContainer = Snap("#" + container.id);
+var svgContainer = SVG(`#${container.id}`);
 var player = new Player(svgContainer);
-
-function makeScene(setupFunc) {
-
-  let scene = new Scene(player);
-
-  scene.prepareActors(setupFunc);
-  
-  return scene;
-
-}
 
 let sceneSelect = document.getElementById('sceneSelect');
 for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
@@ -22,8 +12,7 @@ for (let [sceneName, sceneFunc] of Object.entries(scenes)) {
 
 function onSceneSelect(e) {
   localStorage.setItem('currentScene', e.target.value);
-  player.svgElement.clear();
-  player.loadScene(makeScene(scenes[e.target.value]));
+  player.loadScene(scenes[e.target.value]);
 }
 
 sceneSelect.addEventListener('change', onSceneSelect);
@@ -39,7 +28,7 @@ else {
 
 sceneSelect.value = currentSceneName;
 
-player.loadScene(makeScene(scenes[currentSceneName]));
+player.loadScene(scenes[currentSceneName]);
 
 /**
  * @param {Animated} animated 
@@ -83,14 +72,14 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5, easingMap: {y: mina.easeinout}});
+    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5, easingMap: {y: SVG.easing['<>']}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 2000).moveY(100, 500, {easingMap: {y: mina.easeinout}, merge: .5})
+    animated.moveX(300, 2000).moveY(100, 500, {easingMap: {y: SVG.easing['<>']}, merge: .5})
   },
   
   /**

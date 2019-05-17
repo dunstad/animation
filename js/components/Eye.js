@@ -12,48 +12,52 @@ class Eye extends Animated {
    */
   constructor(svgContainer, whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor) {
   
-    super(svgContainer.group());
+    super(svgContainer.magicContainer());
 
     let eyeGroup = svgContainer.group();
-    this.element.append(eyeGroup);
+    this.element.add(eyeGroup);
 
-    let white = svgContainer.circle(0, 0, whiteRadius || 50);
+    whiteRadius = whiteRadius || 50;
+    let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
     white.attr({
       fill: whiteColor || 'white',
     });
-    eyeGroup.append(white);
+    eyeGroup.add(white);
 
     let irisGroup = svgContainer.group();
-    eyeGroup.append(irisGroup);
+    eyeGroup.add(irisGroup);
     
-    let iris = svgContainer.circle(0, 0, irisRadius || 20);
+    irisRadius = irisRadius || 20;
+    let iris = svgContainer.circle(irisRadius * 2).x(-irisRadius).y(-irisRadius);
     iris.attr({
       fill: irisColor || 'saddlebrown',
     });
-    irisGroup.append(iris);
+    irisGroup.add(iris);
     
-    let pupil = svgContainer.circle(0, 0, pupilRadius || 10);
+    pupilRadius = pupilRadius || 10;
+    let pupil = svgContainer.circle(pupilRadius * 2).x(-pupilRadius).y(-pupilRadius);
     pupil.attr({
       fill: pupilColor || 'black',
     });
-    irisGroup.append(pupil);
+    irisGroup.add(pupil);
 
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
-    let maskGroup = svgContainer.group();
-    this.element.append(maskGroup);
-
+    let clipGroup = svgContainer.clip();
+    clipGroup.attr({overflow: 'visible'});
+    
     let topControlPointY = -maxRadius / 2;
     let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
     topEyelid.attr({fill: 'white'});
-    maskGroup.append(topEyelid);
+    clipGroup.add(topEyelid);
     
     let bottomControlPointY = maxRadius / 2;
     let bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${bottomControlPointY}, ${maxRadius / 2} ${bottomControlPointY}, ${maxRadius} 0`);
     bottomEyelid.attr({fill: 'white'});
-    maskGroup.append(bottomEyelid);
+    clipGroup.add(bottomEyelid);
 
-    this.element.attr({mask: maskGroup});
+    this.element.add(clipGroup)
+    this.element.clipWith(clipGroup);
 
     this.radius = maxRadius;
 
@@ -79,7 +83,7 @@ class Eye extends Animated {
 
   set lookAngle(angle) {
     this.angle = angle % 360;
-    this.eyeGroup.transform(`r${this.angle}`);
+    this.eyeGroup.transform({rotate: this.angle});
   }
 
   get lookMagnitude() {
@@ -88,13 +92,14 @@ class Eye extends Animated {
 
   set lookMagnitude(magnitude) {
     this.magnitude = magnitude;
-    this.irisGroup.transform(`t${(this.radius / 100.0) * this.magnitude},0`);
+    // translateX works relative to parent, .x() seems to be absolute
+    this.irisGroup.transform({translateX: (this.radius / 100.0) * this.magnitude});
   }
 
   /**
    * Animate looking in a direction.
-   * @param {Number} angle 
-   * @param {Number} magnitude 
+   * @param {Number} angle 0-360
+   * @param {Number} magnitude 0-100
    */
   look(angle, magnitude) {
     return {propertyValueMap: {lookAngle: angle, lookMagnitude: magnitude}};
@@ -118,7 +123,8 @@ class Eye extends Animated {
 
   set topEyelidOpen(ratio) {
     this.topOpen = ratio;
-    this.topEyelid.attr({d: this.newPath(ratio, true)});
+    // this.topEyelid.attr({d: this.newPath(ratio, true)});
+    this.topEyelid.plot(this.newPath(ratio, true));
   }
 
   /**
@@ -135,7 +141,8 @@ class Eye extends Animated {
 
   set bottomEyelidOpen(ratio) {
     this.bottomOpen = ratio;
-    this.bottomEyelid.attr({d: this.newPath(ratio, false)});
+    // this.bottomEyelid.attr({d: this.newPath(ratio, false)});
+    this.bottomEyelid.plot(this.newPath(ratio, false));
   }
 
   /**

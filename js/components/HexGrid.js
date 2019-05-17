@@ -2,7 +2,7 @@ class HexGrid extends Animated {
   
   constructor(svgContainer, width, height) {
 
-    let gridGroup = svgContainer.group();
+    let gridGroup = svgContainer.magicContainer();
     
     super(gridGroup);
 
@@ -30,10 +30,10 @@ class HexGrid extends Animated {
       hexagon.attr({
         fill: 'white',
         stroke: 'black',
-        strokeWidth: 2,
-      }).transform(`t${x},${y}`);
+        'stroke-width': 2,
+      }).x(x).y(y);
       
-      this.element.append(hexagon);
+      this.element.add(hexagon);
       
       hex.hexagon = hexagon;
 

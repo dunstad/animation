@@ -53,32 +53,48 @@ class Animated {
         let startValues = propertyNames.map(name=>this[name]);
         let endValues = propertyNames.map(name=>transformation.propertyValueMap[name]);
         let nextAnimationId = this.newAnimationId();
-        let animation = Snap.animate(startValues, endValues, (values)=>{
-            Object.assign(this, propertyNames.reduce((obj, k, i)=>({...obj, [k]: values[i] }), {}));
-          },
-          transformation.milliseconds,
-          ()=>{
-            delete this.anims[nextAnimationId];
-            if (transformation.callback) {
-              transformation.callback();
+
+        let timeline = this.element.timeline();
+        let runner = new SVG.Runner(transformation.milliseconds);
+        runner.ease('-'); // we'll do the easing inside the during callback
+
+        runner.during((pos)=>{
+
+          for (let i = 0; i < startValues.length; i++) {
+            let propertyName = propertyNames[i];
+            let startValue = startValues[i];
+            let endValue = endValues[i];
+            let easedPos = pos;
+            if (transformation.easingMap[propertyName]) {
+              easedPos = transformation.easingMap[propertyName](pos);
             }
-            // processing after callbacks so it doesn't stop recursing before
-            // repeating animations stick their next transform in the queue
-            this.process(resolve);
+            this[propertyName] = startValue + ((endValue - startValue) * easedPos);
           }
-        );
+
+        });
+
+        runner.after(()=>{
+
+          delete this.anims[nextAnimationId];
+          if (transformation.callback) {
+            transformation.callback();
+          }
+
+          // processing after callbacks so it doesn't stop recursing before
+          // repeating animations stick their next transform in the queue
+          this.process(resolve);
+
+        });
+
+        timeline.schedule(runner);
+        timeline.play();
+
+        let animation = {timeline: timeline, runner: runner};
+
         this.anims[nextAnimationId] = animation;
         animation.propertyNames = propertyNames; // used to convert back to transformation
         animation.originalCallback = transformation.callback;
-        animation.easing = propertyNames.map(name=>transformation.easingMap[name] || mina.linear);
-
-        animation.update = function() {
-          var a = this, res = [];
-          for (var j = 0, jj = a.start.length; j < jj; j++) {
-            res[j] = +a.start[j] + (a.end[j] - a.start[j]) * a.easing[j](a.s);
-          }
-          a.set(res);
-        };
+        
       }
       else {
         Object.assign(this, transformation.propertyValueMap);
@@ -89,50 +105,6 @@ class Animated {
       }
     }
     else {if (resolve) {resolve();}}
-  }
-
-  /**
-   * Represents the current transformation state of this as a transformation string.
-   * The transform parameter allows the resulting string to be a transformation
-   * from the current state.
-   * @param {Transformation} transformation
-   */
-  getStateString(transformation) {
-    transformation = transformation || new Transformation();
-    
-    let parsedTransform = Snap.parseTransformString(this.element.transform().string || 't0,0r0s1');
-
-    if (transformation.propertyValueMap.x != undefined || transformation.propertyValueMap.y != undefined) {
-      let location = parsedTransform.find(e=>e[0]=='t');
-      if (!location) {
-        location = ['t', 0, 0];
-        parsedTransform.push(location);
-      }
-      
-      location[1] = transformation.propertyValueMap.x != undefined ? transformation.propertyValueMap.x : location[1];
-      location[2] = transformation.propertyValueMap.y != undefined ? transformation.propertyValueMap.y : location[2];
-    }
-    
-    if (transformation.propertyValueMap.rotation !== undefined) {
-      let rotation = parsedTransform.find(e=>e[0]=='r');
-      if (!rotation) {
-        rotation = ['r', 0];
-        parsedTransform.push(rotation);
-      }
-      rotation[1] = transformation.propertyValueMap.rotation;
-    }
-    
-    if (transformation.propertyValueMap.scalar !== undefined) {
-      let scalar = parsedTransform.find(e=>e[0]=='s');
-      if (!scalar) {
-        scalar = ['s', 1];
-        parsedTransform.push(scalar);
-      }
-      scalar[1] = transformation.propertyValueMap.scalar;
-    }
-
-    this.currentStateString = {transform: parsedTransform ? parsedTransform.toString() : ''};
-    return this.currentStateString;
   }
 
   /**
@@ -317,51 +289,65 @@ class Animated {
   }
 
   get rotation() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="r")[1];
+    return this.element.transform().rotate;
   }
 
   set rotation(degree) {
     if (typeof degree != 'number') {throw new Error('rotation must be a number');}
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {rotation: degree}}));
-    this.element.attr(this.currentStateString);
+    let transformObject = {
+      scale: this.element.transform().scaleX,
+      rotate: degree,
+    };
+    this.element.transform(transformObject);
+    if (this.element.clipper()) {
+      this.element.clipper().transform(transformObject);
+    }
+    if (this.element.masker()) {
+      this.element.masker().transform(transformObject);
+    }
   }
   
   get scalar() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    return Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="s")[1];
+    return this.element.transform().scaleX;
   }
 
   set scalar(scalar) {
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: {scalar: scalar}}));
-    this.element.attr(this.currentStateString);
+    // element.transform() contains scaleX/Y, and a-f, which overwrite them
+    let transformObject = {
+      scale: scalar,
+      rotate: this.element.transform().rotate,
+    };
+    this.element.transform(transformObject);
+    if (this.element.clipper()) {
+      this.element.clipper().transform(transformObject);
+    }
+    if (this.element.masker()) {
+      this.element.masker().transform(transformObject);
+    }
   }
   
   get location() {
-    let currentStateString = this.currentStateString || this.getStateString();
-    let locationInfo = Snap.parseTransformString(currentStateString.transform).find(e=>e[0]=="t");
-    return {x: locationInfo[1], y: locationInfo[2]};
+    return {x: this.element.x(), y: this.element.y()};
   }
 
   set location(coordinates) {
-    this.currentStateString = this.getStateString(new Transformation({propertyValueMap: coordinates}));
-    this.element.attr(this.currentStateString);
+    this.element.x(coordinates.x).y(coordinates.y);
   }
 
   get x() {
-    return this.location.x;
+    return this.element.x();
   }
   
   set x(coordinate) {
-    this.location = {x: coordinate};
+    this.element.x(coordinate);
   }
 
   get y() {
-    return this.location.y;
+    return this.element.y();
   }
 
   set y(coordinate) {
-    this.location = {y: coordinate};
+    this.element.y(coordinate);
   }
 
   get vivus() {
@@ -379,12 +365,12 @@ class Animated {
   currentAnimationToTransformation() {
 
     let [id, currentAnimation] = Object.entries(this.anims).sort((a,b)=>{return b[1].b-a[1].b})[0];
-    currentAnimation.stop();
+    currentAnimation.timeline.stop();
     delete this.anims[id];
     
     let currentTransformation = new Transformation({
       propertyValueMap: currentAnimation.propertyNames.reduce((obj, k, i)=>({...obj, [k]: currentAnimation.end[i]}), {}),
-      milliseconds: (1 - currentAnimation.status()) * currentAnimation.duration(),
+      milliseconds: (1 - currentAnimation.runner.progress()) * currentAnimation.runner.duration(),
       animate: true,
       callback: currentAnimation.originalCallback,
     });
@@ -588,28 +574,28 @@ class Animated {
 
     }
 
-
   }
 
   /**
    * Used to pause all running animations.
    */
   pause() {
-    Object.values(this.anims).map(anim=>anim.pause());
+    this.element.timeline().pause();
   }
 
   /**
    * Used to resume all paused animations.
+   * Not sure how necessary this is anymore since timeline pause is a toggle
    */
   resume() {
-    Object.values(this.anims).map(anim=>anim.resume());
+    this.element.timeline()._continue();
   }
 
   /**
    * Used to stop all running animations.
    */
   stop() {
-    Object.values(this.anims).forEach(anim=>anim.stop());
+    this.element.timeline().stop();
   }
 
 }
