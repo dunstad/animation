@@ -18,6 +18,7 @@ self.addEventListener('install', (e)=>{
           '/animation/js/Transformation.js',
           '/animation/js/AnimationQueue.js',
           '/animation/js/Animated.js',
+          '/animation/js/MagicContainer.js',
           '/animation/js/External.js',
           '/animation/js/HexGrid.js',
           '/animation/js/HexMover.js',
