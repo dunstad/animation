@@ -152,18 +152,18 @@ var scenes = {
     robotoA.move(100, 100).process();
 
     robotoA.newPath('Roboto', 'B');
-    robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}, callback: ()=>{robotoA.newPath('Roboto', 'E');}});
+    robotoA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}, callback: ()=>{robotoA.newPath('Roboto', 'E');}});
     
-    robotoA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}});
+    robotoA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}});
     
     let stencilA = new Alphabet(svgContainer, 'Allerta Stencil', 'A', 'white', 'black');
 
     stencilA.move(100, 200).process();
 
     stencilA.newPath('Allerta Stencil', 'B');
-    stencilA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}, callback: ()=>{stencilA.newPath('Allerta Stencil', 'E');}});
+    stencilA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}, callback: ()=>{stencilA.newPath('Allerta Stencil', 'E');}});
     
-    stencilA.toStatus(1, transitionTime, {easingMap: {status: mina.linear}});
+    stencilA.toStatus(1, transitionTime, {easingMap: {status: SVG.easing['-']}});
 
     scene.addActors([robotoA, stencilA]);
 
@@ -221,7 +221,7 @@ var scenes = {
     function circleMove(hexMover) {
 
       let duration = 250;
-      let easing = mina.easeout;
+      let easing = SVG.easing['>'];
       let easingMap = {easingMap: {x: easing, y: easing}};
       let wait = 50;
   
@@ -273,7 +273,7 @@ var scenes = {
       
       if (nextMove) {
 
-        let easing = mina.easeout;
+        let easing = SVG.easing['>'];
         let easingMap = {easingMap: {x: easing, y: easing}};
         controlledHexMover[nextMove](time, 250, easingMap);
         if (!Object.keys(controlledHexMover.anims).length) {

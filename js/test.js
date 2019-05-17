@@ -72,14 +72,14 @@ animatedTests = [
    * @param {Animated} animated
    */
   function testEasingMap(animated) {
-    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5, easingMap: {y: mina.easeinout}});
+    animated.moveX(300, 4000).moveY(100, 1000, {merge: .5, easingMap: {y: SVG.easing['<>']}});
   },
 
   /**
    * @param {Animated} animated
    */
   function testAutoMerge(animated) {
-    animated.moveX(300, 2000).moveY(100, 500, {easingMap: {y: mina.easeinout}, merge: .5})
+    animated.moveX(300, 2000).moveY(100, 500, {easingMap: {y: SVG.easing['<>']}, merge: .5})
   },
   
   /**

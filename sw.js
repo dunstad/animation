@@ -4,7 +4,7 @@ self.addEventListener('install', (e)=>{
       return Promise.all([
           '/animation/hexgrid.html',
           '/animation/css/hexgrid.css',
-          '/animation/lib/snap.svg.js',
+          '/animation/lib/svg.min.js',
           '/animation/lib/vivus.min.js',
           '/animation/lib/flubber.min.js',
           '/animation/lib/gif.js',

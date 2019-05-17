@@ -7,8 +7,6 @@ class Player {
     this.frameCount = 0;
     this.frames = [];
 
-    // make this do nothing
-    Snap.prefixURL = a=>a;
   }
   
   svgToFrame() {

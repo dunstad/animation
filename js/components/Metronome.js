@@ -64,7 +64,7 @@ class Metronome extends Animated {
   }
 
   static beatEasing (n) {
-    return 1 - mina.linear(n);
+    return 1 - SVG.easing['-'](n);
   };
 
 }

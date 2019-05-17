@@ -5,7 +5,7 @@ class ControlledHexMover extends MusicalHexMover {
     super(svgContainer, hex, color);
 
     this.duration = 250;
-    let easing = mina.easeout;
+    let easing = SVG.easing['>'];
     this.config = {easingMap: {x: easing, y: easing}};
 
     let keys = {
