@@ -223,18 +223,16 @@ var scenes = {
       let duration = 250;
       let easing = SVG.easing['>'];
       let easingMap = {easingMap: {x: easing, y: easing}};
-      let wait = 50;
   
-      hexMover.moveDownLeft(duration, easingMap).wait(wait);
-      hexMover.moveDown(duration, easingMap).wait(wait);
-      hexMover.moveDownRight(duration, easingMap).wait(wait);
-      hexMover.moveUpRight(duration, easingMap).wait(wait);
-      hexMover.moveUp(duration, easingMap).wait(wait);
-      hexMover.moveUpLeft(duration, easingMap).wait(wait, {callback: ()=>{circleMove(hexMover);}});
+      hexMover.moveDownLeft(duration, easingMap);
+      hexMover.moveDown(duration, easingMap);
+      hexMover.moveDownRight(duration, easingMap);
+      hexMover.moveUpRight(duration, easingMap);
+      hexMover.moveUp(duration, easingMap);
+      hexMover.moveUpLeft(duration, {callback: ()=>{circleMove(hexMover);}, ...easingMap});
 
     }
 
-    // todo: make this use the metronome
     circleMove(musicMover);
 
     let hexMoveQueue = new HexMoveQueue(svgContainer);
@@ -265,6 +263,7 @@ var scenes = {
     // }
     
     metronome.onBeat((time)=>{
+
       metronome.scalar = 1; // this should fix it eventually getting stuck at 1.5
       metronome.beat(1.5);
       
@@ -281,6 +280,9 @@ var scenes = {
         }
 
       }
+
+      musicMover.processOnce();
+
     });
     metronome.beat(1.5);
 
@@ -296,7 +298,7 @@ var scenes = {
       window.player.play(); // todo: remove this GLOBAL
     });
 
-    scene.addActors([hexgrid, musicMover, controlledHexMover, metronome, hexMoveQueue]);
+    scene.addActors([hexgrid, controlledHexMover, metronome, hexMoveQueue]);
 
   },
 

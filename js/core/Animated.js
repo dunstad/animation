@@ -37,8 +37,11 @@ class Animated {
 
   /**
    * Performs transformations waiting in the queue.
+   * @param {Function} resolve Used to know when 
+   * @param {Boolean} stopAfterOne Used to process only one transformation.
    */
-  process(resolve) {
+  process(resolve, stopAfterOne) {
+
     let transformation = this.animationQueue.next();
     if (transformation) {
       
@@ -82,7 +85,12 @@ class Animated {
 
           // processing after callbacks so it doesn't stop recursing before
           // repeating animations stick their next transform in the queue
-          this.process(resolve);
+          if (!stopAfterOne) {
+            this.process(resolve);
+          }
+          else {
+            if (resolve) {resolve();}
+          }
 
         });
 
@@ -96,15 +104,36 @@ class Animated {
         animation.originalCallback = transformation.callback;
         
       }
+
+      // instant transformations
       else {
+        
         Object.assign(this, transformation.propertyValueMap);
-        this.process(resolve);
+        
         if (transformation.callback) {
           transformation.callback();
         }
+
+        // processing after callbacks so it doesn't stop recursing before
+        // repeating animations stick their next transform in the queue
+        if (!stopAfterOne) {
+          this.process(resolve);
+        }
+        else {
+          if (resolve) {resolve();}
+        }
+        
       }
+
     }
+
+    // when no transformations are left
     else {if (resolve) {resolve();}}
+
+  }
+
+  processOnce(resolve) {
+    this.process(resolve, true);
   }
 
   /**

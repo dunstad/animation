@@ -48,8 +48,10 @@ class HexMoveQueue extends Animated {
     
     let quotient = Math.floor(this.triangleGroup.x / 40);
     indicator.x = -(quotient * 40) + (40 * this.moveQueue.length);
-    indicator.scalar = 1e-6;
-    indicator.scale(1, duration).process();
+    indicator.scalar = 1;
+    // TODO: figure out why processing here causes the tab to freeze
+    // indicator.scalar = .025;
+    // indicator.scale(1, duration).processOnce();
 
   }
 
@@ -61,21 +63,12 @@ class HexMoveQueue extends Animated {
 
       duration = duration || 500;
   
-      // for (let indicator of this.moveQueue.slice(1)) {
-      //   indicator.moveX(indicator.x - 40, duration).process();
-      // }
-  
-      // let firstIndicator = this.moveQueue[0];
-      // firstIndicator.moveX(firstIndicator.x - 40, duration, {callback: ()=>{
-      //   firstIndicator.element.remove();
-      // }}).scale(0, duration, {merge: 'start'}).process();
-      
-      this.triangleGroup.moveX(this.triangleGroup.x - 40, duration).process();
+      this.triangleGroup.moveX(this.triangleGroup.x - 40, duration).processOnce();
   
       let firstIndicator = this.moveQueue[0];
-      firstIndicator.scale(1e-6, duration, {callback: ()=>{
+      firstIndicator.scale(.025, duration, {callback: ()=>{
         firstIndicator.element.remove();
-      }}).process();
+      }}).processOnce();
   
       result = this.moveQueue.shift();
 
