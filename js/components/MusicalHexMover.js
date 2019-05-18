@@ -26,10 +26,10 @@ class MusicalHexMover extends HexMover {
         // Tone.js got loaded
         if (Tone.context.state !== 'running') {Tone.context.resume();}
         if (moveSuccess) {
-          this.synth.triggerAttackRelease(note, '16n', event.detail.time);
+          this.synth.triggerAttackRelease(note, '16n');
         }
         else {
-          this.errorSynth.triggerAttackRelease('32n', event.detail.time);
+          this.errorSynth.triggerAttackRelease('32n');
         }
       });
 

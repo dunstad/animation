@@ -32,7 +32,7 @@ class HexMover extends Animated {
     };
 
     for (let [move, offsets] of Object.entries(moves)) {
-      this[move] = (time, milliseconds, config)=>{
+      this[move] = (milliseconds, config)=>{
 
         // need to clone config here because the same object is used
         // every time a key is pressed
@@ -87,7 +87,6 @@ class HexMover extends Animated {
 
           let moveEvent = new CustomEvent(move, {detail: {
             moveSuccess: !moveFailed,
-            time: time,
           }});
           this.element.node.dispatchEvent(moveEvent);
           
@@ -110,8 +109,8 @@ class HexMover extends Animated {
    * Currently supported events are moveUpLeft, moveUp, moveUpRight,
    * moveDownLeft, moveDown, and moveDownRight.
    * 
-   * The callback has one event parameter with a detail property, which
-   * will be true if the move was successful, and false otherwise.
+   * The callback has one event parameter that looks like this:
+   * {detail: {moveSuccess: true}}
    * @param {String} eventName 
    * @param {Function} callback 
    */

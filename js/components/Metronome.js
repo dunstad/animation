@@ -54,9 +54,7 @@ class Metronome extends Animated {
   }
 
   /**
-   * Used to do things when the beat happens. The callback needs
-   * to accept a time parameter, used for example by triggerAttackRelease
-   * in Tone.js .
+   * Used to do things when the beat happens.
    * @param {Function} callback 
    */
   onBeat(callback) {
