@@ -186,7 +186,7 @@ var scenes = {
 
   'eye': (scene)=>{
 
-    svgContainer.rect(1000, 500).x(0).y(0).attr({fillColor: 'gray'});
+    svgContainer.rect(1000, 500).x(0).y(0).attr({fill: 'gray'});
 
     let eye = new Eye(svgContainer, 50, 20, 10);
     eye.move(100, 100).openTop(1).openBottom(1).process();
@@ -209,6 +209,8 @@ var scenes = {
   },
 
   'hexgrid': (scene)=>{
+
+    svgContainer.rect(1000, 500).x(0).y(0).attr({fill: 'white'});
 
     let hexgrid = new HexGrid(svgContainer, 5, 5);
 
