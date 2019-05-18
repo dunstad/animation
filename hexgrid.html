@@ -67,13 +67,7 @@
     var svgContainer = SVG(`#${container.id}`);
     var player = new Player(svgContainer);
 
-    function makeScene(setupFunc) {
-      let scene = new Scene(player);
-      scene.prepareActors(setupFunc);
-      return scene;
-    }
-
-    player.loadScene(makeScene(scenes.hexgrid));
+    player.loadScene(scenes.hexgrid);
 
   </script>
 
