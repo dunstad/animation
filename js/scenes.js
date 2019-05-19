@@ -308,7 +308,7 @@ var scenes = {
 
     svgContainer.rect(640, 360).x(0).y(0).attr({fill: 'white'});
 
-    let squareGrid = new SquareGrid(svgContainer);
+    let squareGrid = new SquareGrid(svgContainer, 80);
     squareGrid.y = 20;
 
     let tileStyle = {

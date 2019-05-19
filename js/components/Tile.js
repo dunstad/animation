@@ -18,4 +18,12 @@ class Tile extends Animated {
     entity.tile = this;
   }
 
+  get gridX() {
+    return this.x / this.grid.tileSize;
+  }
+  
+  get gridY() {
+    return this.y / this.grid.tileSize;
+  }
+
 }

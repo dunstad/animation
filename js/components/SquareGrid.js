@@ -1,12 +1,12 @@
 class SquareGrid extends Animated {
 
-  constructor(svgContainer, options) {
+  constructor(svgContainer, tileSize, options) {
 
     super(svgContainer.magicContainer());
 
     this.grid = {};
 
-    this.tileSize = 80;
+    this.tileSize = tileSize;
 
   }
 
@@ -18,7 +18,7 @@ class SquareGrid extends Animated {
       }
     }
     else {
-      tile.grid = this.grid;
+      tile.grid = this;
       if (!this.grid[x]) {
         this.grid[x] = {};
       }
