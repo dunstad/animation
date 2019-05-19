@@ -304,4 +304,28 @@ var scenes = {
 
   },
 
+  'sandbox': (scene)=>{
+
+    svgContainer.rect(640, 360).x(0).y(0).attr({fill: 'white'});
+
+    let squareGrid = new SquareGrid(svgContainer);
+    squareGrid.y = 20;
+
+    let tileStyle = {
+      fill: 'gray',
+      stroke: 'black',
+    };
+
+    for (let x of [0, 1, 2, 3, 4, 5, 6, 7]) {
+      for (let y of [0, 1, 2, 3]) {
+        squareGrid.tile(x, y, new Tile(svgContainer, tileStyle));
+      }
+    }
+
+
+
+    scene.addActors([squareGrid]);
+
+  }
+
 };
