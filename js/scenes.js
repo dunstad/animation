@@ -318,13 +318,15 @@ var scenes = {
 
     for (let x of [0, 1, 2, 3, 4, 5, 6, 7]) {
       for (let y of [0, 1, 2, 3]) {
-        squareGrid.tile(x, y, new Tile(svgContainer, tileStyle));
+        squareGrid.tile(x, y, new Tile(svgContainer, squareGrid, tileStyle));
       }
     }
 
+    let adventurer = new Adventurer(svgContainer, squareGrid);
 
+    squareGrid.occupy(1, 1, adventurer);
 
-    scene.addActors([squareGrid]);
+    scene.addActors([squareGrid, adventurer]);
 
   }
 

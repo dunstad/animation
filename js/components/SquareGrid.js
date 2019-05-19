@@ -18,6 +18,7 @@ class SquareGrid extends Animated {
       }
     }
     else {
+      tile.grid = this.grid;
       if (!this.grid[x]) {
         this.grid[x] = {};
       }
@@ -28,6 +29,14 @@ class SquareGrid extends Animated {
       result = tile;
     }
     return result;
+  }
+
+  occupy(x, y, entity) {
+    this.element.add(entity.element);
+    let tile = this.tile(x, y);
+    tile.occupy(entity);
+    entity.x = tile.x + this.tileSize / 4;
+    entity.y = tile.y + this.tileSize / 4;
   }
 
 }
