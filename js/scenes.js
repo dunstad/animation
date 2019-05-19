@@ -311,9 +311,18 @@ var scenes = {
     let squareGrid = new SquareGrid(svgContainer, 80);
     squareGrid.y = 20;
 
+    let brickWall = new External(svgContainer, '/img/brick_wall.svg');
+    let pattern = svgContainer.pattern(40, 40, (add)=>{
+      let style = {stroke: 'black', fill: '#113837'};
+      add.rect(40, 20).attr(style);
+      add.rect(40, 20).x(-20).y(20).attr(style);
+      add.rect(40, 20).x(20).y(20).attr(style);
+    });
+
     let tileStyle = {
-      fill: '#113837',
+      fill: pattern,
       stroke: 'black',
+      'stroke-width': 2,
     };
 
     for (let x of [0, 1, 2, 3, 4, 5, 6, 7]) {
