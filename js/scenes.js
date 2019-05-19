@@ -311,12 +311,12 @@ var scenes = {
     let squareGrid = new SquareGrid(svgContainer, 80);
     squareGrid.y = 20;
 
-    let brickWall = new External(svgContainer, '/img/brick_wall.svg');
     let pattern = svgContainer.pattern(40, 40, (add)=>{
       let style = {stroke: 'black', fill: '#113837'};
+      let style2 = {stroke: 'black', fill: chroma('#113837').darken(.15)};
       add.rect(40, 20).attr(style);
-      add.rect(40, 20).x(-20).y(20).attr(style);
-      add.rect(40, 20).x(20).y(20).attr(style);
+      add.rect(40, 20).x(-20).y(20).attr(style2);
+      add.rect(40, 20).x(20).y(20).attr(style2);
     });
 
     let tileStyle = {
@@ -336,8 +336,11 @@ var scenes = {
     
     let crystal = new Crystal(svgContainer, squareGrid, {fill: '#14ECE3'});
     squareGrid.occupy(2, 2, crystal);
+    
+    let drill = new Drill(svgContainer, squareGrid, {fill: 'gray'});
+    squareGrid.occupy(3, 2, drill);
 
-    scene.addActors([squareGrid, crystal, adventurer]);
+    scene.addActors([squareGrid, crystal, drill, adventurer]);
 
   }
 
