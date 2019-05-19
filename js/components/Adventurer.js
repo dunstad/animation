@@ -10,7 +10,7 @@ class Adventurer extends Animated {
     this.element.add(faceGroup);
 
     let face = svgContainer.circle(40, 40);
-    face.attr({fill: 'tan'});
+    face.attr({fill: options.fill});
     faceGroup.add(face);
 
     let eyeGroup = svgContainer.magicContainer();

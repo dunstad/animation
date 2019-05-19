@@ -312,7 +312,7 @@ var scenes = {
     squareGrid.y = 20;
 
     let tileStyle = {
-      fill: 'gray',
+      fill: '#113837',
       stroke: 'black',
     };
 
@@ -322,11 +322,13 @@ var scenes = {
       }
     }
 
-    let adventurer = new Adventurer(svgContainer, squareGrid);
-
+    let adventurer = new Adventurer(svgContainer, squareGrid, {fill: '#FF7D16'});
     squareGrid.occupy(1, 1, adventurer);
+    
+    let crystal = new Crystal(svgContainer, squareGrid, {fill: '#14ECE3'});
+    squareGrid.occupy(2, 2, crystal);
 
-    scene.addActors([squareGrid, adventurer]);
+    scene.addActors([squareGrid, crystal, adventurer]);
 
   }
 
