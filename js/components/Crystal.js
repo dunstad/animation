@@ -8,7 +8,7 @@ class Crystal extends Animated {
   }
 
   tick() {
-    console.log(`I'm a ${this.constructor.name}!`);
+    this.scalar = Math.min(1, this.scalar + .1);
   }
 
 }

@@ -94,6 +94,8 @@ class Adventurer extends Animated {
       'moveLeft': ()=>{this.move(this.tile.gridX - 1, this.tile.gridY)},
       'moveRight': ()=>{this.move(this.tile.gridX + 1, this.tile.gridY)},
     };
+
+    this.crystals = 0;
     
   }
 

@@ -13,7 +13,10 @@ class Drill extends Animated {
       add.rect(80, 10).attr({fill: color});
       add.path('M 20 0 C 30 10 50 10 60 0').attr(style);
     });
-    this.element.attr({fill: pattern})
+    this.element.attr({fill: pattern});
+
+    this.facingCrystal = false;
+    this.crystals = 0;
 
   }
 
@@ -37,13 +40,21 @@ class Drill extends Animated {
       let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
       if (tile.occupied && tile.occupied.constructor.name == 'Crystal') {
         this.rotation = facingToRotation[direction];
+        this.facingCrystal = tile.occupied;
       }
     }
 
   }
 
   tick() {
-    console.log(`I'm a ${this.constructor.name}!`);
+
+    this.facingCrystal = false;
+    this.faceCrystal();
+    if (this.facingCrystal) {
+      this.crystals += 1;
+      this.facingCrystal.scalar *= .8;
+    }
+
   }
 
 }
