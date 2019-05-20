@@ -340,6 +340,10 @@ var scenes = {
     let drill = new Drill(svgContainer, squareGrid, {fill: 'gray'});
     squareGrid.occupy(3, 2, drill);
 
+    squareGrid.wait(0, {callback: ()=>{setInterval(()=>{
+      squareGrid.tick();
+    }, 500)}});
+
     scene.addActors([squareGrid, crystal, drill, adventurer]);
 
   }
