@@ -24,18 +24,6 @@
   
 * Improvements
 
-  * Metronome
-    * pause the transport when the pause button is pressed
-    * pause the transport when the page loses focus, and resume when refocused
-  * HexMoveQueue
-    * figure out a better design for the direction indicators
-  * HexMover
-    * internal queue to track movements, have them executed by another component
-      * this will keep all the hexmovers in time with each other
-    * add double movement
-  * hexgrid
-    * configurable shapes
-    * ability to create a grid from HexTiles
   * eye
     * refactor into parent class with look methods, child class with eyelid
   * alphabet
@@ -50,6 +38,8 @@
     * ticking animation
   * stars
     * twinkling animation
+  * moon
+    * doesn't transform properly, center is not where it should be
   * a lot of classes should probably use a config object for appearance stuff
     * add optional glow for moon, star, and flame
     * the moon might need a darker shadow
@@ -57,9 +47,6 @@
 
 
 #### animation
-* finish svg.js refactor
-  * moon is weird about transformations
-  * fix gif and image export
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment
 * 3d transform methods (stretch, skew, etc.)
@@ -68,6 +55,7 @@
 * make animation helper config parameter object a class (mostly so it's easy to document)
 
 #### player
+* fix gif and image export
 * figure out why svg isn't stretching to fill width
   * maybe related to viewbox? seems to preserve aspect ratio
 * does the scene need to be paused when the tab loses focus?
