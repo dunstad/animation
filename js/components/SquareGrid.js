@@ -8,6 +8,9 @@ class SquareGrid extends Animated {
 
     this.tileSize = tileSize;
 
+    // used to simplify finding all the things to simulate
+    this.entities = [];
+
   }
 
   tile(x, y, tile) {
@@ -34,6 +37,9 @@ class SquareGrid extends Animated {
   occupy(x, y, entity) {
     
     this.element.add(entity.element);
+
+    // separate function for putting them on the grid the first time?
+    if (!this.entities.find(e=>e==entity)) {this.entities.push(entity);}
     
     let tile = this.tile(x, y);
     tile.occupied = entity;
@@ -46,7 +52,9 @@ class SquareGrid extends Animated {
 
   tick() {
 
-
+    for (let entity of this.entities) {
+      entity.tick();
+    }
 
   }
 

@@ -7,4 +7,8 @@ class Crystal extends Animated {
 
   }
 
+  tick() {
+    console.log(`I'm a ${this.constructor.name}!`);
+  }
+
 }

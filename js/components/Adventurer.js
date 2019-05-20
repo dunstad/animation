@@ -92,4 +92,8 @@ class Adventurer extends Animated {
     }
   }
 
+  tick() {
+    console.log(`I'm an ${this.constructor.name}!`);
+  }
+
 }
