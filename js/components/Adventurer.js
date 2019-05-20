@@ -108,6 +108,23 @@ class Adventurer extends Animated {
   tick() {
     this.actions[this.nextAction]();
     this.nextAction = '';
+
+    // TODO: put this somewhere lots of entities can use it
+    let directionToOffset = {
+      'up': [0, -1],
+      'right': [1, 0],
+      'down': [0, 1],
+      'left': [-1, 0],
+    };
+
+    for (let [direction, coords] of Object.entries(directionToOffset)) {
+      let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
+      if (tile.occupied && tile.occupied.constructor.name == 'Drill') {
+        this.crystals = tile.occupied.crystals;
+        tile.occupied.crystals = 0;
+      }
+    }
+
   }
 
 }
