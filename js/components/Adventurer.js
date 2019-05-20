@@ -72,17 +72,28 @@ class Adventurer extends Animated {
     });
 
     this.element.node.addEventListener('controlUp', ()=>{
-      this.move(this.tile.gridX, this.tile.gridY - 1);
+      this.nextAction = 'moveUp';
     });
     this.element.node.addEventListener('controlDown', ()=>{
-      this.move(this.tile.gridX, this.tile.gridY + 1);
+      this.nextAction = 'moveDown';
     });
     this.element.node.addEventListener('controlLeft', ()=>{
-      this.move(this.tile.gridX - 1, this.tile.gridY);
+      this.nextAction = 'moveLeft';
     });
     this.element.node.addEventListener('controlRight', ()=>{
-      this.move(this.tile.gridX + 1, this.tile.gridY);
+      this.nextAction = 'moveRight';
     });
+
+    // used to tell the board what the adventurer does on the next tick
+    this.nextAction = '';
+
+    this.actions = {
+      '': ()=>{},
+      'moveUp': ()=>{this.move(this.tile.gridX, this.tile.gridY - 1)},
+      'moveDown': ()=>{this.move(this.tile.gridX, this.tile.gridY + 1)},
+      'moveLeft': ()=>{this.move(this.tile.gridX - 1, this.tile.gridY)},
+      'moveRight': ()=>{this.move(this.tile.gridX + 1, this.tile.gridY)},
+    };
     
   }
 
@@ -93,7 +104,8 @@ class Adventurer extends Animated {
   }
 
   tick() {
-    console.log(`I'm an ${this.constructor.name}!`);
+    this.actions[this.nextAction]();
+    this.nextAction = '';
   }
 
 }
