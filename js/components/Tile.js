@@ -12,12 +12,6 @@ class Tile extends Animated {
 
   }
 
-  occupy(entity) {
-    this.occupied = entity;
-    if (entity.tile) {entity.tile.occupied = false;}
-    entity.tile = this;
-  }
-
   get gridX() {
     return this.x / this.grid.tileSize;
   }

@@ -32,11 +32,22 @@ class SquareGrid extends Animated {
   }
 
   occupy(x, y, entity) {
+    
     this.element.add(entity.element);
+    
     let tile = this.tile(x, y);
-    tile.occupy(entity);
+    tile.occupied = entity;
+    if (entity.tile) {entity.tile.occupied = false;}
+    entity.tile = tile;
+    
     entity.x = tile.x + this.tileSize / 4;
     entity.y = tile.y + this.tileSize / 4;
+  }
+
+  tick() {
+
+
+
   }
 
 }
