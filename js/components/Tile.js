@@ -10,6 +10,10 @@ class Tile extends Animated {
 
     this.occupied = false;
 
+    this.element.node.addEventListener('click', ()=>{
+      console.log(this.gridX, this.gridY);
+    });
+
   }
 
   get gridX() {
