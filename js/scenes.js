@@ -340,8 +340,16 @@ var scenes = {
     let drill = new Drill(svgContainer, squareGrid, {fill: 'gray'});
     squareGrid.occupy(3, 2, drill);
 
+    let GUI = new SandboxGUI();
+    let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
+    let crystalButton = new ToggleButton(svgContainer, displayCrystal, ()=>{return adventurer.crystals});
+    crystalButton.x = 600;
+    crystalButton.y = 20;
+    GUI.addButton(crystalButton);
+
     squareGrid.wait(0, {callback: ()=>{setInterval(()=>{
       squareGrid.tick();
+      GUI.tick();
     }, 500)}});
 
     scene.addActors([squareGrid, crystal, drill, adventurer]);
