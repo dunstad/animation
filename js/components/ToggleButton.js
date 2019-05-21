@@ -19,6 +19,22 @@ class ToggleButton extends Animated {
     this.text.cx(diameter / 2).cy(diameter);
     this.element.add(this.text);
 
+    this.isSelected = false;
+
+  }
+
+  get selected() {
+    return this.isSelected;
+  }
+
+  set selected(bool) {
+    this.isSelected = bool;
+    if (bool) {
+      this.circle.attr({fill: 'lime'});
+    }
+    else {
+      this.circle.attr({fill: 'blue'});
+    }
   }
 
   updateText() {
