@@ -344,7 +344,7 @@ var scenes = {
 
     let GUI = game.GUI;
     let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
-    let crystalButton = new ToggleButton(svgContainer, displayCrystal, ()=>{return adventurer.crystals});
+    let crystalButton = new ToggleButton(svgContainer, displayCrystal, ()=>{return adventurer.inventory.Crystal;});
     crystalButton.x = 600;
     crystalButton.y = 20;
     GUI.addButton(crystalButton);

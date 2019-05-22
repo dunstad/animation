@@ -95,7 +95,9 @@ class Adventurer extends Animated {
       'moveRight': ()=>{this.move(this.tile.gridX + 1, this.tile.gridY)},
     };
 
-    this.crystals = 0;
+    this.inventory = {
+      Crystal: 0,
+    }
     
   }
 
@@ -120,7 +122,7 @@ class Adventurer extends Animated {
     for (let [direction, coords] of Object.entries(directionToOffset)) {
       let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
       if (tile.occupied && tile.occupied.constructor.name == 'Drill') {
-        this.crystals += tile.occupied.crystals;
+        this.inventory.Crystal += tile.occupied.crystals;
         tile.occupied.crystals = 0;
       }
     }
