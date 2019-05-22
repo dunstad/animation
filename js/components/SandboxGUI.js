@@ -13,7 +13,12 @@ class SandboxGUI {
     this.buttons.push(button);
     button.GUI = this;
     button.element.node.addEventListener('click', ()=>{
-      button.selected = !button.selected;
+      if (button.selected) {
+        this.unselect();
+      }
+      else {
+        this.select(button);
+      }
     });
   }
 

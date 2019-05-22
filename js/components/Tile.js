@@ -12,6 +12,7 @@ class Tile extends Animated {
 
     this.element.node.addEventListener('click', ()=>{
       console.log(this.gridX, this.gridY);
+      console.log(this.grid.game.GUI.selectedButton);
     });
 
   }

@@ -308,7 +308,9 @@ var scenes = {
 
     svgContainer.rect(640, 360).x(0).y(0).attr({fill: 'white'});
 
-    let squareGrid = new SquareGrid(svgContainer, 80);
+    let game = new SandboxGame({svgContainer: svgContainer});
+
+    let squareGrid = game.grid;
     squareGrid.y = 20;
 
     let pattern = svgContainer.pattern(40, 40, (add)=>{
@@ -340,7 +342,7 @@ var scenes = {
     let drill = new Drill(svgContainer, squareGrid, {fill: 'gray'});
     squareGrid.occupy(3, 2, drill);
 
-    let GUI = new SandboxGUI();
+    let GUI = game.GUI;
     let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
     let crystalButton = new ToggleButton(svgContainer, displayCrystal, ()=>{return adventurer.crystals});
     crystalButton.x = 600;
