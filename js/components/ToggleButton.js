@@ -15,7 +15,7 @@ class ToggleButton extends Animated {
     this.countGetter = countGetter;
 
     this.text = svgContainer.text(String(this.countGetter()));
-    this.text.attr({stroke: 'white'});
+    this.text.attr({stroke: 'white', fill: 'white'});
     this.text.cx(diameter / 2).cy(diameter);
     this.element.add(this.text);
 
