@@ -52,7 +52,7 @@ class Drill extends Animated {
     this.faceCrystal();
     if (this.facingCrystal) {
       this.crystals += 1;
-      this.facingCrystal.scalar *= .8;
+      this.facingCrystal.scalar -= .2;
     }
 
   }
