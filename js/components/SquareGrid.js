@@ -42,12 +42,19 @@ class SquareGrid extends Animated {
     if (!this.entities.find(e=>e==entity)) {this.entities.push(entity);}
     
     let tile = this.tile(x, y);
+    if (tile.occupied) {
+      tile.occupied.element.remove();
+      this.entities.splice(this.entities.indexOf(tile.occupied), 1);
+    }
     tile.occupied = entity;
-    if (entity.tile) {entity.tile.occupied = false;}
-    entity.tile = tile;
     
-    entity.x = tile.x + this.tileSize / 4;
-    entity.y = tile.y + this.tileSize / 4;
+    if (entity) {
+      if (entity.tile) {entity.tile.occupied = false;}
+      entity.tile = tile;
+      
+      entity.x = tile.x + this.tileSize / 4;
+      entity.y = tile.y + this.tileSize / 4;
+    }
   }
 
   tick() {
