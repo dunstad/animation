@@ -11,8 +11,13 @@ class Tile extends Animated {
     this.occupied = false;
 
     this.element.node.addEventListener('click', ()=>{
-      console.log(this.gridX, this.gridY);
       console.log(this.grid.game.GUI.selectedButton);
+      if(this.grid.game.GUI.selectedButton) {
+        this.grid.game.player.placeCrystal(this.gridX, this.gridY);
+      }
+      else {
+        console.log(this.gridX, this.gridY);
+      }
     });
 
   }

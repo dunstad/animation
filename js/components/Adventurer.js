@@ -107,6 +107,10 @@ class Adventurer extends Animated {
     }
   }
 
+  placeCrystal(x, y) {
+    console.log('todo: placing crystal!');
+  }
+
   tick() {
     this.actions[this.nextAction]();
     this.nextAction = '';

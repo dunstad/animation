@@ -334,6 +334,7 @@ var scenes = {
     }
 
     let adventurer = new Adventurer(svgContainer, squareGrid, {fill: '#FF7D16'});
+    game.player = adventurer;
     squareGrid.occupy(1, 1, adventurer);
     
     let crystal = new Crystal(svgContainer, squareGrid, {fill: '#14ECE3'});
