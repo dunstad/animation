@@ -113,7 +113,14 @@ class Adventurer extends Animated {
 
   placeCrystal(x, y) {
     if (this.distanceTo(x, y) == 1) {
-      console.log('todo: placing crystal!');
+      if (this.inventory.Crystal) {
+        let crystal = new Crystal(svgContainer, this.grid, {fill: '#14ECE3'});
+        this.grid.occupy(x, y, crystal);
+        this.inventory.Crystal -= 1;
+      }
+      else {
+        console.log('not enough crystals!');
+      }
     }
     else {
       console.log('too far!');
