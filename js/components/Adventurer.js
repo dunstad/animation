@@ -107,8 +107,17 @@ class Adventurer extends Animated {
     }
   }
 
+  distanceTo(x, y) {
+    return Math.abs(this.tile.gridX - x) + Math.abs(this.tile.gridY - y);
+  }
+
   placeCrystal(x, y) {
-    console.log('todo: placing crystal!');
+    if (this.distanceTo(x, y) == 1) {
+      console.log('todo: placing crystal!');
+    }
+    else {
+      console.log('too far!');
+    }
   }
 
   tick() {
