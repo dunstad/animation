@@ -115,17 +115,20 @@ class Adventurer extends Animated {
 
     // move towards destination
     if (this.destination) {
+      
       let xDirection = Math.sign(this.destination.x - this.tile.gridX);
-      let yDirection;
-      if (xDirection != 0) {yDirection = 0;}
-      else {yDirection = Math.sign(this.destination.y - this.tile.gridY);}
+      let yDirection = Math.sign(this.destination.y - this.tile.gridY);
       
       if (xDirection == 0 && yDirection == 0) {
         this.direction = false;
       }
-      else {
-        this.moveRelative(xDirection, yDirection);
+      else if (!this.grid.tile(xDirection, 0).occupied) {
+        this.moveRelative(xDirection, 0);
       }
+      else {
+        this.moveRelative(0, yDirection);
+      }
+
     }
 
     // TODO: put this somewhere lots of entities can use it
