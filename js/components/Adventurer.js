@@ -43,32 +43,20 @@ class Adventurer extends Animated {
     let hammer = new Hammer(svgContainer.node);
     hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
-    let swipeDirections = {
-      controlUp: [-135, -45],
-      controlDown: [45, 135],
-      // controlLeft: [135, -135], // TODO: fix this deadzone
-      controlLeft: [135, 180],
-      controlRight: [-45, 45],
-    };
-
-    /**
-     * Used to tell what direction a swipe was.
-     * Range should be 2 numbers from -180 to 180, smallest first.
-     * @param {Number} angle 
-     * @param {Number[]} range 
-     */
-    function angleInRange(angle, range) {
-      return ((angle >= range[0]) && (angle < range[1]));
-    }
-
-    hammer.on('swipe', (event)=>{
-      for (let [eventName, range] of Object.entries(swipeDirections)) {
-        if (angleInRange(event.angle, range)) {
-          let controlEvent = new CustomEvent(eventName);
-          this.element.node.dispatchEvent(controlEvent);
-          break; // any swipe should only fall into exactly one of these ranges
-        }
-      }
+    hammer.on('swipeup', (event)=>{
+      this.element.node.dispatchEvent(new CustomEvent('controlUp'));
+    });
+    
+    hammer.on('swipedown', (event)=>{
+      this.element.node.dispatchEvent(new CustomEvent('controlDown'));
+    });
+    
+    hammer.on('swipeleft', (event)=>{
+      this.element.node.dispatchEvent(new CustomEvent('controlLeft'));
+    });
+    
+    hammer.on('swiperight', (event)=>{
+      this.element.node.dispatchEvent(new CustomEvent('controlRight'));
     });
 
     this.element.node.addEventListener('controlUp', ()=>{
