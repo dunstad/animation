@@ -4,7 +4,7 @@ class ToggleButton extends Animated {
 
     if (!options) {options = {};}
 
-    let diameter = 40;
+    let diameter = 80;
     
     super(svgContainer.magicContainer());
     
@@ -15,13 +15,14 @@ class ToggleButton extends Animated {
     this.element.add(this.circle);
 
     this.element.add(displayElement);
+    displayElement.cx(diameter / 2).cy(diameter / 2);
 
     this.countGetter = options.countGetter;
 
     if (this.countGetter) {
       this.text = svgContainer.text(String(this.countGetter()));
       this.text.attr({stroke: 'white', fill: 'white'});
-      this.text.cx(diameter / 2).cy(diameter);
+      this.text.cx(diameter / 2).cy(diameter - (diameter / 8));
       this.element.add(this.text);
     }
 

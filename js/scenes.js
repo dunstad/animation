@@ -327,7 +327,7 @@ var scenes = {
       'stroke-width': 2,
     };
 
-    for (let x of [0, 1, 2, 3, 4, 5, 6, 7]) {
+    for (let x of [0, 1, 2, 3, 4, 5, 6]) {
       for (let y of [0, 1, 2, 3]) {
         squareGrid.tile(x, y, new Tile(svgContainer, squareGrid, tileStyle));
       }
@@ -345,26 +345,26 @@ var scenes = {
 
     let GUI = game.GUI;
 
-    let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
+    let displayCrystal = crystal.element.clone().x(0).y(0);
     let crystalButton = new ToggleButton(svgContainer, displayCrystal, 'Crystal', {
       countGetter: ()=>{return adventurer.inventory.Crystal;}
     });
-    crystalButton.x = 600;
+    crystalButton.x = 560;
     crystalButton.y = 20;
     GUI.addButton(crystalButton);
     
-    let displayDrill = drill.element.clone().x(0).y(0).scale(.65);
+    let displayDrill = drill.element.clone().x(0).y(0);
     let drillButton = new ToggleButton(svgContainer, displayDrill, 'Drill', {
       countGetter: ()=>{return adventurer.inventory.Drill;}
     });
-    drillButton.x = 600;
-    drillButton.y = 80;
+    drillButton.x = 560;
+    drillButton.y = 100;
     GUI.addButton(drillButton);
     
     let cross = svgContainer.path('');
     let crossButton = new ToggleButton(svgContainer, cross, 'cross');
-    crossButton.x = 600;
-    crossButton.y = 140;
+    crossButton.x = 560;
+    crossButton.y = 180;
     GUI.addButton(crossButton);
 
     squareGrid.wait(0, {callback: ()=>{setInterval(()=>{

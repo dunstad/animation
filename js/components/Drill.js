@@ -38,7 +38,7 @@ class Drill extends Animated {
 
     for (let [direction, coords] of Object.entries(directionToOffset)) {
       let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
-      if (tile.occupied && tile.occupied.constructor.name == 'Crystal') {
+      if (tile && tile.occupied && tile.occupied.constructor.name == 'Crystal') {
         this.rotation = facingToRotation[direction];
         this.facingCrystal = tile.occupied;
       }
