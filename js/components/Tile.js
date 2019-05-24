@@ -17,7 +17,7 @@ class Tile extends Animated {
         this.grid.game.player.placeCrystal(this.gridX, this.gridY);
       }
       else {
-        this.game.player.destination = {x: this.gridX, y: this.gridY};
+        this.grid.game.player.destination = {x: this.gridX, y: this.gridY};
       }
     });
 

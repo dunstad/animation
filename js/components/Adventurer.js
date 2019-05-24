@@ -139,7 +139,7 @@ class Adventurer extends Animated {
     // pick up crystals from nearby drills
     for (let [direction, coords] of Object.entries(directionToOffset)) {
       let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
-      if (tile.occupied && tile.occupied.constructor.name == 'Drill') {
+      if (tile && tile.occupied && tile.occupied.constructor.name == 'Drill') {
         this.inventory.Crystal += tile.occupied.crystals;
         tile.occupied.crystals = 0;
       }
