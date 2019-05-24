@@ -344,11 +344,28 @@ var scenes = {
     squareGrid.occupy(3, 2, drill);
 
     let GUI = game.GUI;
+
     let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
-    let crystalButton = new ToggleButton(svgContainer, displayCrystal, ()=>{return adventurer.inventory.Crystal;});
+    let crystalButton = new ToggleButton(svgContainer, displayCrystal, {
+      countGetter: ()=>{return adventurer.inventory.Crystal;}
+    });
     crystalButton.x = 600;
     crystalButton.y = 20;
     GUI.addButton(crystalButton);
+    
+    let displayDrill = drill.element.clone().x(0).y(0).scale(.65);
+    let drillButton = new ToggleButton(svgContainer, displayDrill, {
+      countGetter: ()=>{return adventurer.inventory.Drill;}
+    });
+    drillButton.x = 600;
+    drillButton.y = 80;
+    GUI.addButton(drillButton);
+    
+    let cross = svgContainer.path('');
+    let crossButton = new ToggleButton(svgContainer, cross);
+    crossButton.x = 600;
+    crossButton.y = 140;
+    GUI.addButton(crossButton);
 
     squareGrid.wait(0, {callback: ()=>{setInterval(()=>{
       squareGrid.tick();

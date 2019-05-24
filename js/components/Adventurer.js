@@ -85,6 +85,7 @@ class Adventurer extends Animated {
 
     this.inventory = {
       Crystal: 0,
+      Drill: 0,
     }
     
   }

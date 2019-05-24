@@ -1,6 +1,8 @@
 class ToggleButton extends Animated {
 
-  constructor(svgContainer, displayElement, countGetter, options) {
+  constructor(svgContainer, displayElement, options) {
+
+    if (!options) {options = {};}
 
     let diameter = 40;
 
@@ -12,12 +14,14 @@ class ToggleButton extends Animated {
 
     this.element.add(displayElement);
 
-    this.countGetter = countGetter;
+    this.countGetter = options.countGetter;
 
-    this.text = svgContainer.text(String(this.countGetter()));
-    this.text.attr({stroke: 'white', fill: 'white'});
-    this.text.cx(diameter / 2).cy(diameter);
-    this.element.add(this.text);
+    if (this.countGetter) {
+      this.text = svgContainer.text(String(this.countGetter()));
+      this.text.attr({stroke: 'white', fill: 'white'});
+      this.text.cx(diameter / 2).cy(diameter);
+      this.element.add(this.text);
+    }
 
     this.isSelected = false;
 
@@ -42,7 +46,9 @@ class ToggleButton extends Animated {
   }
 
   tick() {
-    this.updateText();
+    if (this.countGetter) {
+      this.updateText();
+    }
   }
 
 }
