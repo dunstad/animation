@@ -110,6 +110,31 @@ class Adventurer extends Animated {
       console.log('too far!');
     }
   }
+  
+  /**
+   * TODO: make this and placeCrystal the same
+   * @param {Number} x 
+   * @param {Number} y 
+   */
+  placeDrill(x, y) {
+    if (this.distanceTo(x, y) == 1) {
+      if (this.inventory.Drill) {
+        let drill = new Drill(svgContainer, this.grid, {fill: 'gray'});
+        this.grid.occupy(x, y, drill);
+        this.inventory.Drill -= 1;
+      }
+      else {
+        console.log('not enough drills!');
+      }
+    }
+    else {
+      console.log('too far!');
+    }
+  }
+
+  pickUp(x, y) {
+    console.log(`pick up ${x} ${y}`);
+  }
 
   tick() {
 

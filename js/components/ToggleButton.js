@@ -1,12 +1,14 @@
 class ToggleButton extends Animated {
 
-  constructor(svgContainer, displayElement, options) {
+  constructor(svgContainer, displayElement, label, options) {
 
     if (!options) {options = {};}
 
     let diameter = 40;
-
+    
     super(svgContainer.magicContainer());
+    
+    this.label = label;
     
     this.circle = svgContainer.circle(diameter);
     this.circle.attr({fill: 'blue'});

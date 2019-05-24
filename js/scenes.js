@@ -346,7 +346,7 @@ var scenes = {
     let GUI = game.GUI;
 
     let displayCrystal = crystal.element.clone().x(0).y(0).scale(.65);
-    let crystalButton = new ToggleButton(svgContainer, displayCrystal, {
+    let crystalButton = new ToggleButton(svgContainer, displayCrystal, 'Crystal', {
       countGetter: ()=>{return adventurer.inventory.Crystal;}
     });
     crystalButton.x = 600;
@@ -354,7 +354,7 @@ var scenes = {
     GUI.addButton(crystalButton);
     
     let displayDrill = drill.element.clone().x(0).y(0).scale(.65);
-    let drillButton = new ToggleButton(svgContainer, displayDrill, {
+    let drillButton = new ToggleButton(svgContainer, displayDrill, 'Drill', {
       countGetter: ()=>{return adventurer.inventory.Drill;}
     });
     drillButton.x = 600;
@@ -362,7 +362,7 @@ var scenes = {
     GUI.addButton(drillButton);
     
     let cross = svgContainer.path('');
-    let crossButton = new ToggleButton(svgContainer, cross);
+    let crossButton = new ToggleButton(svgContainer, cross, 'cross');
     crossButton.x = 600;
     crossButton.y = 140;
     GUI.addButton(crossButton);
