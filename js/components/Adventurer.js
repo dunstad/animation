@@ -133,14 +133,15 @@ class Adventurer extends Animated {
   }
 
   pickUp(x, y) {
-    console.log(`pick up ${x} ${y}`);
-    let canPickUp = ['Crystal', 'Drill'];
-    let entity = this.grid.tile(x, y).occupied;
-    if (entity) {
-      let entityName = entity.constructor.name;
-      if (canPickUp.indexOf(entityName) != -1) {
-        this.inventory[entityName] += 1;
-        this.grid.occupy(x, y, false);
+    if (this.distanceTo(x, y) == 1) {
+      let canPickUp = ['Crystal', 'Drill'];
+      let entity = this.grid.tile(x, y).occupied;
+      if (entity) {
+        let entityName = entity.constructor.name;
+        if (canPickUp.indexOf(entityName) != -1) {
+          this.inventory[entityName] += 1;
+          this.grid.occupy(x, y, false);
+        }
       }
     }
   }
@@ -156,7 +157,7 @@ class Adventurer extends Animated {
       if (xDirection == 0 && yDirection == 0) {
         this.direction = false;
       }
-      else if (!this.grid.tile(xDirection, 0).occupied) {
+      else if (!this.grid.tile(this.tile.gridX + xDirection, this.tile.gridY).occupied) {
         this.moveRelative(xDirection, 0);
       }
       else {

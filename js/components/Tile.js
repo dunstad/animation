@@ -17,7 +17,7 @@ class Tile extends Animated {
         this.grid.game.player.placeCrystal(this.gridX, this.gridY);
       }
       else if (button && button.label == 'Drill') {
-        this.grid.game.player.placeCrystal(this.gridX, this.gridY);
+        this.grid.game.player.placeDrill(this.gridX, this.gridY);
       }
       else if (button && button.label == 'cross') {
         this.grid.game.player.pickUp(this.gridX, this.gridY);
