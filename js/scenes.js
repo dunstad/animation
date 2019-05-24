@@ -204,7 +204,16 @@ var scenes = {
     eye.openTop(1, 100, {merge: 'start'});
     eye.openBottom(1, 100, {merge: 'start'});
 
-    scene.addActor(eye);
+    let wildEye = new Eye(svgContainer, 50, 1, 10);
+    wildEye.move(250, 100).openTop(1).openBottom(1).process();
+
+    let cuteEye = new Eye(svgContainer, 0, 0, 40);
+    cuteEye.move(100, 200).openTop(1).openBottom(1).process();
+    
+    let animeEye = new Eye(svgContainer, 50, 40, 20);
+    animeEye.move(250, 200).openTop(1).openBottom(1).process();
+
+    scene.addActors([eye, wildEye, cuteEye, animeEye]);
 
   },
 
