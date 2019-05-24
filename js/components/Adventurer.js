@@ -134,6 +134,15 @@ class Adventurer extends Animated {
 
   pickUp(x, y) {
     console.log(`pick up ${x} ${y}`);
+    let canPickUp = ['Crystal', 'Drill'];
+    let entity = this.grid.tile(x, y).occupied;
+    if (entity) {
+      let entityName = entity.constructor.name;
+      if (canPickUp.indexOf(entityName) != -1) {
+        this.inventory[entityName] += 1;
+        this.grid.occupy(x, y, false);
+      }
+    }
   }
 
   tick() {
