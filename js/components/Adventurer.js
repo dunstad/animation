@@ -60,28 +60,19 @@ class Adventurer extends Animated {
     });
 
     this.element.node.addEventListener('controlUp', ()=>{
-      this.nextAction = 'moveUp';
+      this.destination = {x: this.tile.gridX, y: this.tile.gridY - 1};
     });
     this.element.node.addEventListener('controlDown', ()=>{
-      this.nextAction = 'moveDown';
+      this.destination = {x: this.tile.gridX, y: this.tile.gridY + 1};
     });
     this.element.node.addEventListener('controlLeft', ()=>{
-      this.nextAction = 'moveLeft';
+      this.destination = {x: this.tile.gridX - 1, y: this.tile.gridY};
     });
     this.element.node.addEventListener('controlRight', ()=>{
-      this.nextAction = 'moveRight';
+      this.destination = {x: this.tile.gridX + 1, y: this.tile.gridY};
     });
 
-    // used to tell the board what the adventurer does on the next tick
-    this.nextAction = '';
-
-    this.actions = {
-      '': ()=>{},
-      'moveUp': ()=>{this.move(this.tile.gridX, this.tile.gridY - 1)},
-      'moveDown': ()=>{this.move(this.tile.gridX, this.tile.gridY + 1)},
-      'moveLeft': ()=>{this.move(this.tile.gridX - 1, this.tile.gridY)},
-      'moveRight': ()=>{this.move(this.tile.gridX + 1, this.tile.gridY)},
-    };
+    this.destination = false;
 
     this.inventory = {
       Crystal: 0,
@@ -94,6 +85,10 @@ class Adventurer extends Animated {
     if (!this.grid.tile(x, y).occupied) {
       this.grid.occupy(x, y, this);
     }
+  }
+
+  moveRelative(x, y) {
+    this.move(this.tile.gridX + x, this.tile.gridY + y);
   }
 
   distanceTo(x, y) {
@@ -117,8 +112,21 @@ class Adventurer extends Animated {
   }
 
   tick() {
-    this.actions[this.nextAction]();
-    this.nextAction = '';
+
+    // move towards destination
+    if (this.destination) {
+      let xDirection = Math.sign(this.destination.x - this.tile.gridX);
+      let yDirection;
+      if (xDirection != 0) {yDirection = 0;}
+      else {yDirection = Math.sign(this.destination.y - this.tile.gridY);}
+      
+      if (xDirection == 0 && yDirection == 0) {
+        this.direction = false;
+      }
+      else {
+        this.moveRelative(xDirection, yDirection);
+      }
+    }
 
     // TODO: put this somewhere lots of entities can use it
     let directionToOffset = {
@@ -128,6 +136,7 @@ class Adventurer extends Animated {
       'left': [-1, 0],
     };
 
+    // pick up crystals from nearby drills
     for (let [direction, coords] of Object.entries(directionToOffset)) {
       let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
       if (tile.occupied && tile.occupied.constructor.name == 'Drill') {

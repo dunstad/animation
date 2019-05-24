@@ -13,10 +13,11 @@ class Tile extends Animated {
     this.element.node.addEventListener('click', ()=>{
       console.log(this.grid.game.GUI.selectedButton);
       if(this.grid.game.GUI.selectedButton) {
+        // TODO: differentiate the buttons
         this.grid.game.player.placeCrystal(this.gridX, this.gridY);
       }
       else {
-        console.log(this.gridX, this.gridY);
+        this.game.player.destination = {x: this.gridX, y: this.gridY};
       }
     });
 
