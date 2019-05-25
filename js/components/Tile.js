@@ -11,19 +11,19 @@ class Tile extends Animated {
     this.occupied = false;
 
     this.element.node.addEventListener('click', ()=>{
-      console.log(this.grid.game.GUI.selectedButton);
+      let player = this.grid.game.player;
       let button = this.grid.game.GUI.selectedButton;
       if (button && button.label == 'Crystal') {
-        this.grid.game.player.placeCrystal(this.gridX, this.gridY);
+        player.placeCrystal(this.gridX, this.gridY);
       }
       else if (button && button.label == 'Drill') {
-        this.grid.game.player.placeDrill(this.gridX, this.gridY);
+        player.placeDrill(this.gridX, this.gridY);
       }
       else if (button && button.label == 'cross') {
-        this.grid.game.player.pickUp(this.gridX, this.gridY);
+        player.pickUp(this.gridX, this.gridY);
       }
       else {
-        this.grid.game.player.destination = {x: this.gridX, y: this.gridY};
+        player.destination = {x: this.gridX, y: this.gridY};
       }
     });
 

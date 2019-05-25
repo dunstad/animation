@@ -324,7 +324,7 @@ var scenes = {
 
     let pattern = svgContainer.pattern(40, 40, (add)=>{
       let style = {stroke: 'black', fill: '#113837'};
-      let style2 = {stroke: 'black', fill: chroma('#113837').darken(.15)};
+      let style2 = {stroke: 'black', fill: chroma(style.fill).darken(.15)};
       add.rect(40, 20).attr(style);
       add.rect(40, 20).x(-20).y(20).attr(style2);
       add.rect(40, 20).x(20).y(20).attr(style2);
@@ -370,10 +370,38 @@ var scenes = {
     drillButton.y = 100;
     GUI.addButton(drillButton);
     
-    let cross = svgContainer.path('');
+    let plus = svgContainer.path('M 20 0 20 40 M 0 20 40 20');
+    plus.attr({
+      stroke: 'yellow',
+      'stroke-width': 10,
+      'stroke-linecap': 'round',
+    });
+    let plusButton = new ToggleButton(svgContainer, plus, 'plus', {countGetter: ()=>{return 20;}});
+    plusButton.x = 560;
+    plusButton.y = 180;
+    GUI.addButton(plusButton);
+
+    plusButton.element.node.addEventListener('click', (function() {
+      console.log(this)
+      if (this.player.inventory.Crystal >= 20) {
+        this.player.inventory.Crystal -= 20;
+        this.player.inventory.Drill += 1;
+      }
+      else {
+        console.log('not enough crystals!');
+      }
+      this.GUI.unselect();
+    }).bind(game));
+
+    let cross = svgContainer.path('M 0 0 40 40 M 40 0 0 40');
+    cross.attr({
+      stroke: 'red',
+      'stroke-width': 10,
+      'stroke-linecap': 'round',
+    });
     let crossButton = new ToggleButton(svgContainer, cross, 'cross');
     crossButton.x = 560;
-    crossButton.y = 180;
+    crossButton.y = 260;
     GUI.addButton(crossButton);
 
     squareGrid.wait(0, {callback: ()=>{setInterval(()=>{

@@ -13,7 +13,7 @@ class Crystal extends Animated {
       this.grid.occupy(this.tile.gridX, this.tile.gridY, false);
     }
     else {
-      this.scalar = Math.min(1, this.scalar + .1);
+      this.scalar = Math.min(1.9, this.scalar + .05);
     }
   }
 
