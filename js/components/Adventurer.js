@@ -74,6 +74,8 @@ class Adventurer extends Animated {
 
     this.destination = false;
 
+    this.buildTargets = false;
+
     this.inventory = {
       Crystal: 0,
       Drill: 0,
@@ -89,6 +91,12 @@ class Adventurer extends Animated {
 
   moveRelative(x, y) {
     this.move(this.tile.gridX + x, this.tile.gridY + y);
+  }
+
+  moveNextTo(x, y) {
+    let xDirection = Math.sign(this.tile.gridX - x);
+    let yDirection = Math.sign(this.tile.gridY - y);
+    this.destination = {x: x - xDirection, y: y - yDirection};
   }
 
   distanceTo(x, y) {
