@@ -107,7 +107,7 @@ class Adventurer extends Animated {
     if (this.distanceTo(x, y) == 1) {
       if (this.inventory.Crystal) {
         let crystal = new Crystal(svgContainer, this.grid, {
-          fill: '#14ECE3',
+          fill: '#00FFF5',
           stroke: 'black',
           'stroke-width': 3,
         });
