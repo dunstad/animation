@@ -14,10 +14,10 @@ class Tile extends Animated {
       let player = this.grid.game.player;
       let button = this.grid.game.GUI.selectedButton;
       if (button && button.label == 'Crystal') {
-        player.placeCrystal(this.gridX, this.gridY);
+        player.build('Crystal', this.gridX, this.gridY);
       }
       else if (button && button.label == 'Drill') {
-        player.placeDrill(this.gridX, this.gridY);
+        player.build('Drill', this.gridX, this.gridY);
       }
       else if (button && button.label == 'cross') {
         player.pickUp(this.gridX, this.gridY);

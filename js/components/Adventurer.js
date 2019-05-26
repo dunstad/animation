@@ -74,7 +74,7 @@ class Adventurer extends Animated {
 
     this.destination = false;
 
-    this.buildTargets = false;
+    this.buildTargets = [];
 
     this.inventory = {
       Crystal: 0,
@@ -94,9 +94,34 @@ class Adventurer extends Animated {
   }
 
   moveNextTo(x, y) {
-    let xDirection = Math.sign(this.tile.gridX - x);
-    let yDirection = Math.sign(this.tile.gridY - y);
-    this.destination = {x: x - xDirection, y: y - yDirection};
+
+    if (this.distanceTo(x, y) == 1) {
+      this.destination = false;
+    }
+    else {
+      let xDirection = Math.sign(this.tile.gridX - x);
+      let yDirection = Math.sign(this.tile.gridY - y);
+  
+      let xDistance = this.distanceTo(x + xDirection, y);
+      let yDistance = this.distanceTo(x, y + yDirection);
+  
+      if (xDistance > yDistance) {
+        this.destination = {x: x + xDirection, y: y};
+      }
+      else {
+        this.destination = {x: x, y: y + yDirection};
+      }
+    }
+    
+  }
+
+  build(name, x, y) {
+    this.moveNextTo(x, y);
+    this.buildTargets.push({
+      x: x,
+      y: y,
+      name: name,
+    });
   }
 
   distanceTo(x, y) {
@@ -131,7 +156,11 @@ class Adventurer extends Animated {
   placeDrill(x, y) {
     if (this.distanceTo(x, y) == 1) {
       if (this.inventory.Drill) {
-        let drill = new Drill(svgContainer, this.grid, {fill: 'gray'});
+        let drill = new Drill(svgContainer, this.grid, {
+          fill: 'gray',
+          stroke: 'black',
+          'stroke-width': 3,
+        });
         this.grid.occupy(x, y, drill);
         this.inventory.Drill -= 1;
       }
@@ -167,13 +196,25 @@ class Adventurer extends Animated {
       let yDirection = Math.sign(this.destination.y - this.tile.gridY);
       
       if (xDirection == 0 && yDirection == 0) {
-        this.direction = false;
+        this.destination = false;
       }
       else if (!this.grid.tile(this.tile.gridX + xDirection, this.tile.gridY).occupied) {
         this.moveRelative(xDirection, 0);
       }
       else {
         this.moveRelative(0, yDirection);
+      }
+
+    }
+
+    else if (this.buildTargets.length) {
+
+      let buildTarget = this.buildTargets.shift();
+      if (buildTarget.name == 'Crystal') {
+        this.placeCrystal(buildTarget.x, buildTarget.y);
+      }
+      else {
+        this.placeDrill(buildTarget.x, buildTarget.y);
       }
 
     }
