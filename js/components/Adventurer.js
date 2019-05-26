@@ -74,7 +74,7 @@ class Adventurer extends Animated {
 
     this.destination = false;
 
-    this.buildTargets = [];
+    this.buildTarget = false;
 
     this.inventory = {
       Crystal: 0,
@@ -112,16 +112,18 @@ class Adventurer extends Animated {
         this.destination = {x: x, y: y + yDirection};
       }
     }
-    
+
+    console.log(this.destination);
+
   }
 
   build(name, x, y) {
     this.moveNextTo(x, y);
-    this.buildTargets.push({
+    this.buildTarget = {
       x: x,
       y: y,
       name: name,
-    });
+    };
   }
 
   distanceTo(x, y) {
@@ -207,14 +209,13 @@ class Adventurer extends Animated {
 
     }
 
-    else if (this.buildTargets.length) {
+    if (this.buildTarget && !this.destination) {
 
-      let buildTarget = this.buildTargets.shift();
-      if (buildTarget.name == 'Crystal') {
-        this.placeCrystal(buildTarget.x, buildTarget.y);
+      if (this.buildTarget.name == 'Crystal') {
+        this.placeCrystal(this.buildTarget.x, this.buildTarget.y);
       }
       else {
-        this.placeDrill(buildTarget.x, buildTarget.y);
+        this.placeDrill(this.buildTarget.x, this.buildTarget.y);
       }
 
     }
