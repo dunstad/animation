@@ -99,21 +99,24 @@ class Adventurer extends Animated {
       this.destination = false;
     }
     else {
+
       let xDirection = Math.sign(this.tile.gridX - x);
       let yDirection = Math.sign(this.tile.gridY - y);
   
       let xDistance = this.distanceTo(x + xDirection, y);
       let yDistance = this.distanceTo(x, y + yDirection);
   
-      if (xDistance > yDistance) {
+      let xTileOccupied = this.grid.tile(x + xDirection, y).occupied;
+      let yTileOccupied = this.grid.tile(x, y + yDirection).occupied;
+
+      if (!xTileOccupied) {
         this.destination = {x: x + xDirection, y: y};
       }
       else {
         this.destination = {x: x, y: y + yDirection};
       }
-    }
 
-    console.log(this.destination);
+    }
 
   }
 
@@ -217,6 +220,8 @@ class Adventurer extends Animated {
       else {
         this.placeDrill(this.buildTarget.x, this.buildTarget.y);
       }
+
+      this.buildTarget = false;
 
     }
 
