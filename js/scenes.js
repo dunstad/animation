@@ -323,7 +323,7 @@ var scenes = {
     squareGrid.y = 20;
 
     let pattern = svgContainer.pattern(40, 40, (add)=>{
-      let style = {stroke: 'black', fill: '#113837'};
+      let style = {stroke: 'black', fill: '#FFE4A6'};
       let style2 = {stroke: 'black', fill: chroma(style.fill).darken(.15)};
       add.rect(40, 20).attr(style);
       add.rect(40, 20).x(-20).y(20).attr(style2);
@@ -342,14 +342,26 @@ var scenes = {
       }
     }
 
-    let adventurer = new Adventurer(svgContainer, squareGrid, {fill: '#FF7D16'});
+    let adventurer = new Adventurer(svgContainer, squareGrid, {
+      fill: '#FFB5A6',
+      stroke: 'black',
+      'stroke-width': 3,
+    });
     game.player = adventurer;
     squareGrid.occupy(1, 1, adventurer);
     
-    let crystal = new Crystal(svgContainer, squareGrid, {fill: '#14ECE3'});
+    let crystal = new Crystal(svgContainer, squareGrid, {
+      fill: '#14ECE3',
+      stroke: 'black',
+      'stroke-width': 3,
+    });
     squareGrid.occupy(2, 2, crystal);
     
-    let drill = new Drill(svgContainer, squareGrid, {fill: 'gray'});
+    let drill = new Drill(svgContainer, squareGrid, {
+      fill: 'gray',
+      stroke: 'black',
+      'stroke-width': 3,
+    });
     squareGrid.occupy(3, 2, drill);
 
     let GUI = game.GUI;

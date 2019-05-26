@@ -10,7 +10,7 @@ class Adventurer extends Animated {
     this.element.add(faceGroup);
 
     let face = svgContainer.circle(40, 40);
-    face.attr({fill: options.fill});
+    face.attr(options);
     faceGroup.add(face);
 
     let eyeGroup = svgContainer.magicContainer();
@@ -106,7 +106,11 @@ class Adventurer extends Animated {
   placeCrystal(x, y) {
     if (this.distanceTo(x, y) == 1) {
       if (this.inventory.Crystal) {
-        let crystal = new Crystal(svgContainer, this.grid, {fill: '#14ECE3'});
+        let crystal = new Crystal(svgContainer, this.grid, {
+          fill: '#14ECE3',
+          stroke: 'black',
+          'stroke-width': 3,
+        });
         this.grid.occupy(x, y, crystal);
         this.inventory.Crystal -= 1;
       }
