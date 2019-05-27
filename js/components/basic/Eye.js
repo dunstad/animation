@@ -59,7 +59,6 @@ class Eye extends Animated {
     bottomEyelid.attr({fill: 'white'});
     clipGroup.add(bottomEyelid);
 
-    this.element.add(clipGroup)
     this.element.clipWith(clipGroup);
 
     this.radius = maxRadius;
