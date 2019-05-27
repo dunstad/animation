@@ -349,20 +349,24 @@ var scenes = {
     });
     game.player = adventurer;
     squareGrid.occupy(1, 1, adventurer);
+    adventurer.inventory.Crystal = 18;
     
-    let crystal = new Crystal(svgContainer, squareGrid, {
-      fill: '#00FFF5',
-      stroke: 'black',
-      'stroke-width': 3,
-    });
-    squareGrid.occupy(2, 2, crystal);
+    let crystal;
+    for (let coords of [[0, 0], [2, 2], [0, 3], [5, 3], [5, 1], [6, 0]]) {
+      crystal = new Crystal(svgContainer, squareGrid, {
+        fill: '#00FFF5',
+        stroke: 'black',
+        'stroke-width': 3,
+      });
+      squareGrid.occupy(coords[0], coords[1], crystal);
+    }
     
-    let drill = new Drill(svgContainer, squareGrid, {
+    let drill = new Drill(svgContainer.defs(), squareGrid, {
       fill: 'gray',
       stroke: 'black',
       'stroke-width': 3,
     });
-    squareGrid.occupy(3, 2, drill);
+    // squareGrid.occupy(3, 2, drill);
 
     let GUI = game.GUI;
 
