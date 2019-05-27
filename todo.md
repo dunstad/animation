@@ -45,7 +45,6 @@
     * the moon might need a darker shadow
   
 * moveNextTo is still weird when going straight up
-* clicking entities doesn't trigger tile clicks
 
 #### animation
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.

@@ -55,6 +55,12 @@ class SquareGrid extends Animated {
       
       entity.x = tile.x + this.tileSize / 4;
       entity.y = tile.y + this.tileSize / 4;
+
+      // make sure clicking the entities is the same as clicking the tile they stand on
+      entity.element.node.addEventListener('click', ()=>{
+        entity.tile.element.node.dispatchEvent(new Event('click'));
+      });
+
     }
   }
 
