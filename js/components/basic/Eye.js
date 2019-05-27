@@ -3,12 +3,13 @@ class Eye extends Animated {
   /**
    * Used to set the appearance of the eye.
    * @param {*} svgContainer 
-   * @param {Number} whiteRadius 
-   * @param {Number} irisRadius 
-   * @param {Number} pupilRadius 
-   * @param {String} whiteColor 
-   * @param {String} irisColor 
-   * @param {String} pupilColor 
+   * @param {Object} options
+   * @param {Number} options.whiteRadius
+   * @param {Number} options.irisRadius
+   * @param {Number} options.pupilRadius
+   * @param {String} options.whiteColor
+   * @param {String} options.irisColor
+   * @param {String} options.pupilColor
    */
   constructor(svgContainer, options) {
     // whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor
