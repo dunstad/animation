@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <!-- 
+
+    This entire file is a hacky way to split one scene into a separate app
+    I'll eventually need to find a more elegant way to accomplish this
+
+   -->
+
+  <head>
+    <title>hexical</title>
+    <link rel="stylesheet" type="text/css" href="../css/hexgrid.css">
+    <link rel="manifest" href="hexical.webmanifest">
+  </head>
+
+  <body>
+    
+    <svg id='container' viewbox="0 0 640 360">
+      <rect width="100%" height="100%" fill="white"/>
+    </svg>
+
+  </body>
+
+  <script src="../lib/svg.min.js"></script>
+  <script src="../lib/vivus.min.js"></script>
+  <script src="../lib/flubber.min.js"></script>
+  
+  <script src="../lib/gif.js"></script>
+  <script src="../lib/gif.worker.js"></script>
+  
+  <script src="../lib/jszip.min.js"></script>
+  <script src="../lib/FileSaver.js"></script>
+  
+  <script src="../lib/honeycomb.min.js"></script>
+  <script src="../lib/Tone.js"></script>
+  <script src="../lib/mousetrap.min.js"></script>
+  <script src="../lib/hammer.min.js"></script>
+
+  <script src="../js/core/Transformation.js"></script>
+  <script src="../js/core/AnimationQueue.js"></script>
+  <script src="../js/core/Animated.js"></script>
+  <script src="../js/core/MagicContainer.js"></script>
+  <script src="../js/core/External.js"></script>
+  <script src="../js/components/hexical/HexGrid.js"></script>
+  <script src="../js/components/hexical/HexMover.js"></script>
+  <script src="../js/components/hexical/MusicalHexMover.js"></script>
+  <script src="../js/components/hexical/ControlledHexMover.js"></script>
+  <script src="../js/components/hexical/Metronome.js"></script>
+  <script src="../js/components/hexical/HexMoveQueue.js"></script>
+
+  <script src="../js/core/Player.js"></script>
+  <script src="../js/core/Scene.js"></script>
+  <script src="../js/scenes.js"></script>
+  
+  <script type="text/javascript">
+
+    // Register service worker to control making site work offline
+    if('serviceWorker' in navigator) {
+      // might need to change this url for github pages
+      // navigator.serviceWorker.register('/animation/sw.js')
+      navigator.serviceWorker.register('/hexical/sw.js')
+        .then(()=>{console.log('Service Worker Registered');});
+    }
+
+    var container = document.getElementById('container');
+    var svgContainer = SVG(`#${container.id}`);
+    var player = new Player(svgContainer);
+
+    player.loadScene(scenes.hexgrid);
+
+  </script>
+
+</html>

@@ -2,7 +2,7 @@ self.addEventListener('install', (e)=>{
   e.waitUntil(
     caches.open('file-store').then((cache)=>{
       return Promise.all([
-          '/animation/hexgrid.html',
+          '/animation/hexical/index.html',
           '/animation/css/hexgrid.css',
           '/animation/lib/svg.min.js',
           '/animation/lib/vivus.min.js',
