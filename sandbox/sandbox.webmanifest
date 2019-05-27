@@ -1,7 +1,7 @@
 {
   "background_color": "white",
   "theme_color": "white",
-  "description": "musical hexagons",
+  "description": "sandbox",
   "display": "fullscreen",
   "orientation": "landscape",
   "icons": [
@@ -16,7 +16,7 @@
       "type": "image/png"
     }
   ],
-  "name": "hexical",
-  "short_name": "hexical",
-  "start_url": "/animation/hexical/index.html"
+  "name": "sandbox",
+  "short_name": "sandbox",
+  "start_url": "/animation/sandbox/index.html"
 }
