@@ -188,7 +188,11 @@ var scenes = {
 
     svgContainer.rect(640, 360).x(0).y(0).attr({fill: 'gray'});
 
-    let eye = new Eye(svgContainer, 50, 20, 10);
+    let eye = new Eye(svgContainer, {
+      whiteRadius: 50,
+      irisRadius: 20,
+      pupilRadius: 10,
+    });
     eye.move(100, 100).openTop(1).openBottom(1).process();
     
     eye.wait(250);
@@ -204,13 +208,25 @@ var scenes = {
     eye.openTop(1, 100, {merge: 'start'});
     eye.openBottom(1, 100, {merge: 'start'});
 
-    let wildEye = new Eye(svgContainer, 50, 1, 10);
+    let wildEye = new Eye(svgContainer, {
+      whiteRadius: 50,
+      irisRadius: 1,
+      pupilRadius: 10,
+    });
     wildEye.move(250, 100).openTop(1).openBottom(1).process();
 
-    let cuteEye = new Eye(svgContainer, 0, 0, 40);
+    let cuteEye = new Eye(svgContainer, {
+      whiteRadius: 0,
+      irisRadius: 0,
+      pupilRadius: 40,
+    });
     cuteEye.move(100, 200).openTop(1).openBottom(1).process();
     
-    let animeEye = new Eye(svgContainer, 50, 40, 20);
+    let animeEye = new Eye(svgContainer, {
+      whiteRadius: 50,
+      irisRadius: 40,
+      pupilRadius: 20,
+    });
     animeEye.move(250, 200).openTop(1).openBottom(1).process();
 
     scene.addActors([eye, wildEye, cuteEye, animeEye]);

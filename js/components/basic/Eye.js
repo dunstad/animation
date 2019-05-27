@@ -10,34 +10,36 @@ class Eye extends Animated {
    * @param {String} irisColor 
    * @param {String} pupilColor 
    */
-  constructor(svgContainer, whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor) {
+  constructor(svgContainer, options) {
+    // whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor
+    options = options || {};
   
     super(svgContainer.magicContainer());
 
     let eyeGroup = svgContainer.group();
     this.element.add(eyeGroup);
 
-    whiteRadius = whiteRadius || 50;
+    let whiteRadius = options.whiteRadius || 50;
     let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
     white.attr({
-      fill: whiteColor || 'white',
+      fill: options.whiteColor || 'white',
     });
     eyeGroup.add(white);
 
     let irisGroup = svgContainer.group();
     eyeGroup.add(irisGroup);
     
-    irisRadius = irisRadius || 20;
+    let irisRadius = options.irisRadius || 20;
     let iris = svgContainer.circle(irisRadius * 2).x(-irisRadius).y(-irisRadius);
     iris.attr({
-      fill: irisColor || 'saddlebrown',
+      fill: options.irisColor || 'saddlebrown',
     });
     irisGroup.add(iris);
     
-    pupilRadius = pupilRadius || 10;
+    let pupilRadius = options.pupilRadius || 10;
     let pupil = svgContainer.circle(pupilRadius * 2).x(-pupilRadius).y(-pupilRadius);
     pupil.attr({
-      fill: pupilColor || 'black',
+      fill: options.pupilColor || 'black',
     });
     irisGroup.add(pupil);
 

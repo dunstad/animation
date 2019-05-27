@@ -25,7 +25,8 @@
 * Improvements
 
   * eye
-    * refactor into parent class with look methods, child class with eyelid
+    * option for circular eyelid
+    * document options somehow
   * alphabet
     * fix letter morphing
   * flame
