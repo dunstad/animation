@@ -44,8 +44,6 @@
     * add optional glow for moon, star, and flame
     * the moon might need a darker shadow
   
-* moveNextTo is still weird when going straight up
-
 #### animation
 * AnimationQueue and HexMoveQueue should probably use the same terminology for push, etc.
 * shouldn't vivus work on stars and clouds? not sure why it isn't at the moment

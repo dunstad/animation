@@ -109,7 +109,7 @@ class Adventurer extends Animated {
       let xTileOccupied = this.grid.tile(x + xDirection, y).occupied;
       let yTileOccupied = this.grid.tile(x, y + yDirection).occupied;
 
-      if (!xTileOccupied) {
+      if (!xTileOccupied && xDirection) {
         this.destination = {x: x + xDirection, y: y};
       }
       else {
