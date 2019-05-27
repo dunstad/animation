@@ -382,11 +382,15 @@ var scenes = {
     drillButton.y = 100;
     GUI.addButton(drillButton);
     
-    let plus = svgContainer.path('M 20 0 20 40 M 0 20 40 20');
+    // let plus = svgContainer.path('M 20 0 20 40 M 0 20 40 20');
+    // plus.attr({
+    //   stroke: 'yellow',
+    //   'stroke-width': 10,
+    //   'stroke-linecap': 'round',
+    // });
+    let plus = svgContainer.text('Buy Drill');
     plus.attr({
-      stroke: 'yellow',
-      'stroke-width': 10,
-      'stroke-linecap': 'round',
+      fill: 'white',
     });
     let plusButton = new ToggleButton(svgContainer, plus, 'plus', {countGetter: ()=>{return 20;}});
     plusButton.x = 560;
@@ -405,11 +409,15 @@ var scenes = {
       this.GUI.unselect();
     }).bind(game));
 
-    let cross = svgContainer.path('M 0 0 40 40 M 40 0 0 40');
+    // let cross = svgContainer.path('M 0 0 40 40 M 40 0 0 40');
+    // cross.attr({
+    //   stroke: 'red',
+    //   'stroke-width': 10,
+    //   'stroke-linecap': 'round',
+    // });
+    let cross = svgContainer.text('Pick Up');
     cross.attr({
-      stroke: 'red',
-      'stroke-width': 10,
-      'stroke-linecap': 'round',
+      fill: 'white',
     });
     let crossButton = new ToggleButton(svgContainer, cross, 'cross');
     crossButton.x = 560;
