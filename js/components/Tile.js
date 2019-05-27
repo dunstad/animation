@@ -20,7 +20,7 @@ class Tile extends Animated {
         player.build('Drill', this.gridX, this.gridY);
       }
       else if (button && button.label == 'cross') {
-        player.pickUp(this.gridX, this.gridY);
+        player.build('pickUp', this.gridX, this.gridY);
       }
       else {
         player.destination = {x: this.gridX, y: this.gridY};

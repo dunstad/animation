@@ -217,8 +217,11 @@ class Adventurer extends Animated {
       if (this.buildTarget.name == 'Crystal') {
         this.placeCrystal(this.buildTarget.x, this.buildTarget.y);
       }
-      else {
+      else if (this.buildTarget.name == 'Drill') {
         this.placeDrill(this.buildTarget.x, this.buildTarget.y);
+      }
+      else if (this.buildTarget.name == 'pickUp') {
+        this.pickUp(this.buildTarget.x, this.buildTarget.y);
       }
 
       this.buildTarget = false;
