@@ -1,6 +1,6 @@
 self.addEventListener('install', (e)=>{
   e.waitUntil(
-    caches.open('file-store').then((cache)=>{
+    caches.open('hexical').then((cache)=>{
       return Promise.all([
           '/animation/hexical/index.html',
           '/animation/css/pwa.css',
