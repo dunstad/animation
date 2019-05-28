@@ -16,9 +16,9 @@ class Eye extends Animated {
     options = options || {};
   
     super(svgContainer.magicContainer());
-
-    let eyeGroup = svgContainer.group();
-    this.element.add(eyeGroup);
+    
+    let eyeGroup = this.element;
+    // this.element.add(eyeGroup);
 
     let whiteRadius = options.whiteRadius || 50;
     let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
@@ -43,7 +43,7 @@ class Eye extends Animated {
       fill: options.pupilColor || 'black',
     });
     irisGroup.add(pupil);
-
+    
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
     let clipGroup = svgContainer.clip();
@@ -62,21 +62,21 @@ class Eye extends Animated {
     this.element.clipWith(clipGroup);
 
     this.radius = maxRadius;
-
+    
     this.look = this.makeAnimationHelper(this.look);
     this.openTop = this.makeAnimationHelper(this.openTop);
     this.openBottom = this.makeAnimationHelper(this.openBottom);
-
+    
     this.angle = 0;
     this.magnitude = 0;
     this.irisGroup = irisGroup;
     this.eyeGroup = eyeGroup;
-
+    
     this.topOpen = .5;
     this.bottomOpen = .5;
     this.topEyelid = topEyelid;
     this.bottomEyelid = bottomEyelid;
-
+    
   }
 
   get lookAngle() {
@@ -125,7 +125,6 @@ class Eye extends Animated {
 
   set topEyelidOpen(ratio) {
     this.topOpen = ratio;
-    // this.topEyelid.attr({d: this.newPath(ratio, true)});
     this.topEyelid.plot(this.newPath(ratio, true));
   }
 
@@ -143,7 +142,6 @@ class Eye extends Animated {
 
   set bottomEyelidOpen(ratio) {
     this.bottomOpen = ratio;
-    // this.bottomEyelid.attr({d: this.newPath(ratio, false)});
     this.bottomEyelid.plot(this.newPath(ratio, false));
   }
 

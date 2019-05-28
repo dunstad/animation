@@ -348,6 +348,7 @@ class Animated {
     };
     this.element.transform(transformObject);
     if (this.element.clipper()) {
+      // firefox doesn't like this...
       this.element.clipper().transform(transformObject);
     }
     if (this.element.masker()) {
