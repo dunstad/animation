@@ -60,7 +60,7 @@
     // Register service worker to control making site work offline
     if('serviceWorker' in navigator) {
       // might need to change this url for github pages
-      navigator.serviceWorker.register('/animation/sandbox/sw.js')
+      navigator.serviceWorker.register('/animation/sw_sandbox.js')
       // navigator.serviceWorker.register('/sandbox/sw.js')
         .then(()=>{console.log('Service Worker Registered');});
     }

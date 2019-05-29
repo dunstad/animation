@@ -19,5 +19,5 @@
   "name": "sandbox",
   "short_name": "sandbox",
   "start_url": "/animation/sandbox/index.html",
-  "scope": "/animation/sandbox/"
+  "scope": "/animation/"
 }
