@@ -58,8 +58,8 @@
     // Register service worker to control making site work offline
     if('serviceWorker' in navigator) {
       // might need to change this url for github pages
-      navigator.serviceWorker.register('/animation/hexical/sw.js')
-      // navigator.serviceWorker.register('/hexical/sw.js')
+      navigator.serviceWorker.register('/animation/sw_hexicaljs')
+      // navigator.serviceWorker.register('/sw_hexicaljs')
         .then(()=>{console.log('Service Worker Registered');});
     }
 

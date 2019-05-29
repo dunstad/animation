@@ -19,5 +19,5 @@
   "name": "hexical",
   "short_name": "hexical",
   "start_url": "/animation/hexical/index.html",
-  "scope": "/animation/hexical/"
+  "scope": "/animation/"
 }
