@@ -18,5 +18,6 @@
   ],
   "name": "hexical",
   "short_name": "hexical",
-  "start_url": "/animation/hexical/index.html"
+  "start_url": "/animation/hexical/index.html",
+  "scope": "/animation/hexical/"
 }
