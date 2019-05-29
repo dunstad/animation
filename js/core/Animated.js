@@ -347,13 +347,6 @@ class Animated {
       rotate: this.element.transform().rotate,
     };
     this.element.transform(transformObject);
-    if (this.element.clipper()) {
-      // firefox doesn't like this...
-      this.element.clipper().transform(transformObject);
-    }
-    if (this.element.masker()) {
-      this.element.masker().transform(transformObject);
-    }
   }
   
   get location() {

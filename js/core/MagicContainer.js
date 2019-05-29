@@ -9,8 +9,18 @@ SVG.MagicContainer = SVG.invent({
     let group = this.group();
     magicContainer.add(group);
     
-    magicContainer.transform = magicContainer.transform.bind(group);
-    magicContainer.add = magicContainer.add.bind(group);
+    for (let methodName of [
+      'transform',
+      'add',
+      'clipper',
+      'clipWith',
+      'unclip',
+      'masker',
+      'maskWith',
+      'unmask',
+    ]) {
+      magicContainer[methodName] = magicContainer[methodName].bind(group);
+    }
     
     return magicContainer;
 
