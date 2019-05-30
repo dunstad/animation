@@ -1,0 +1,25 @@
+{
+  "name": "animation",
+  "version": "0.0.1",
+  "description": "",
+  "main": "js/server/main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dunstad/animation.git"
+  },
+  "author": "dunstad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dunstad/animation/issues"
+  },
+  "homepage": "https://github.com/dunstad/animation#readme",
+  "dependencies": {
+    "colyseus": "^0.10.7"
+  }
+}
