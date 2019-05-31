@@ -20,7 +20,7 @@ class Eye extends Animated {
     let eyeGroup = this.element;
     // this.element.add(eyeGroup);
 
-    let whiteRadius = options.whiteRadius || 50;
+    let whiteRadius = (options.whiteRadius === undefined) ? 50 : options.whiteRadius;
     let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
     white.attr({
       fill: options.whiteColor || 'white',
@@ -30,14 +30,14 @@ class Eye extends Animated {
     let irisGroup = svgContainer.group();
     eyeGroup.add(irisGroup);
     
-    let irisRadius = options.irisRadius || 20;
+    let irisRadius = (options.irisRadius === undefined) ? 20 : options.irisRadius;
     let iris = svgContainer.circle(irisRadius * 2).x(-irisRadius).y(-irisRadius);
     iris.attr({
       fill: options.irisColor || 'saddlebrown',
     });
     irisGroup.add(iris);
     
-    let pupilRadius = options.pupilRadius || 10;
+    let pupilRadius = (options.pupilRadius === undefined) ? 10 : options.pupilRadius;
     let pupil = svgContainer.circle(pupilRadius * 2).x(-pupilRadius).y(-pupilRadius);
     pupil.attr({
       fill: options.pupilColor || 'black',
@@ -49,13 +49,28 @@ class Eye extends Animated {
     let clipGroup = svgContainer.clip();
     clipGroup.attr({overflow: 'visible'});
     
-    let topControlPointY = -maxRadius / 2;
-    let topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
+
+    let topEyelid, bottomEyelid;
+    if (options.shape == 'circular') {
+
+      topEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 ${maxRadius} 0`);
+      bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 ${maxRadius} 0`);
+      
+    }
+    
+    else {
+      
+      let topControlPointY = -maxRadius / 2;
+      topEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${topControlPointY}, ${maxRadius / 2} ${topControlPointY}, ${maxRadius} 0`);
+      
+      let bottomControlPointY = maxRadius / 2;
+      bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${bottomControlPointY}, ${maxRadius / 2} ${bottomControlPointY}, ${maxRadius} 0`);
+      
+    }
+    
     topEyelid.attr({fill: 'white'});
     clipGroup.add(topEyelid);
-    
-    let bottomControlPointY = maxRadius / 2;
-    let bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 C ${-maxRadius / 2} ${bottomControlPointY}, ${maxRadius / 2} ${bottomControlPointY}, ${maxRadius} 0`);
+
     bottomEyelid.attr({fill: 'white'});
     clipGroup.add(bottomEyelid);
 
