@@ -17,8 +17,8 @@ class Eye extends Animated {
   
     super(svgContainer.magicContainer());
     
-    let eyeGroup = this.element;
-    // this.element.add(eyeGroup);
+    let eyeGroup = svgContainer.group();
+    this.element.add(eyeGroup);
 
     let whiteRadius = (options.whiteRadius === undefined) ? 50 : options.whiteRadius;
     let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
@@ -47,14 +47,12 @@ class Eye extends Animated {
     let maxRadius = Math.max(whiteRadius, irisRadius, pupilRadius);
 
     let clipGroup = svgContainer.clip();
-    clipGroup.attr({overflow: 'visible'});
-    
 
     let topEyelid, bottomEyelid;
     if (options.shape == 'circular') {
 
-      topEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 ${maxRadius} 0`);
-      bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 ${maxRadius} 0`);
+      topEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 1 ${maxRadius} 0`);
+      bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 1 ${maxRadius} 0`);
       
     }
     
