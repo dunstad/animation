@@ -10,9 +10,10 @@ class Eye extends Animated {
    * @param {String} options.whiteColor
    * @param {String} options.irisColor
    * @param {String} options.pupilColor
+   * @param {String} options.shape
    */
   constructor(svgContainer, options) {
-    // whiteRadius, irisRadius, pupilRadius, whiteColor, irisColor, pupilColor
+    
     options = options || {};
   
     super(svgContainer.magicContainer());
@@ -49,7 +50,8 @@ class Eye extends Animated {
     let clipGroup = svgContainer.clip();
 
     let topEyelid, bottomEyelid;
-    if (options.shape == 'circular') {
+    this.eyelidShape = options.shape;
+    if (this.eyelidShape == 'circular') {
 
       topEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 1 ${maxRadius} 0`);
       bottomEyelid = svgContainer.path(`M ${-maxRadius} 0 A ${maxRadius} ${maxRadius} 0 0 1 ${maxRadius} 0`);
@@ -89,7 +91,7 @@ class Eye extends Animated {
     this.bottomOpen = .5;
     this.topEyelid = topEyelid;
     this.bottomEyelid = bottomEyelid;
-    
+
   }
 
   get lookAngle() {
@@ -126,9 +128,23 @@ class Eye extends Animated {
    * @param {Boolean}} isTop 
    */
   newPath(ratio, isTop) {
-    let modifier = isTop ? -1 : 1;
-    let controlPoint = modifier * this.radius * ratio;
-    let pathString = `M ${-this.radius} 0 C ${-this.radius / 2} ${controlPoint}, ${this.radius / 2} ${controlPoint}, ${this.radius} 0`;
+
+    let pathString;
+    if (this.eyelidShape == 'circular') {
+
+      let modifier = isTop ? 1 : 0;
+      pathString = `M ${-this.radius} 0 A ${this.radius} ${this.radius * ratio} 0 0 ${modifier} ${this.radius} 0`;
+      
+    }
+
+    else {
+
+      let modifier = isTop ? -1 : 1;
+      let controlPoint = modifier * this.radius * ratio;
+      pathString = `M ${-this.radius} 0 C ${-this.radius / 2} ${controlPoint}, ${this.radius / 2} ${controlPoint}, ${this.radius} 0`;
+
+    }
+
     return pathString;
   }
 

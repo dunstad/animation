@@ -226,11 +226,11 @@ var scenes = {
       eye.openBottom(.5, 500, {merge: 'start'});
       eye.look(0, 50, 250, {merge: .5});
       eye.look(0, -50, 1000);
-      eye.look(90, 50, 500);
-      eye.look(180, 50, 400);
-      eye.look(270, 50, 300);
-      eye.look(360, 50, 200);
-      eye.look(360, 0, 100);
+      eye.look(90, 50, 5000);
+      eye.look(180, 50, 4000);
+      eye.look(270, 50, 3000);
+      eye.look(360, 50, 2000);
+      eye.look(360, 0, 1000);
       eye.openTop(1, 100, {merge: 'start'});
       eye.openBottom(1, 100, {merge: 'start'});
     }
