@@ -23,6 +23,7 @@ class Eye extends Animated {
 
     let whiteRadius = (options.whiteRadius === undefined) ? 50 : options.whiteRadius;
     let white = svgContainer.circle(whiteRadius * 2).x(-whiteRadius).y(-whiteRadius);
+    this.white = white;
     white.attr({
       fill: options.whiteColor || 'white',
     });
@@ -100,7 +101,7 @@ class Eye extends Animated {
 
   set lookAngle(angle) {
     this.angle = angle % 360;
-    this.eyeGroup.transform({rotate: this.angle});
+    this.eyeGroup.transform({rotate: this.angle, ox: this.white.cx(), oy: this.white.cy()});
   }
 
   get lookMagnitude() {
