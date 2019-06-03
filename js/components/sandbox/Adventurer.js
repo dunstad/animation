@@ -6,25 +6,19 @@ class Adventurer extends Animated {
 
     this.grid = grid;
 
-    let faceGroup = svgContainer.group();
-    this.element.add(faceGroup);
+    let headGroup = svgContainer.group();
+    this.element.add(headGroup);
 
-    let face = svgContainer.circle(40, 40);
-    face.attr(options);
-    faceGroup.add(face);
+    let head = svgContainer.circle(40, 40);
+    head.attr(options);
+    headGroup.add(head);
 
-    let eyeGroup = svgContainer.magicContainer();
-    eyeGroup.x(10).y(20);
-    faceGroup.add(eyeGroup);
-
-    let leftEye = new Eye(svgContainer);
-    leftEye.scalar = .125;
-    eyeGroup.add(leftEye.element);
-    
-    let rightEye = new Eye(svgContainer);
-    rightEye.scalar = .125;
-    rightEye.x = 20;
-    eyeGroup.add(rightEye.element);
+    let eyeOptions = {};
+    let face = new Face(svgContainer, eyeOptions);
+    face.x = -43;
+    face.y = 20;
+    face.scalar = .2;
+    headGroup.add(face.element);
 
     let keys = {
       w: 'controlUp',
