@@ -95,6 +95,28 @@ class Player {
 
   recordGIF() {
 
+    let timeline = new SVG.Timeline();
+    // TODO: how to make sure we don't skip frames?
+    let runner = new SVG.Runner(); // TODO: how long?
+    runner.ease('-');
+
+    runner.during((pos)=>{
+
+      // frame capture here
+
+    });
+
+    runner.after(()=>{
+
+      // open gif in new window
+
+    });
+
+    timeline.schedule(runner);
+    timeline.play();
+
+    // old stuff below
+
     this.frameCount = 0;
 
     this.recordingStart = Date.now();
