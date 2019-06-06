@@ -86,4 +86,14 @@ class Scene {
     }
   }
 
+  /**
+   * Used to know how long the scene is expected to last,
+   * primarily for gif and png exporting.
+   * Some of the transformations could have callbacks or callfronts that
+   * add more transformations, increasing the duration.
+   */
+  get duration() {
+    return Math.max(...this.actors.map(a=>a.animationQueue.queue.reduce((a, t)=>{return a + t.milliseconds}, 0)));
+  }
+
 }

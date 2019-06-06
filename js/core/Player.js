@@ -97,7 +97,7 @@ class Player {
 
     let timeline = new SVG.Timeline();
     // TODO: how to make sure we don't skip frames?
-    let runner = new SVG.Runner(); // TODO: how long?
+    let runner = new SVG.Runner(this.scene.duration);
     runner.ease('-');
 
     runner.during((pos)=>{
