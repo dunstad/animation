@@ -95,33 +95,12 @@ class Player {
 
   recordGIF() {
 
-    let timeline = new SVG.Timeline();
-    // TODO: how to make sure we don't skip frames?
-    let runner = new SVG.Runner(this.scene.duration);
-    runner.ease('-');
-
-    runner.during((pos)=>{
-
-      // frame capture here
-
-    });
-
-    runner.after(()=>{
-
-      // open gif in new window
-
-    });
-
-    timeline.schedule(runner);
-    timeline.play();
-
-    // old stuff below
-
     this.frameCount = 0;
 
-    this.recordingStart = Date.now();
-    mina.time = ()=>{return this.recordingStart;}
-    
+    // TODO: how to make sure we don't skip frames?
+    // this.recordingStart = Date.now();
+    // mina.time = ()=>{return this.recordingStart;}
+
     this.gif = new GIF({
       workers: 2,
       quality: 10,
@@ -131,20 +110,33 @@ class Player {
       background: '#fff',
       debug: true,
     });
-    
+
     this.gif.on('finished', (blob)=>{
       window.open(URL.createObjectURL(blob));
     });
-    
-    mina.setFrameFunction((timestamp)=>{
-      mina.frame(timestamp);
-      this.recordingStart += 16;
+
+    // mina.setFrameFunction((timestamp)=>{
+    //   mina.frame(timestamp);
+    //   this.recordingStart += 16;
+    //   this.svgToFrame();
+    // });
+
+    let timeline = new SVG.Timeline();
+    let runner = new SVG.Runner(this.scene.duration);
+    runner.ease('-');
+
+    runner.during((pos)=>{
+
       this.svgToFrame();
+
     });
-    
+
+    timeline.schedule(runner);
+    timeline.play();
+
     this.play().then(()=>{
-      mina.setFrameFunction(mina.frame);
-      mina.time = Date.now;
+
+      // open gif in new window
       Promise.all(this.frames).then((images)=>{
         for (let img of images) {
           this.gif.addFrame(img, {delay: 1000 / 60});
@@ -152,8 +144,21 @@ class Player {
         this.gif.render();
         this.frameCount = 0;
       }).catch(console.error);
+
     });
-    
+
+    // this.play().then(()=>{
+    //   mina.setFrameFunction(mina.frame);
+    //   mina.time = Date.now;
+    //   Promise.all(this.frames).then((images)=>{
+    //     for (let img of images) {
+    //       this.gif.addFrame(img, {delay: 1000 / 60});
+    //     }
+    //     this.gif.render();
+    //     this.frameCount = 0;
+    //   }).catch(console.error);
+    // });
+
   }
   
   recordPNG() {
