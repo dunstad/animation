@@ -97,9 +97,7 @@ class Player {
 
     this.frameCount = 0;
 
-    // TODO: how to make sure we don't skip frames?
-    // this.recordingStart = Date.now();
-    // mina.time = ()=>{return this.recordingStart;}
+    this.recordingStart = Date.now();
 
     this.gif = new GIF({
       workers: 2,
@@ -115,28 +113,22 @@ class Player {
       window.open(URL.createObjectURL(blob));
     });
 
-    // mina.setFrameFunction((timestamp)=>{
-    //   mina.frame(timestamp);
-    //   this.recordingStart += 16;
-    //   this.svgToFrame();
-    // });
-
-    let timeline = new SVG.Timeline();
+    let timeline = new SVG.Timeline(()=>{
+      let result = this.recordingStart;
+      this.recordingStart += 16;
+      return result;
+    });
     let runner = new SVG.Runner(this.scene.duration);
     runner.ease('-');
 
     runner.during((pos)=>{
-
       this.svgToFrame();
-
     });
 
     timeline.schedule(runner);
     timeline.play();
 
     this.play().then(()=>{
-
-      // open gif in new window
       Promise.all(this.frames).then((images)=>{
         for (let img of images) {
           this.gif.addFrame(img, {delay: 1000 / 60});
@@ -144,20 +136,7 @@ class Player {
         this.gif.render();
         this.frameCount = 0;
       }).catch(console.error);
-
     });
-
-    // this.play().then(()=>{
-    //   mina.setFrameFunction(mina.frame);
-    //   mina.time = Date.now;
-    //   Promise.all(this.frames).then((images)=>{
-    //     for (let img of images) {
-    //       this.gif.addFrame(img, {delay: 1000 / 60});
-    //     }
-    //     this.gif.render();
-    //     this.frameCount = 0;
-    //   }).catch(console.error);
-    // });
 
   }
   
