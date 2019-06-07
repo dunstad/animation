@@ -113,8 +113,16 @@ class Player {
       window.open(URL.createObjectURL(blob));
     });
 
+    let timeSource = ()=>{return this.recordingStart;};
+
+    for (let actor of this.scene.actors) {
+      let timeline = actor.element.timeline();
+      timeline._originalTimeSource = timeline._timeSource;
+      timeline._timeSource = timeSource;
+    }
+
     let timeline = new SVG.Timeline(()=>{
-      let result = this.recordingStart;
+      let result = timeSource();
       this.recordingStart += 16;
       return result;
     });
@@ -128,7 +136,10 @@ class Player {
     timeline.schedule(runner);
     timeline.play();
 
-    this.play().then(()=>{
+    this.play();
+
+    runner.after(()=>{
+
       Promise.all(this.frames).then((images)=>{
         for (let img of images) {
           this.gif.addFrame(img, {delay: 1000 / 60});
@@ -136,6 +147,13 @@ class Player {
         this.gif.render();
         this.frameCount = 0;
       }).catch(console.error);
+
+      // put actor time sources back to normal
+      for (let actor of this.scene.actors) {
+        let timeline = actor.element.timeline();
+        timeline._timeSource = timeline._originalTimeSource;
+      }
+
     });
 
   }
