@@ -13,11 +13,19 @@ class Adventurer extends Animated {
     head.attr(options);
     headGroup.add(head);
 
-    let eyeOptions = {};
-    let face = new Face(svgContainer, eyeOptions);
-    face.x = -43;
+    let eyeOptions = {
+      whiteRadius: 0,
+      irisRadius: 0,
+      pupilRadius: 40,
+      shape: 'circular',
+    };
+    let face = new Face(svgContainer, {eyeOptions: eyeOptions});
+    face.leftEye.bottomEyelidOpen = 1;
+    face.rightEye.bottomEyelidOpen = 1;
+    window.face = face;
+    face.x = -30;
     face.y = 20;
-    face.scalar = .2;
+    face.scalar = .13;
     headGroup.add(face.element);
 
     let keys = {
