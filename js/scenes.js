@@ -468,9 +468,12 @@ var scenes = {
     });
 
     menu.choices = {
-      'hello world!': ()=>{},
-      'man it\'s loud in here: ()=>{},
+      'hello world!': ()=>{console.log('hi')},
+      'man it\'s loud in here': ()=>{console.log('bye')},
     };
+
+    menu.x = 100;
+    menu.y = 100;
 
     scene.addActors([menu]);
 
