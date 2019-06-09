@@ -20,11 +20,15 @@ class Menu extends Animated {
     // TODO: apparently this isn't synchronous...
     // for (let child of this.element.children()) {child.remove();}
 
+    let increment = 0;
     for (let [name, onclick] of Object.entries(this.choiceObject)) {
       let text = svgContainer.text(name);
-      text.cx = this.element.cx();
+      text.cx(this.element.cx());
+      text.cy(increment * text.node.getBBox().height);
       text.attr(this.options.textOptions || {});
+      text.node.addEventListener('click', onclick);
       this.element.add(text);
+      increment += 1;
     }
 
   }
