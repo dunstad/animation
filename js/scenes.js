@@ -457,6 +457,23 @@ var scenes = {
 
     scene.addActors([squareGrid, crystal, drill, adventurer]);
 
-  }
+  },
+
+  'menu test': (scene)=>{
+
+    let menu = new Menu(svgContainer, {
+      textOptions: {
+        // fill: 'black',
+      },
+    });
+
+    menu.choices = {
+      'hello world!': ()=>{},
+      'man it\'s loud in here: ()=>{},
+    };
+
+    scene.addActors([menu]);
+
+  },
 
 };
