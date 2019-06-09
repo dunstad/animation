@@ -93,7 +93,22 @@ class Scene {
    * add more transformations, increasing the duration.
    */
   get duration() {
-    return Math.max(...this.actors.map(a=>a.animationQueue.queue.reduce((a, t)=>{return a + t.milliseconds}, 0)));
+    let result;
+    if (this._duration) {
+      result = this._duration;
+    }
+    else {
+      result = Math.max(...this.actors.map(a=>a.animationQueue.queue.reduce((a, t)=>{return a + t.milliseconds}, 0)));
+    }
+    return result;
+  }
+
+  /**
+   * For manually setting the duration when determining it
+   * automatically is difficult.
+   */
+  set duration(milliseconds) {
+    this._duration = milliseconds;
   }
 
 }
