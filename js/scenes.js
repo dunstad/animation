@@ -462,8 +462,14 @@ var scenes = {
   'menu test': (scene)=>{
 
     let menu = new Menu(svgContainer, {
+      spacing: 10,
       textOptions: {
-        // fill: 'black',
+        fill: 'aqua',
+        stroke: 'black',
+        'stroke-width': 1,
+        size: '16px',
+        family: 'Helvetica',
+        weight: 700,
       },
     });
 
@@ -472,8 +478,9 @@ var scenes = {
       'man it\'s loud in here': ()=>{console.log('bye')},
     };
 
-    menu.x = 100;
+    menu.x = 300;
     menu.y = 100;
+    menu.scalar = 3;
 
     scene.addActors([menu]);
 
