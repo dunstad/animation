@@ -465,7 +465,7 @@ var scenes = {
       spacing: 10,
       textOptions: {
         fill: 'aqua',
-        stroke: 'black',
+        stroke: 'teal',
         'stroke-width': 1,
         size: '16px',
         family: 'Helvetica',
@@ -474,8 +474,8 @@ var scenes = {
     });
 
     menu.choices = {
-      'hello world!': ()=>{console.log('hi')},
-      'man it\'s loud in here': ()=>{console.log('bye')},
+      'single player': ()=>{console.log('hi')},
+      'multiplayer': ()=>{console.log('bye')},
     };
 
     menu.x = 300;

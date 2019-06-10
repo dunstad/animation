@@ -18,7 +18,7 @@ class Menu extends Animated {
     this.choiceObject = choices;
 
     // TODO: apparently this isn't synchronous...
-    // for (let child of this.element.children()) {child.remove();}
+    for (let child of this.element.children()) {child.remove();}
 
     let increment = 0;
     for (let [name, onclick] of Object.entries(this.choiceObject)) {

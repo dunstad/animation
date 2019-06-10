@@ -18,6 +18,7 @@ SVG.MagicContainer = SVG.invent({
       'masker',
       'maskWith',
       'unmask',
+      'children',
     ]) {
       magicContainer[methodName] = magicContainer[methodName].bind(group);
     }
