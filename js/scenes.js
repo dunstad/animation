@@ -479,7 +479,18 @@ var scenes = {
       },
       'multiplayer': ()=>{
         var client = new Colyseus.Client('ws://localhost:2567');
-        var room = client.join("my_room");
+
+        client.getAvailableRooms("sandbox", function(rooms, err) {
+          if (err) console.error(err);
+          rooms.forEach(function(room) {
+            console.log(room.roomId);
+            console.log(room.clients);
+            console.log(room.maxClients);
+            console.log(room.metadata);
+          });
+        });
+
+        var room = client.join("sandbox");
         room.onJoin.add(function() {
           console.log(client.id, "joined", room.name);
           room.send('hello room');
