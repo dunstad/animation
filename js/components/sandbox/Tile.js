@@ -37,4 +37,16 @@ class Tile extends Animated {
     return this.y / this.grid.tileSize;
   }
 
+  /**
+   * Used to represent the tile as a string that can be sent over the network.
+   */
+  serialize() {
+    // might need gridX and gridY to not depend on the visual representation...
+    let tileState = {
+      x: this.gridX,
+      y: this.gridY,
+    }
+    return JSON.stringify(tileState);
+  }
+
 }

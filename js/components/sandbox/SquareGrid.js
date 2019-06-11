@@ -72,4 +72,21 @@ class SquareGrid extends Animated {
 
   }
 
+  /**
+   * Used to represent the grid as a string that can be sent over the network.
+   */
+  serialize() {
+    let gridState = {};
+
+    for (let [x, yObject] of Object.entries(this.grid)) {
+      gridState[x] = {};
+      for (let [y, tile] of Object.entries(yObject)) {
+        gridState[x][y] = tile.serialize();
+      }
+    }
+
+    console.log(gridState)
+    return JSON.stringify(gridState);
+  }
+
 }
