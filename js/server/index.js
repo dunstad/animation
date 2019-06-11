@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const gameServer = new colyseus.Server({ server });
 
 // register your room handlers
-gameServer.register('my_room', MyRoom);
+gameServer.register('sandbox', MyRoom);
 
 // register @colyseus/social routes
 app.use("/", socialRoutes);
