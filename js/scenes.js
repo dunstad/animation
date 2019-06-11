@@ -477,7 +477,15 @@ var scenes = {
       'single player': ()=>{
         scene.player.loadScene(scenes.sandbox);
       },
-      'multiplayer': ()=>{console.log('bye')},
+      'multiplayer': ()=>{
+        var client = new Colyseus.Client('ws://localhost:2567');
+        var room = client.join("my_room");
+        room.onJoin.add(function() {
+          console.log(client.id, "joined", room.name);
+          room.send('hello room');
+          // room.leave();
+        });
+      },
     };
 
     menu.x = 300;
