@@ -474,7 +474,9 @@ var scenes = {
     });
 
     menu.choices = {
-      'single player': ()=>{console.log('hi')},
+      'single player': ()=>{
+        scene.player.loadScene(scenes.sandbox);
+      },
       'multiplayer': ()=>{console.log('bye')},
     };
 
