@@ -4,7 +4,7 @@ const colyseus = require('colyseus');
 const monitor = require("@colyseus/monitor").monitor;
 const socialRoutes = require("@colyseus/social/express").default;
 
-const MyRoom = require('./MyRoom').MyRoom;
+const SandboxRoom = require('./SandboxRoom').SandboxRoom;
 
 const port = process.env.PORT || 2567;
 const app = express()
@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const gameServer = new colyseus.Server({ server });
 
 // register your room handlers
-gameServer.register('sandbox', MyRoom);
+gameServer.register('sandbox', SandboxRoom);
 
 // register @colyseus/social routes
 app.use("/", socialRoutes);

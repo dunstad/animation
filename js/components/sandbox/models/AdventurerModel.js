@@ -1,10 +1,12 @@
+if (module) {var Model = require('./Model');}
+
 class AdventurerModel extends Model {
 
   constructor(grid) {
 
     super();
 
-    this.state.grid = grid;
+    this.grid = grid;
     this.state.destination = false;
     this.state.buildTarget = false;
     this.state.inventory = {
@@ -15,8 +17,8 @@ class AdventurerModel extends Model {
   }
 
   move(x, y) {
-    if (!this.state.grid.tile(x, y).occupied) {
-      this.state.grid.occupy(x, y, this);
+    if (!this.grid.tile(x, y).occupied) {
+      this.grid.occupy(x, y, this);
     }
   }
 
@@ -37,8 +39,8 @@ class AdventurerModel extends Model {
       let xDistance = this.distanceTo(x + xDirection, y);
       let yDistance = this.distanceTo(x, y + yDirection);
   
-      let xTileOccupied = this.state.grid.tile(x + xDirection, y).occupied;
-      let yTileOccupied = this.state.grid.tile(x, y + yDirection).occupied;
+      let xTileOccupied = this.grid.tile(x + xDirection, y).occupied;
+      let yTileOccupied = this.grid.tile(x, y + yDirection).occupied;
 
       if (!xTileOccupied && xDirection) {
         this.state.destination = {x: x + xDirection, y: y};
@@ -67,12 +69,12 @@ class AdventurerModel extends Model {
   placeCrystal(x, y) {
     if (this.distanceTo(x, y) == 1) {
       if (this.state.inventory.Crystal) {
-        let crystal = new Crystal(svgContainer, this.state.grid, {
+        let crystal = new Crystal(svgContainer, this.grid, {
           fill: '#00FFF5',
           stroke: 'black',
           'stroke-width': 3,
         });
-        this.state.grid.occupy(x, y, crystal);
+        this.grid.occupy(x, y, crystal);
         this.state.inventory.Crystal -= 1;
       }
       else {
@@ -92,12 +94,12 @@ class AdventurerModel extends Model {
   placeDrill(x, y) {
     if (this.distanceTo(x, y) == 1) {
       if (this.state.inventory.Drill) {
-        let drill = new Drill(svgContainer, this.state.grid, {
+        let drill = new Drill(svgContainer, this.grid, {
           fill: 'gray',
           stroke: 'black',
           'stroke-width': 3,
         });
-        this.state.grid.occupy(x, y, drill);
+        this.grid.occupy(x, y, drill);
         this.state.inventory.Drill -= 1;
       }
       else {
@@ -112,12 +114,12 @@ class AdventurerModel extends Model {
   pickUp(x, y) {
     if (this.distanceTo(x, y) == 1) {
       let canPickUp = ['Crystal', 'Drill'];
-      let entity = this.state.grid.tile(x, y).occupied;
+      let entity = this.grid.tile(x, y).occupied;
       if (entity) {
         let entityName = entity.constructor.name;
         if (canPickUp.indexOf(entityName) != -1) {
           this.state.inventory[entityName] += 1;
-          this.state.grid.occupy(x, y, false);
+          this.grid.occupy(x, y, false);
         }
       }
     }
@@ -134,7 +136,7 @@ class AdventurerModel extends Model {
       if (xDirection == 0 && yDirection == 0) {
         this.state.destination = false;
       }
-      else if (!this.state.grid.tile(this.tile.gridX + xDirection, this.tile.gridY).occupied) {
+      else if (!this.grid.tile(this.tile.gridX + xDirection, this.tile.gridY).occupied) {
         this.moveRelative(xDirection, 0);
       }
       else {
@@ -169,7 +171,7 @@ class AdventurerModel extends Model {
 
     // pick up crystals from nearby drills
     for (let [direction, coords] of Object.entries(directionToOffset)) {
-      let tile = this.state.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
+      let tile = this.grid.tile(this.tile.gridX + coords[0], this.tile.gridY + coords[1]);
       if (tile && tile.occupied && tile.occupied.constructor.name == 'Drill') {
         this.state.inventory.Crystal += tile.occupied.crystals;
         tile.occupied.crystals = 0;
@@ -179,3 +181,5 @@ class AdventurerModel extends Model {
   }
 
 }
+
+if (module) {module.exports = AdventurerModel;}
