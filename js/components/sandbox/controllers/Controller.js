@@ -16,15 +16,14 @@ class Controller {
       }
     }
 
-    this.state = grid;
+    this.grid = grid;
 
   }
 
   addPlayer() {
 
-    let grid = this.state;
-    let adventurer = new AdventurerModel(grid);
-    grid.occupy(1, 1, adventurer);
+    let adventurer = new AdventurerModel(this.grid);
+    this.grid.occupy(1, 1, adventurer);
 
   }
 
