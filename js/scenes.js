@@ -496,6 +496,9 @@ var scenes = {
           room.send('hello room');
           // room.leave();
         });
+        room.onMessage.add((message) => {
+          console.log(client.id, "received on", room.name, message);
+        });
       },
     };
 
