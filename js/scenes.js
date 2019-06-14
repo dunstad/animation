@@ -494,10 +494,10 @@ var scenes = {
         room.onJoin.add(function() {
           console.log(client.id, "joined", room.name);
           room.send('hello room');
-          // room.leave();
         });
         room.onMessage.add((message) => {
-          console.log(client.id, "received on", room.name, message);
+          console.log(client.id, "received on", room.name, ':');
+          console.log(JSON.parse(message))
         });
       },
     };
