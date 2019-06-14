@@ -35,7 +35,6 @@ class GridModel extends Model {
     
     let tile = this.tile(x, y);
     if (tile.state.occupied) {
-      tile.state.occupied.element.remove();
       this.entities.splice(this.entities.indexOf(tile.state.occupied), 1);
     }
     tile.state.occupied = entity;
@@ -69,6 +68,7 @@ class GridModel extends Model {
     for (let [x, yObject] of Object.entries(this.state)) {
       gridState[x] = {};
       for (let [y, tile] of Object.entries(yObject)) {
+        console.log(tile)
         gridState[x][y] = tile.serialize();
       }
     }
