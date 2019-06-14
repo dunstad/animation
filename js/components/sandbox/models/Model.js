@@ -1,7 +1,17 @@
 class Model {
 
   constructor() {
-    this.state = {};
+    this.state = {
+      className: this.constructor.name,
+      id: Model.uuidv4(),
+    };
+  }
+
+  static uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   serialize() {

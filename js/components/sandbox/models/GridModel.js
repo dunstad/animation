@@ -5,6 +5,8 @@ class GridModel extends Model {
   constructor() {
     
     super();
+    
+    this.state.grid = {};
 
     // used to simplify finding all the things to simulate
     this.entities = [];
@@ -14,16 +16,16 @@ class GridModel extends Model {
   tile(x, y, tile) {
     let result;
     if (!tile) {
-      if (this.state[x]) {
-        result = this.state[x][y];
+      if (this.state.grid[x]) {
+        result = this.state.grid[x][y];
       }
     }
     else {
       tile.grid = this;
-      if (!this.state[x]) {
-        this.state[x] = {};
+      if (!this.state.grid[x]) {
+        this.state.grid[x] = {};
       }
-      this.state[x][y] = tile;
+      this.state.grid[x][y] = tile;
       tile.x = x;
       tile.y = y;
       result = tile;
@@ -65,15 +67,21 @@ class GridModel extends Model {
   serialize() {
     let gridState = {};
 
-    for (let [x, yObject] of Object.entries(this.state)) {
+    for (let [x, yObject] of Object.entries(this.state.grid)) {
       gridState[x] = {};
       for (let [y, tile] of Object.entries(yObject)) {
-        console.log(tile)
-        gridState[x][y] = tile.serialize();
+        try {
+          gridState[x][y] = tile.state;
+          if (tile.state.occupied) {
+            tile.state.occupied = tile.state.occupied.state;
+          }
+        }
+        catch {
+          console.log(x, y, tile)
+        }
       }
     }
 
-    console.log(gridState)
     return JSON.stringify(gridState);
   }
 

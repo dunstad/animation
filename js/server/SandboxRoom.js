@@ -10,7 +10,7 @@ exports.SandboxRoom = class extends colyseus.Room {
     // this.broadcast(`${ client.sessionId } joined.`);
     console.log(`${ client.sessionId } joined.`);
     this.controller.addPlayer();
-    this.broadcast(this.controller.state.serialize());
+    this.broadcast(this.controller.grid.serialize());
   }
   onMessage (client, message) {
     console.log("BasicRoom received message from", client.sessionId, ":", message);

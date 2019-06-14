@@ -11,14 +11,6 @@ class TileModel extends Model {
 
   }
 
-  serialize() {
-    let tileState = Object.assign({}, this.state);
-    if (tileState.occupied) {
-      tileState.occupied = tileState.occupied.state;
-    }
-    return JSON.stringify(tileState);
-  }
-
 }
 
 if (module) {module.exports = TileModel;}
