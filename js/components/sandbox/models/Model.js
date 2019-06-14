@@ -9,3 +9,5 @@ class Model {
   }
 
 }
+
+if (module) {module.exports = Model;}

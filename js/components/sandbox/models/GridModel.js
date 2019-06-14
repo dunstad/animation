@@ -1,3 +1,5 @@
+if (module) {var Model = require('./Model');}
+
 class GridModel extends Model {
 
   constructor() {
@@ -22,7 +24,6 @@ class GridModel extends Model {
         this.state[x] = {};
       }
       this.state[x][y] = tile;
-      this.element.add(tile.element);
       tile.x = x;
       tile.y = y;
       result = tile;
@@ -32,30 +33,23 @@ class GridModel extends Model {
 
   occupy(x, y, entity) {
     
-    this.element.add(entity.element);
-
     let tile = this.tile(x, y);
-    if (tile.occupied) {
-      tile.occupied.element.remove();
-      this.entities.splice(this.entities.indexOf(tile.occupied), 1);
+    if (tile.state.occupied) {
+      tile.state.occupied.element.remove();
+      this.entities.splice(this.entities.indexOf(tile.state.occupied), 1);
     }
-    tile.occupied = entity;
+    tile.state.occupied = entity;
 
     if (entity) {
 
       // separate function for putting them on the grid the first time?
       if (!this.entities.find(e=>e==entity)) {this.entities.push(entity);}
 
-      if (entity.tile) {entity.tile.occupied = false;}
+      if (entity.tile) {entity.tile.state.occupied = false;}
       entity.tile = tile;
       
       entity.x = tile.x;
       entity.y = tile.y;
-
-      // make sure clicking the entities is the same as clicking the tile they stand on
-      entity.element.node.addEventListener('click', ()=>{
-        entity.tile.element.node.dispatchEvent(new Event('click'));
-      });
 
     }
   }
@@ -84,3 +78,5 @@ class GridModel extends Model {
   }
 
 }
+
+if (module) {module.exports = GridModel;}
