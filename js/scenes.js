@@ -491,14 +491,25 @@ var scenes = {
         });
 
         var room = client.join("sandbox");
+
         room.onJoin.add(function() {
           console.log(client.id, "joined", room.name);
           room.send('hello room');
         });
+
         room.onMessage.add((message) => {
           console.log(client.id, "received on", room.name, ':');
           console.log(JSON.parse(message))
         });
+
+        room.state.onChange = (changes) => {
+          changes.forEach(change => {
+              console.log(change.field);
+              console.log(change.value);
+              console.log(change.previousValue);
+          });
+        };
+
       },
     };
 
