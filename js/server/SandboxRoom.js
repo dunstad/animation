@@ -8,6 +8,7 @@ class MyState extends Schema {
 }
 type("string")(MyState.prototype, "test");
 
+
 exports.SandboxRoom = class extends colyseus.Room {
 
   onInit (options) {
@@ -39,7 +40,8 @@ exports.SandboxRoom = class extends colyseus.Room {
   }
 
   update() {
-    this.state.test = String(Math.random());
+    // this.state.test = String(Math.random());
+    this.state.test = this.state.test + 'a';
   }
 
 }

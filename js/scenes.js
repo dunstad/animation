@@ -502,13 +502,9 @@ var scenes = {
           console.log(JSON.parse(message))
         });
 
-        room.state.onChange = (changes) => {
-          changes.forEach(change => {
-              console.log(change.field);
-              console.log(change.value);
-              console.log(change.previousValue);
-          });
-        };
+        room.onStateChange.add((state) => {
+          console.log('state', state);
+        });
 
       },
     };
