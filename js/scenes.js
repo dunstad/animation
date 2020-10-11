@@ -469,10 +469,78 @@ var scenes = {
 
     menu.choices = {
       'hello world!': ()=>{},
-      'man it\'s loud in here: ()=>{},
+      'man it\'s loud in here': ()=>{},
     };
 
     scene.addActors([menu]);
+
+  },
+
+  'demo': (scene)=>{
+
+    let sky = new Sky(svgContainer, 640, 360, 0);
+    sky.time = 18;
+    sky.toHour(21, 10 * 1000);
+    scene.addActor(sky);
+
+    let clock = new Clock(svgContainer, 50);
+    clock.move(10, 250).process();
+    clock.time = 8.5;
+    clock.toTime(9, 10 * 1000);
+    scene.addActor(clock);
+
+    let cloud = new Cloud(svgContainer, 3, 100, 'white');
+    cloud.move(400, 100).process();
+    cloud.moveX(450, 10 * 1000);
+    let maxArcs = 8;
+    let cloudTransitionTime = 10000;
+    for (let numArcs = 4; numArcs < maxArcs; numArcs++) {
+      cloud.toBumps(numArcs, cloudTransitionTime);
+    }
+    for (let numArcs = maxArcs; numArcs > 2; numArcs--) {
+      cloud.toBumps(numArcs, cloudTransitionTime);
+    }
+    scene.addActor(cloud);
+    
+    let moon = new Moon(svgContainer, 50);
+    moon.move(100, 100).process();
+    moon.toPhase(1, 10 * 1000);
+    scene.addActor(moon);
+
+    let star = new Star(svgContainer, 2, 40, '#ffffc0');
+    star.move(270, 70).process();
+    let maxPoints = 7;
+    let starTransitionTime = (10 * 1000) / 10;
+    for (let numPoints = 3; numPoints < maxPoints; numPoints++) {
+      star.toPoints(numPoints, starTransitionTime);
+    }
+    for (let numPoints = maxPoints; numPoints > 1; numPoints--) {
+      star.toPoints(numPoints, starTransitionTime);
+    }
+    scene.addActor(star);
+
+    let realEye = new Eye(svgContainer, {
+      whiteRadius: 50,
+      irisRadius: 20,
+      pupilRadius: 10,
+    });
+    realEye.move(300, 200).openTop(0).openBottom(0).process();
+    realEye.wait(4 * 1000);
+    realEye.openTop(.5, 500);
+    realEye.openBottom(.5, 500, {merge: 'start'});
+    realEye.look(0, 50, 250, {merge: .5});
+    realEye.look(0, -50, 1000);
+    realEye.look(90, 50, 500);
+    realEye.look(180, 50, 400);
+    realEye.look(270, 50, 300);
+    realEye.look(360, 50, 200);
+    realEye.look(360, 0, 100);
+    realEye.openTop(1, 100, {merge: 'start'});
+    realEye.openBottom(1, 100, {merge: 'start'});
+    realEye.wait(1 * 1000);
+    realEye.openTop(0, 2000);
+    realEye.openBottom(0, 2000, {merge: 'start'});
+    scene.addActor(realEye);
 
   },
 
